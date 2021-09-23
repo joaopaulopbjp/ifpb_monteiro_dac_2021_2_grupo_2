@@ -24,6 +24,8 @@ public class Livro {
 	
 	private BigDecimal preco;
 	
+	private String isbn;
+	
 	private byte[] imagemCapa;
 	
 	private Integer edicao;
@@ -114,6 +116,13 @@ public class Livro {
 	public void setCategoria(CategoriasLivros categoria) {
 		this.categoria = categoria;
 	}
-	
+
+	public String getIsbn() {
+		return isbn;
+	}
+
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
+	}
 	
 }

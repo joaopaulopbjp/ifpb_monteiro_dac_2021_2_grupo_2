@@ -36,7 +36,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	public void cadastrarLivro() {
 		Livro livro = new Livro();
 		livro.setTitulo("O Conde de Monte Cristo");
-		livro.setDescricao("Uma livro muito bom!");
+		livro.setDescricao("Um livro muito bom!");
 		livro.setPreco(new BigDecimal(25.30));
 		livro.setEdicao(01);
 		livro.setAno(1844);
