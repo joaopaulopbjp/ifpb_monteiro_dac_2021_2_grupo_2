@@ -5,18 +5,19 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "TB_LIVRO")
 public class Livro {
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name = "livro_isbn")
+	private String isbn;
 	
 	private String titulo;
 	
@@ -24,16 +25,16 @@ public class Livro {
 	
 	private BigDecimal preco;
 	
-	private String isbn;
-	
 	private byte[] imagemCapa;
 	
 	private Integer edicao;
 	
 	private Integer ano;
 	
-	@OneToMany
-	@JoinColumn(name = "autor_id")
+	@ManyToMany
+	@JoinTable(name = "TB_LIVRO_AUTOR", 
+	joinColumns = @JoinColumn(name ="livro_isbn"),
+	inverseJoinColumns = @JoinColumn(name ="autor_id"))
 	private List<Autor> autores;
 	
 	@Enumerated(EnumType.STRING)
@@ -41,13 +42,12 @@ public class Livro {
 	private CategoriasLivros categoria;
 	
 	public Livro() {
-		// TODO Auto-generated constructor stub
+	
 	}
 
 	public byte[] getImagemCapa() {
 		return imagemCapa;
 	}
-
 
 	public void setImagemCapa(byte[] imagemCapa) {
 		this.imagemCapa = imagemCapa;
@@ -62,12 +62,6 @@ public class Livro {
 	public void setAutores(List<Autor> autores) {
 		this.autores = autores;
 	}
-
-
-	public Long getId() {
-		return id;
-	}
-
 
 	public String getTitulo() {
 		return titulo;
