@@ -1,4 +1,4 @@
-package com.dac.ecommerce.livros.service;
+package com.dac.ecommerce.livros.services;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

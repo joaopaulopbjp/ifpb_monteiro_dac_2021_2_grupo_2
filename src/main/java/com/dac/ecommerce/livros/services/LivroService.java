@@ -1,8 +1,13 @@
-package com.dac.ecommerce.livros.service;
-import java.util.List;
+package com.dac.ecommerce.livros.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
 import com.dac.ecommerce.livros.model.Livro;
 import com.dac.ecommerce.livros.repository.LivroRepository;
 
@@ -32,7 +37,7 @@ public class LivroService {
 		repositorioLivro.delete(livro);
 	}
 	
-	//altera um livro
+	// Altera um livro
 	public void alterar(Livro livro) {
 		try {
 			salvar(livro);
@@ -41,10 +46,20 @@ public class LivroService {
 		}
 	}
 	
-	//recupera todos os livros
-	public List<Livro> todosOsLivros() {
-	
-		return repositorioLivro.findAll();
+	// Recupera todos os livros
+	public String getAllLivrosPorPagina(Integer numeroPagina) throws PaginaInvalidaException {
+		Pageable pageable = PageRequest.of((numeroPagina - 1), 5, Sort.by("titulo").ascending());
+		Page<Livro> pagina = repositorioLivro.findAll(pageable);
+		
+		String livros = "";
+		for(Livro livro : pagina) {
+			livros += livro.toString();
+		}
+		
+		if(livros.length() == 0) {
+			throw new PaginaInvalidaException();
+		}
+		return livros;
 	}
 	
 

@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -24,9 +23,7 @@ public class Autor {
 	@ManyToMany(cascade = CascadeType.ALL,mappedBy = "autores")
 	private List<Livro> livros;
 	
-	public Autor() {
-	
-	}
+	public Autor() { }
 
 	public String getNome() {
 		return nome;
@@ -47,5 +44,6 @@ public class Autor {
 	public Long getId() {
 		return id;
 	}
+
 
 }

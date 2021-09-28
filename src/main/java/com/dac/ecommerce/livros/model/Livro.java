@@ -18,17 +18,11 @@ public class Livro {
 	@Id
 	@Column(name = "livro_isbn")
 	private String isbn;
-	
 	private String titulo;
-	
 	private String descricao;
-	
 	private BigDecimal preco;
-	
 	private byte[] imagemCapa;
-	
 	private Integer edicao;
-	
 	private Integer ano;
 	
 	@ManyToMany
@@ -41,9 +35,7 @@ public class Livro {
 	@Column(nullable = false)
 	private CategoriasLivros categoria;
 	
-	public Livro() {
-	
-	}
+	public Livro() { }
 
 	public byte[] getImagemCapa() {
 		return imagemCapa;
@@ -53,11 +45,9 @@ public class Livro {
 		this.imagemCapa = imagemCapa;
 	}
 
-
 	public List<Autor> getAutores() {
 		return autores;
 	}
-
 
 	public void setAutores(List<Autor> autores) {
 		this.autores = autores;
@@ -119,4 +109,12 @@ public class Livro {
 		this.isbn = isbn;
 	}
 	
+	public String toString() {
+		return "\n\nTítulo: " + this.titulo + 
+			   "\nDescrição: " + this.descricao + 
+			   "\nEdição: " + this.edicao +
+			   "\nAno: " + this.ano +
+			   "\nPreço: " + this.preco +
+			   "\nISBN: " + this.isbn;
+	}
 }
