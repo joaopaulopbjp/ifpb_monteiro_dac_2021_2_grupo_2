@@ -11,14 +11,21 @@ public class AutorService {
 	@Autowired
 	private AutorRepository repository;
 	
-	public List<Autor> todosAutores(){
-		
-		return repository.findAll();
+	public List<Autor> todosAutores() throws Exception{
+		List<Autor> autores = repository.findAll();
+		if(autores.size() == 0 || autores == null) {
+			throw new Exception("Não existe autores cadastrados");
+		}else {
+			return repository.findAll();
+		}
 	}
 	
 	public void salvar(Autor autor) {
 		
 		repository.save(autor);
 	}
-
+	
+	public Autor recuperarAutor(Long id) {
+		return repository.getById(id);
+	}
 }

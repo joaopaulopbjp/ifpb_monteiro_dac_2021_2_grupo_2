@@ -1,12 +1,11 @@
 package com.dac.ecommerce.livros;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
 import com.dac.ecommerce.livros.model.Autor;
 import com.dac.ecommerce.livros.model.CategoriasLivros;
@@ -33,36 +32,8 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		menu();
-	}
+	}		
 
-	// teste cadastrar livro
-	public void cadastrarLivro() {
-		
-		Autor autor1 = new Autor();
-		autor1.setNome("fulano");
-		autorService.salvar(autor1);
-		
-		//recuperando autores
-		List<Autor> autores = autorService.todosAutores();
-		
-		Livro novoLivro = new Livro();
-		novoLivro.setIsbn("12345678910");
-		novoLivro.setTitulo("Livro 8");
-		novoLivro.setDescricao("primeiro livro");
-		novoLivro.setPreco(new BigDecimal(20.5));
-		novoLivro.setEdicao(01);
-		novoLivro.setAno(2021);
-		novoLivro.setCategoria(CategoriasLivros.AVENTURA);
-		novoLivro.setAutores(autores);
-		
-		try {
-			servicoLivro.salvar(novoLivro);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		
-	}
-	
 	public void menu() {
 		
 		Scanner input = new Scanner(System.in);
@@ -128,6 +99,73 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					if(opcaoMenuLivro == 0) {
 						break;
 					} else if(opcaoMenuLivro == 1) {
+						try {
+							List<Autor> autores = autorService.todosAutores();
+							System.out.println("Autores cadastrados: ");
+							for (int i = 0; i < autores.size(); i++) {
+								System.out.println("Nome do autor: "+autores.get(i).getNome()+" / "+"id: "+autores.get(i).getId());
+							}
+							
+							System.out.print("Qual a quantidade de autores do livro?: ");
+							int qtdAutores = Integer.parseInt(input.nextLine());
+							
+							if(qtdAutores <= autores.size() && qtdAutores > 0) {
+								List<Autor> addAutores = new ArrayList<>();
+								Livro novoLivro = new Livro();
+								for (int i = 0; i < qtdAutores; i++) {
+									System.out.print("Digite o ID do Autor: ");
+									Autor recuperarAutor = autorService.recuperarAutor(Long.parseLong(input.nextLine()));
+									addAutores.add(recuperarAutor);
+								}
+								novoLivro.setAutores(addAutores);
+								System.out.print("Digite ISBN do Livro: ");
+								novoLivro.setIsbn(input.nextLine());
+								System.out.print("Digite o Título do Livro: ");
+								novoLivro.setTitulo(input.nextLine());
+								System.out.print("Digite a Decrição do Livro: ");
+								novoLivro.setDescricao(input.nextLine());
+								System.out.print("Digite o preço do Livro: ");
+								novoLivro.setPreco(new BigDecimal(Float.parseFloat(input.nextLine())));
+								
+								//System.out.print("ImagemCapa: ");
+								//novoLivro.set(input.nextLine());
+								while(true) {
+									System.out.println("Escolha uma categoria");
+									System.out.println("[1] - Informática");
+									System.out.println("[2] - Romance");
+									System.out.println("[3] - Aventura");
+									System.out.println("[4] - Engenharia");
+									String op = input.nextLine();
+									if(op.equals("1")) {
+										novoLivro.setCategoria(CategoriasLivros.INFORMATICA);
+										break;
+									}else if(op.equals("2")) {
+										novoLivro.setCategoria(CategoriasLivros.ROMANCE);
+										break;
+									}else if(op.equals("3")) {
+										novoLivro.setCategoria(CategoriasLivros.AVENTURA);
+										break;
+									}else if(op.equals("4")) {
+										novoLivro.setCategoria(CategoriasLivros.ENGENHARIA);
+										break;
+									}
+									
+								}
+								
+								System.out.print("Edição do Livro: ");
+								novoLivro.setEdicao(Integer.parseInt(input.nextLine()));
+								System.out.print("Ano do Livro: ");
+								novoLivro.setAno(Integer.parseInt(input.nextLine()));
+								
+								servicoLivro.salvar(novoLivro);
+								
+							}else {
+								System.out.println(mensagemInputInvalido);
+							}
+							
+						} catch (Exception e) {
+							System.out.println(e.getMessage());
+						}
 						
 					} else if(opcaoMenuLivro == 2) {
 						
