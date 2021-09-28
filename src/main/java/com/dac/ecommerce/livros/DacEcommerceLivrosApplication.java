@@ -30,8 +30,8 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-		cadastrarLivro();
-	
+
+		
 	}
 
 	// teste cadastrar livro
