@@ -8,7 +8,5 @@ import com.dac.ecommerce.livros.model.Livro;
 
 @Repository
 public interface LivroRepository extends JpaRepository<Livro, String>{
-	
-	Page<Livro> findAll(Pageable pageable);
-	
+
 }
