@@ -48,11 +48,11 @@ public class AutorService {
 		return autor;
 	}
 	
-	public void editarAutor(Autor novoAutor, long idAntigo) {
-		Autor autorSalvo = repository.findByID(idAntigo);
-		BeanUtils.copyProperties(novoAutor, autorSalvo);
-		repository.save(autorSalvo);
-	}
+//	public void editarAutor(Autor novoAutor, long idAntigo) {
+//		Autor autorSalvo = repository.findByID(idAntigo);
+//		BeanUtils.copyProperties(novoAutor, autorSalvo);
+//		repository.save(autorSalvo);
+//	}
 	
 	
 	
