@@ -7,6 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.dac.ecommerce.livros.exceptions.LivroAutorException;
+import com.dac.ecommerce.livros.exceptions.LivroCategoriaException;
+import com.dac.ecommerce.livros.exceptions.LivroException;
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
 import com.dac.ecommerce.livros.model.Livro;
 import com.dac.ecommerce.livros.repository.LivroRepository;
@@ -17,18 +20,18 @@ public class LivroService {
 	@Autowired
 	private LivroRepository repositorioLivro;
 	
-	public void salvar(Livro livro) throws Exception{
+	public void salvar(Livro livro) throws LivroException, LivroAutorException, LivroCategoriaException{
 		
 		if(livro != null){
 			if(livro.getAutores() == null || livro.getAutores().size() == 0) {
-				throw new Exception("Livro não possui autor!");
-			}else if(livro.getCategoria() == null){
-				throw new Exception("Livro não possui categoria!");
-			}else {
+				throw new LivroAutorException();
+			} else if(livro.getCategoria() == null){
+				throw new LivroCategoriaException();
+			} else {
 				repositorioLivro.save(livro);
 			}
-		}else {
-			throw new Exception("Livro não pode ser cadastrado!");
+		} else {
+			throw new LivroException();
 		}
 		
 	}
@@ -42,11 +45,10 @@ public class LivroService {
 		try {
 			salvar(livro);
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println(e.getMessage());
 		}
 	}
 	
-	// Recupera todos os livros
 	public String getAllLivrosPorPagina(Integer numeroPagina) throws PaginaInvalidaException {
 		Pageable pageable = PageRequest.of((numeroPagina - 1), 5, Sort.by("titulo").ascending());
 		Page<Livro> pagina = repositorioLivro.findAll(pageable);
@@ -61,6 +63,6 @@ public class LivroService {
 		}
 		return livros;
 	}
-	
+
 
 }

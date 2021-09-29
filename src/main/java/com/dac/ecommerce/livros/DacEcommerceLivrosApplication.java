@@ -18,7 +18,6 @@ import com.dac.ecommerce.livros.services.LivroService;
 public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	
 	private LivroService servicoLivro;
-
 	private AutorService autorService;
 	
 	public DacEcommerceLivrosApplication(LivroService servicoLivro, AutorService autorService) {

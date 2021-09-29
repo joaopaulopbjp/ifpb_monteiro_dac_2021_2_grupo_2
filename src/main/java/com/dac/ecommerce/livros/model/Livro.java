@@ -18,11 +18,17 @@ public class Livro {
 	@Id
 	@Column(name = "livro_isbn")
 	private String isbn;
+	
 	private String titulo;
+	
 	private String descricao;
+	
 	private BigDecimal preco;
+	
 	private byte[] imagemCapa;
+	
 	private Integer edicao;
+	
 	private Integer ano;
 	
 	@ManyToMany

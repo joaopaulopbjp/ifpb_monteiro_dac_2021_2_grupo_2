@@ -12,12 +12,10 @@ public class AutorService {
 	private AutorRepository repository;
 	
 	public List<Autor> todosAutores(){
-		
 		return repository.findAll();
 	}
 	
 	public void salvar(Autor autor) {
-		
 		repository.save(autor);
 	}
 
