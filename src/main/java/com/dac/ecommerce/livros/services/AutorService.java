@@ -1,5 +1,7 @@
 package com.dac.ecommerce.livros.services;
 import java.util.List;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.dac.ecommerce.livros.model.Autor;
@@ -32,4 +34,23 @@ public class AutorService {
 	public Autor recuperarAutor(Long id) {
 		return repository.getById(id);
 	}
-}
+	
+	public void remove(long ID) {
+		repository.deleteById(ID);
+	}
+	
+	public Autor pesquisarAutorPorNome(String nome) {
+		Autor autor = repository.findUniqueByNome(nome);
+		return autor;
+	}
+	
+	public void editarAutor(Autor novoAutor, long idAntigo) {
+		Autor autorSalvo = repository.findByID(idAntigo);
+		BeanUtils.copyProperties(novoAutor, autorSalvo);
+		repository.save(autorSalvo);
+	}
+	
+	
+	
+	}
+
