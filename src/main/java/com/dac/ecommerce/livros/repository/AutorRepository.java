@@ -13,5 +13,6 @@ public interface AutorRepository extends JpaRepository<Autor, Long>{
 	public List<Autor> findByNome(String nome);
 	
 	public Optional<Autor> findById(Long ID);
-
+	
+	//public Autor findByID(long ID);
 }

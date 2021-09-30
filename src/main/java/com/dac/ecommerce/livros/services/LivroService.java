@@ -23,7 +23,7 @@ public class LivroService {
 	public void salvar(Livro livro) throws LivroException, LivroAutorException, LivroCategoriaException{
 		
 		if(livro != null){
-			if(livro.getAutores() == null || livro.getAutores().size() == 0) {
+			if(livro.getAutores() == null) {
 				throw new LivroAutorException();
 			} else if(livro.getCategoria() == null){
 				throw new LivroCategoriaException();
