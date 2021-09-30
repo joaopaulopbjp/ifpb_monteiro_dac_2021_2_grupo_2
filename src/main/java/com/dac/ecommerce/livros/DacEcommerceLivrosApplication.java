@@ -13,16 +13,20 @@ import com.dac.ecommerce.livros.model.CategoriasLivros;
 import com.dac.ecommerce.livros.model.Livro;
 import com.dac.ecommerce.livros.services.AutorService;
 import com.dac.ecommerce.livros.services.LivroService;
+import com.dac.ecommerce.livros.services.PedidoService;
 
 @SpringBootApplication
 public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	
 	private LivroService servicoLivro;
 	private AutorService autorService;
+	private PedidoService pedidoService;
 	
-	public DacEcommerceLivrosApplication(LivroService servicoLivro, AutorService autorService) {
+	public DacEcommerceLivrosApplication(LivroService servicoLivro, AutorService autorService, PedidoService pedidoService) {
 		this.servicoLivro = servicoLivro;
 		this.autorService = autorService;
+		this.pedidoService = pedidoService;
+		
 	}
 
 	public static void main(String[] args) {
@@ -31,7 +35,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-		menu();
+		//menu();
 	}		
 
 	public void menu() {

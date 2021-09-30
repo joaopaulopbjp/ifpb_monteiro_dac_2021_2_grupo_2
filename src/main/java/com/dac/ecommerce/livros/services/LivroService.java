@@ -7,8 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.dac.ecommerce.livros.exceptions.LivroAutorException;
-import com.dac.ecommerce.livros.exceptions.LivroCategoriaException;
 import com.dac.ecommerce.livros.exceptions.LivroException;
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
 import com.dac.ecommerce.livros.model.Livro;
@@ -20,18 +18,18 @@ public class LivroService {
 	@Autowired
 	private LivroRepository repositorioLivro;
 	
-	public void salvar(Livro livro) throws LivroException, LivroAutorException, LivroCategoriaException{
+	public void salvar(Livro livro) throws LivroException {
 		
 		if(livro != null){
 			if(livro.getAutores() == null) {
-				throw new LivroAutorException();
+				throw new LivroException("[ERROR] - LIVRO NÃO POSSUI AUTOR ATRELADO!");
 			} else if(livro.getCategoria() == null){
-				throw new LivroCategoriaException();
+				throw new LivroException("[ERROR] - LIVRO NÃO POSSUI CATEGORIA!");
 			} else {
 				repositorioLivro.save(livro);
 			}
 		} else {
-			throw new LivroException();
+			throw new LivroException("[ERROR] - LIVRO NÃO PODE SER CADASTRADO!");
 		}
 		
 	}
