@@ -11,10 +11,10 @@ public class AutorService {
 	@Autowired
 	private AutorRepository repository;
 	
-<<<<<<< HEAD
-	public List<Autor> todosAutores(){
+	public List<Autor> getTodosAutores(){
 		return repository.findAll();
-=======
+	}
+	
 	public List<Autor> todosAutores() throws Exception{
 		List<Autor> autores = repository.findAll();
 		if(autores.size() == 0 || autores == null) {
@@ -22,7 +22,6 @@ public class AutorService {
 		}else {
 			return repository.findAll();
 		}
->>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 	}
 	
 	public void salvar(Autor autor) {

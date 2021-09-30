@@ -53,14 +53,15 @@ public class LivroService {
 		Pageable pageable = PageRequest.of((numeroPagina - 1), 5, Sort.by("titulo").ascending());
 		Page<Livro> pagina = repositorioLivro.findAll(pageable);
 		
+		if(pagina.isEmpty()) {
+			throw new PaginaInvalidaException();
+		}
+		
 		String livros = "";
 		for(Livro livro : pagina) {
 			livros += livro.toString();
 		}
-		
-		if(livros.length() == 0) {
-			throw new PaginaInvalidaException();
-		}
+				
 		return livros;
 	}
 
