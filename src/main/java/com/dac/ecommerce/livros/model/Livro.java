@@ -11,6 +11,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "TB_LIVRO")
 public class Livro {
@@ -40,80 +43,6 @@ public class Livro {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private CategoriasLivros categoria;
-	
-	public Livro() { }
-
-	public byte[] getImagemCapa() {
-		return imagemCapa;
-	}
-
-	public void setImagemCapa(byte[] imagemCapa) {
-		this.imagemCapa = imagemCapa;
-	}
-
-	public List<Autor> getAutores() {
-		return autores;
-	}
-
-	public void setAutores(List<Autor> autores) {
-		this.autores = autores;
-	}
-
-	public String getTitulo() {
-		return titulo;
-	}
-
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public BigDecimal getPreco() {
-		return preco;
-	}
-
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
-	}
-
-	public Integer getEdicao() {
-		return edicao;
-	}
-
-	public void setEdicao(Integer edicao) {
-		this.edicao = edicao;
-	}
-
-	public Integer getAno() {
-		return ano;
-	}
-
-	public void setAno(Integer ano) {
-		this.ano = ano;
-	}
-
-	public CategoriasLivros getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(CategoriasLivros categoria) {
-		this.categoria = categoria;
-	}
-
-	public String getIsbn() {
-		return isbn;
-	}
-
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
-	}
 	
 	public String toString() {
 		return "\n\nTítulo: " + this.titulo + 
