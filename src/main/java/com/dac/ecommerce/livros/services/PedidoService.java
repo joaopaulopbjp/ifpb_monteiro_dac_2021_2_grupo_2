@@ -7,37 +7,37 @@ import org.springframework.stereotype.Service;
 
 import com.dac.ecommerce.livros.exceptions.PedidoException;
 import com.dac.ecommerce.livros.model.pedido.Pedido;
-import com.dac.ecommerce.livros.model.pedido.PedidosStatus;
+import com.dac.ecommerce.livros.model.pedido.PedidoStatus;
 import com.dac.ecommerce.livros.repository.PedidoRepository;
 
 @Service
 public class PedidoService {
 	
 	@Autowired
-	private PedidoRepository repository;
-	
-	public void realizarPedido() {
-		
-	}
+	private PedidoRepository pedidoRepository;
 
-	public void cancelarPedido(Long id) throws PedidoException {
+
+	public void cancelarPedido(Long id, String motivo) throws PedidoException {
 		
-		Pedido pedido = repository.findById(id).get();
+		Pedido pedido = pedidoRepository.findById(id).get();
 		
-		LocalDate dataCriacao = LocalDate.fromDateFields(pedido.getDataCriacao());
-		LocalDate dataLimiteCancelamento = dataCriacao.plusWeeks(2);
-		
-		if(dataCriacao.isBefore(dataLimiteCancelamento)) {
-			pedido.setStatus(PedidosStatus.CANCELADO);
-			salvarPedido(pedido);
+		if(pedido.getStatus() != PedidoStatus.CANCELADO) {
+			if(LocalDate.fromDateFields(pedido.getDataCriacao()).isBefore(LocalDate.fromDateFields(pedido.getDataFechamento()))) {
+				pedido.setStatus(PedidoStatus.CANCELADO);
+				pedido.setMotivoCancelamento(motivo);
+				salvarPedido(pedido);
+			} else {
+				throw new PedidoException("[ERROR CANCELAR PEDIDO] - PEDIDO FORA DO PRAZO DE CANCELAMENTO!");
+			}
 		} else {
-			throw new PedidoException("[ERROR CANCELAR PEDIDO] - PEDIDO FORA DO PRAZO DE CANCELAMENTO!");
+			throw new PedidoException("[ERROR CANCELAR PEDIDO] - PEDIDO JÁ FOI CANCELADO!");
 		}
 		
 	}
 	
 	public void salvarPedido(Pedido pedido) {
-		repository.save(pedido);
+		pedidoRepository.save(pedido);
 	}
-
+	
 }
+

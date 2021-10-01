@@ -12,6 +12,7 @@ import com.dac.ecommerce.livros.model.Autor;
 import com.dac.ecommerce.livros.model.CategoriasLivros;
 import com.dac.ecommerce.livros.model.Livro;
 import com.dac.ecommerce.livros.services.AutorService;
+import com.dac.ecommerce.livros.services.FormaPagamentoService;
 import com.dac.ecommerce.livros.services.LivroService;
 import com.dac.ecommerce.livros.services.PedidoService;
 
@@ -21,11 +22,13 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	private LivroService servicoLivro;
 	private AutorService autorService;
 	private PedidoService pedidoService;
+	private FormaPagamentoService formaPagamentoService;
 	
-	public DacEcommerceLivrosApplication(LivroService servicoLivro, AutorService autorService, PedidoService pedidoService) {
+	public DacEcommerceLivrosApplication(LivroService servicoLivro, AutorService autorService, PedidoService pedidoService, FormaPagamentoService formaPagamentoService) {
 		this.servicoLivro = servicoLivro;
 		this.autorService = autorService;
 		this.pedidoService = pedidoService;
+		this.formaPagamentoService = formaPagamentoService;
 		
 	}
 
@@ -35,7 +38,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-		//menu();
+		menu();
 	}		
 
 	public void menu() {
@@ -47,7 +50,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 		boolean flag = true;
 		while(flag) {
 			System.out.println("\n-- MENU PRINCIPAL --");
-			System.out.print("[1] - Usuário \n[2] - Autor \n[3] - Livro \n[0] - Finalizar\nOpção: ");
+			System.out.print("[1] - Usuário \n[2] - Autor \n[3] - Livro \n[4] - Pedido \n[0] - Finalizar\nOpção: ");
 			Integer opcaoMenuPrincipal = Integer.parseInt(input.nextLine());
 			
 			switch(opcaoMenuPrincipal) {
@@ -184,8 +187,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						Integer numeroPagina = Integer.parseInt(input.nextLine());
 						
 						try {
-							String livrosConsulta = servicoLivro.getAllLivrosPorPagina(numeroPagina);
-							System.out.println(livrosConsulta);
+							System.out.println(servicoLivro.getAllLivrosPorPagina(numeroPagina));
 						} catch(PaginaInvalidaException erro) {
 							System.out.println(erro.getMessage());
 						}
@@ -194,11 +196,37 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					}
 				} // loop-while
 				break;
-				
+			case 4:
+				while(true) {
+					System.out.println("\n-- MENU PEDIDO --");
+					System.out.print(
+							"[1] - Novo Pedido \n[2] - Cadastrar Forma Pagamento " + 
+							"\n[0] - Voltar \nOpção: "
+							);
+					Integer opcaoMenuPedido = Integer.parseInt(input.nextLine());
+					
+					if(opcaoMenuPedido == 1) {
+						
+					} else if(opcaoMenuPedido == 2) {
+						System.out.print("Informe a forma de pagamento: ");
+						String formaPagamento = input.nextLine();
+						formaPagamentoService.salvar(formaPagamento);
+					} else if(opcaoMenuPedido == 0) {
+						break;
+					} else {
+						System.out.println(mensagemInputInvalido);
+					}
+				} // loop-while
+				break;
+			default:
+				System.out.println(mensagemInputInvalido);
 			}
+			
+				
 		}
 		
 		input.close();
+		System.exit(0);
 		
 		
 		

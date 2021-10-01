@@ -15,12 +15,15 @@ public class FormaPagamento {
 	
 	private String tipo;
 	
-	private Boolean isActive;									// Define se a forma de pagamento está ativo ou não
+	private Boolean isActive;
 	
-	// Construtor
 	public FormaPagamento(String tipo) {
 		this.tipo = tipo;
 		this.isActive = true;
+	}
+	
+	public String toString() {
+		return "ID: " + this.id + "Tipo: " + this.tipo + "Ativo: " + this.isActive;
 	}
 	
 }

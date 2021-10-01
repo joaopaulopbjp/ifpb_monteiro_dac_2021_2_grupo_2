@@ -4,7 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
+
+import org.joda.time.LocalDate;
+
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 
 @Data
 @Entity
@@ -15,14 +20,18 @@ public class Pedido {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Setter(value = AccessLevel.NONE)
 	@Temporal(TemporalType.DATE)
 	private Date dataCriacao;
 	
+	@Setter(value = AccessLevel.NONE)
 	@Temporal(TemporalType.DATE)
 	private Date dataFechamento;
 	
 	@Enumerated(EnumType.STRING)
-	private PedidosStatus status;
+	private PedidoStatus status;
+	
+	private String motivoCancelamento;
 	
 	@OneToOne(fetch = FetchType.EAGER)
 	private FormaPagamento formaPagamento;
@@ -34,14 +43,16 @@ public class Pedido {
 	private List<ItemPedido> itens;
 
 	public Pedido() {
-		this.status = PedidosStatus.NAO_FINALIZADO;
-		this.dataCriacao = new Date();
+		this.status = PedidoStatus.NAO_FINALIZADO;
 		this.itens = new ArrayList<ItemPedido>();
+		
+		// Setar data de criação e de fechamento
+		this.dataCriacao = new Date();
+		this.dataFechamento = LocalDate.fromDateFields(this.dataCriacao).plusWeeks(1).toDate();  // Adicionar 1 semanas na data de criação para obter o limite de cancelamento
 	}
 	
 	public void adicionarItem(ItemPedido item) {
 		this.itens.add(item);
 	}
 	
-
 }

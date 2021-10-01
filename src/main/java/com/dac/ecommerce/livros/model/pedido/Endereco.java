@@ -7,7 +7,7 @@ import lombok.Data;
 @Embeddable
 public class Endereco {
 	
-	private Integer cep;
+	private String cep;
 	
 	private Integer numero;
 	
@@ -20,6 +20,16 @@ public class Endereco {
 	private String rua;
 	
 	private String complemento;
+	
+	public Endereco(String cep, Integer numero, String cidade, String estado, String bairro, String rua, String complemento) {
+		this.cep = cep;
+		this.rua = rua;
+		this.numero = numero;
+		this.cidade = cidade;
+		this.estado = estado;
+		this.bairro = bairro;
+		this.complemento = complemento;
+	}
 	
 	public String toString() {
 		return "\nCEP: " + this.cep +

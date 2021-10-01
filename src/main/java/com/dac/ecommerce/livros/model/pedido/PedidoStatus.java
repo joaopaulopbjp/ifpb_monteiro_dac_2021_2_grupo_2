@@ -1,5 +1,5 @@
 package com.dac.ecommerce.livros.model.pedido;
 
-public enum PedidosStatus {
+public enum PedidoStatus {
 	NAO_FINALIZADO, PREPARANDO, CANCELADO, ENVIADO, RECEBIDO, FINALIZADO;
 }
