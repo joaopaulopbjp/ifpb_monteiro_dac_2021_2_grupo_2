@@ -1,14 +1,16 @@
 package com.dac.ecommerce.livros.model;
 import java.math.BigDecimal;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -19,30 +21,25 @@ import lombok.Data;
 public class Livro {
 	
 	@Id
-	@Column(name = "livro_isbn")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "livro_id")
+	private Long id;
 	private String isbn;
-	
 	private String titulo;
-	
 	private String descricao;
-	
 	private BigDecimal preco;
-	
 	private byte[] imagemCapa;
-	
 	private Integer edicao;
-	
 	private Integer ano;
 	
 	@ManyToMany
 	@JoinTable(name = "TB_LIVRO_AUTOR", 
-	joinColumns = @JoinColumn(name ="livro_isbn"),
+	joinColumns = @JoinColumn(name ="livro_id"),
 	inverseJoinColumns = @JoinColumn(name ="autor_id"))
 	private List<Autor> autores;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private CategoriasLivros categoria;
+	@OneToOne(cascade = CascadeType.ALL)
+	private Categoria categoria;
 	
 	public String toString() {
 		return "\n\nTítulo: " + this.titulo + 

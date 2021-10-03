@@ -1,5 +1,7 @@
 package com.dac.ecommerce.livros.model;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,7 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "TB_ESTOQUE")
 public class Estoque {
@@ -17,32 +21,18 @@ public class Estoque {
 	@Column(name = "estoque_id")
 	private Integer estoqueID;
 	
-	//estoque atual
-	@OneToMany
-	private List<PedidoItem> itensNoEstoque;
+	//itens atuais do estoque
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "estoque")
+	private List<ItemEstoque> itensDoEstoque = new ArrayList<>();
 	
-	//exluidos do estoque
-	@OneToMany
-	private List<PedidoItem> itensExcluidos;
+	public void adicionarNoEstoque(ItemEstoque livro) {
+		itensDoEstoque.add(livro);
+	}
+
+	@Override
+	public String toString() {
+		return "Estoque [estoqueID=" + estoqueID 
+		+ ", itensDoEstoque=" + itensDoEstoque + "]";
+	}
 	
-	public Integer getEstoqueID() {
-		return estoqueID;
-	}
-
-	public List<PedidoItem> getItensNoEstoque() {
-		return itensNoEstoque;
-	}
-
-	public void setItensNoEstoque(List<PedidoItem> itensNoEstoque) {
-		this.itensNoEstoque = itensNoEstoque;
-	}
-
-	public List<PedidoItem> getItensExcluidos() {
-		return itensExcluidos;
-	}
-
-	public void setItensExcluidos(List<PedidoItem> itensExcluidos) {
-		this.itensExcluidos = itensExcluidos;
-	}
-
 }

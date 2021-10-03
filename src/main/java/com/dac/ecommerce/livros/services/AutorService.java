@@ -1,5 +1,6 @@
 package com.dac.ecommerce.livros.services;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,8 @@ public class AutorService {
 
 	public List<Autor> todosAutores() throws Exception{
 		List<Autor> autores = repository.findAll();
-		if(autores.size() == 0 || autores == null) {
-			throw new Exception("Não existe autores cadastrados");
+		if(autores.size() == 0) {
+			throw new Exception("[ERROR] NÃO EXISTE AUTORES CADASTRADOS");
 		}else {
 			return repository.findAll();
 		}
@@ -25,12 +26,16 @@ public class AutorService {
 		repository.save(autor);
 	}
 	
-	public Autor recuperarAutor(Long id) {
-		return repository.getById(id);
+	public Autor recuperarAutor(Long id) throws Exception{
+		Optional<Autor> autor = repository.findById(id);
+		if(autor.get() == null) {
+			throw new Exception("[ERROR] AUTOR NÃO ENCONTRADO!");
+		}
+		return autor.get();
 	}
 	
-	public void remove(long ID) {
-		repository.deleteById(ID);
+	public void remove(Long id) {
+		repository.deleteById(id);
 	}
 	
 	public List<Autor> retornarListaDeAutores() {
@@ -41,15 +46,6 @@ public class AutorService {
 	public Autor pesquisarAutorPorNome(String nome) {
 		Autor autor = repository.findUniqueByNome(nome);
 		return autor;
-	}
-	
-//	public void editarAutor(Autor novoAutor, long idAntigo) {
-//		Autor autorSalvo = repository.findByID(idAntigo);
-//		BeanUtils.copyProperties(novoAutor, autorSalvo);
-//		repository.save(autorSalvo);
-//	}
-	
-	
-	
-	}
+	}	
+}
 

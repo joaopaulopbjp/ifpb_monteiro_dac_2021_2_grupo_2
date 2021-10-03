@@ -6,6 +6,6 @@ import com.dac.ecommerce.livros.model.Estoque;
 @Repository
 public interface EstoqueRepository extends JpaRepository<Estoque, Integer>{
 
-	
+	Estoque findByEstoqueID(Long estoqueID);
 	
 }

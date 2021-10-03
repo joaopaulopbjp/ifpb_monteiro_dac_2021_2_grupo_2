@@ -1,15 +1,22 @@
 package com.dac.ecommerce.livros.services;
-
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
+import com.dac.ecommerce.livros.exceptions.LivroAutorException;
+import com.dac.ecommerce.livros.exceptions.LivroCategoriaException;
 import com.dac.ecommerce.livros.exceptions.LivroException;
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
+import com.dac.ecommerce.livros.model.Autor;
+import com.dac.ecommerce.livros.model.Categoria;
+import com.dac.ecommerce.livros.model.ItemEstoque;
 import com.dac.ecommerce.livros.model.Livro;
+import com.dac.ecommerce.livros.repository.ItemEstoqueRepository;
 import com.dac.ecommerce.livros.repository.LivroRepository;
 
 @Service
@@ -18,30 +25,85 @@ public class LivroService {
 	@Autowired
 	private LivroRepository repositorioLivro;
 	
-	public void salvar(Livro livro) throws LivroException {
-		
-		if(livro != null){
-			if(livro.getAutores() == null) {
-				throw new LivroException("[ERROR] - LIVRO NÃO POSSUI AUTOR ATRELADO!");
-			} else if(livro.getCategoria() == null){
-				throw new LivroException("[ERROR] - LIVRO NÃO POSSUI CATEGORIA!");
-			} else {
-				repositorioLivro.save(livro);
-			}
-		} else {
-			throw new LivroException("[ERROR] - LIVRO NÃO PODE SER CADASTRADO!");
+	@Autowired
+	private ItemEstoqueRepository itemEstoqueRepository;
+	
+	public void salvarLivro(List<Autor> autores, String isbn, String categoria,
+		String titulo,String descricao, BigDecimal preco, byte[] imagemCapa,
+		Integer edicao, Integer ano) throws LivroException,LivroAutorException, 
+		LivroCategoriaException{
+		if(autores.size() == 0) {
+			throw new LivroAutorException();
 		}
-		
+		Livro livro = repositorioLivro.findByIsbn(isbn);
+		if(livro != null) {
+			throw new LivroException("[ERROR] LIVRO JÁ CADASTRADO");
+		}
+		if(categoria.equals("")) {
+			throw new LivroCategoriaException();
+		}
+		Livro novoLivro = new Livro();
+		novoLivro.setAutores(autores);
+		novoLivro.setIsbn(isbn);
+		Categoria c = new Categoria();
+		c.setNome(categoria);
+		novoLivro.setCategoria(c);
+		novoLivro.setTitulo(titulo);
+		novoLivro.setDescricao(descricao);
+		novoLivro.setPreco(preco);
+		novoLivro.setImagemCapa(imagemCapa);
+		novoLivro.setEdicao(edicao);
+		novoLivro.setAno(ano);
+		repositorioLivro.save(novoLivro);	
 	}
 	
-	public void excluir(Livro livro) {
-		repositorioLivro.delete(livro);
-	}
 	
-	// Altera um livro
-	public void alterar(Livro livro) {
+	public String excluirLivro(String isbn){
 		try {
-			salvar(livro);
+			Livro livro = bucarLivroPeloIsbn(isbn);
+			ItemEstoque item = itemEstoqueRepository.findByProduto(livro);
+			if(item != null) {
+				itemEstoqueRepository.delete(item);
+			}
+			repositorioLivro.delete(livro);
+			return "LIVRO EXCLUÍDO COM SUCESSO!";
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return "[ERROR] - NÃO FOI POSSÍVEL EXCLUÍR O LIVRO!!";
+	}
+	
+	public Livro buscarLivro(Long id) throws Exception{
+		Optional<Livro> livro = repositorioLivro.findById(id);
+		if(livro == null) {
+			throw new Exception();
+		}
+		return livro.get();
+	}
+	
+	public List<Livro> recuperarTodosOsLivros() throws Exception{
+		List<Livro> livros = repositorioLivro.findAll(); 
+		if(livros.size() == 0) {
+			throw new Exception("[ERROR] - NÃO EXISTE LIVROS CADASTRADOS!");
+		}
+		return livros;
+	}
+	
+	public Livro bucarLivroPeloIsbn(String isbn) throws Exception{
+		Livro verificarISBN = repositorioLivro.findByIsbn(isbn);
+		if(verificarISBN == null) {
+			throw new Exception("[ERROR] - LIVRO NÃO CADASTRADO!");
+		}
+		return verificarISBN;
+	}
+	
+	public void alterarLivro(Livro livro) {
+		try {
+			ItemEstoque item = itemEstoqueRepository.findByProduto(livro);
+			if(item != null) {
+				itemEstoqueRepository.save(item);
+			}
+			repositorioLivro.save(livro);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -62,6 +124,4 @@ public class LivroService {
 				
 		return livros;
 	}
-
-
 }
