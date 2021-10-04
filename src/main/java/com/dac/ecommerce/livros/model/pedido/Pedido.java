@@ -39,12 +39,11 @@ public class Pedido {
 	@Embedded
 	private Endereco enderecoEntrega;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pedido")
-	private List<ItemPedido> itens;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pedido_fk")
+	private List<ItemPedido> itens = new ArrayList<ItemPedido>();
 
 	public Pedido() {
 		this.status = PedidoStatus.NAO_FINALIZADO;
-		this.itens = new ArrayList<ItemPedido>();
 		
 		// Setar data de criação e de fechamento
 		this.dataCriacao = new Date();

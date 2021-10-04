@@ -2,6 +2,7 @@ package com.dac.ecommerce.livros.model;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,14 +22,16 @@ public class ItemEstoque {
 	@Column(name = "itemId")
 	private Long id;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "livro_id")
 	private Livro produto;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "estoque_id")
 	private Estoque estoque;
+	
 	private Integer quantidade;
+	
 	private BigDecimal preco;
 
 	@Override

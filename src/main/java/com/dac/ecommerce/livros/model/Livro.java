@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,12 +25,19 @@ public class Livro {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "livro_id")
 	private Long id;
+	
 	private String isbn;
+	
 	private String titulo;
+	
 	private String descricao;
+	
 	private BigDecimal preco;
+	
 	private byte[] imagemCapa;
+	
 	private Integer edicao;
+	
 	private Integer ano;
 	
 	@ManyToMany
@@ -38,11 +46,13 @@ public class Livro {
 	inverseJoinColumns = @JoinColumn(name ="autor_id"))
 	private List<Autor> autores;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Categoria categoria;
 	
+	@Override
 	public String toString() {
-		return "\n\nTítulo: " + this.titulo + 
+		return "\nID: " + this.id + 
+			   "\nTítulo: " + this.titulo + 
 			   "\nDescrição: " + this.descricao + 
 			   "\nEdição: " + this.edicao +
 			   "\nAno: " + this.ano +

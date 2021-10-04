@@ -8,16 +8,22 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import com.dac.ecommerce.livros.model.Estoque;
 import com.dac.ecommerce.livros.model.ItemEstoque;
+import com.dac.ecommerce.livros.model.Livro;
 import com.dac.ecommerce.livros.repository.EstoqueRepository;
 import com.dac.ecommerce.livros.repository.ItemEstoqueRepository;
+import com.dac.ecommerce.livros.repository.LivroRepository;
 
 @Service
 public class EstoqueService {
 	
 	@Autowired
 	private EstoqueRepository repository;
+	
 	@Autowired
 	private ItemEstoqueRepository itemEstoqueRepository;
+	
+	@Autowired
+	private LivroRepository livroRepository;
 	
 	//adicionar no estoque atual
 	public String adicionarNoEstoque(ItemEstoque item){
@@ -46,6 +52,7 @@ public class EstoqueService {
 		}
 		return false;
 	}
+
 	public String consultarLivrosMaisBaratosDoEstoque() throws Exception{
 		Page<ItemEstoque> paginaItens = itemEstoqueRepository
 		.findAll(PageRequest.of(0,5, Sort.by(Sort.Direction.ASC, "preco")));
@@ -58,6 +65,7 @@ public class EstoqueService {
 		}
 		return itens;
 	}
+
 	public void adicionarQtdEstoque(ItemEstoque item) {
 		List<ItemEstoque> itens = itemEstoqueRepository.findAll();
 		ItemEstoque iEstoque = null;
@@ -74,5 +82,17 @@ public class EstoqueService {
 
 	public void alterarItemEstoque(ItemEstoque item) {
 		itemEstoqueRepository.save(item);
+	}
+
+	public Integer consultarQuantidadeEmEstoque(Long idLivro) {
+		Livro livro = livroRepository.findById(idLivro).get();
+		ItemEstoque itemEstoque = itemEstoqueRepository.findByProduto(livro);
+		return itemEstoque.getQuantidade();
+	}
+	
+	public void reduzirEstoque(Livro livro, int quantidade) {
+		ItemEstoque itemEstoque = itemEstoqueRepository.findByProduto(livro);
+		itemEstoque.setQuantidade(itemEstoque.getQuantidade() - quantidade);
+		itemEstoqueRepository.save(itemEstoque);
 	}
 }

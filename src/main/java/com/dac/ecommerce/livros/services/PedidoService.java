@@ -15,14 +15,13 @@ public class PedidoService {
 	
 	@Autowired
 	private PedidoRepository pedidoRepository;
-
-
+	
 	public void cancelarPedido(Long id, String motivo) throws PedidoException {
 		
 		Pedido pedido = pedidoRepository.findById(id).get();
 		
 		if(pedido.getStatus() != PedidoStatus.CANCELADO) {
-			if(LocalDate.fromDateFields(pedido.getDataCriacao()).isBefore(LocalDate.fromDateFields(pedido.getDataFechamento()))) {
+			if(LocalDate.now().isBefore(LocalDate.fromDateFields(pedido.getDataFechamento()))) {
 				pedido.setStatus(PedidoStatus.CANCELADO);
 				pedido.setMotivoCancelamento(motivo);
 				salvarPedido(pedido);
@@ -40,4 +39,3 @@ public class PedidoService {
 	}
 	
 }
-

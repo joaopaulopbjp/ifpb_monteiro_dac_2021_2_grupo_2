@@ -3,6 +3,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,7 @@ public class Autor {
 	
 	private String nome;
 	
-	@ManyToMany(cascade = CascadeType.ALL,mappedBy = "autores")
+	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "autores")
 	private List<Livro> livros;
 	
 	public String toString() {

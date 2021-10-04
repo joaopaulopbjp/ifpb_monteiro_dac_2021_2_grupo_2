@@ -7,39 +7,30 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
-import com.dac.ecommerce.livros.model.Autor;
-import com.dac.ecommerce.livros.model.Categoria;
-import com.dac.ecommerce.livros.model.ItemEstoque;
-import com.dac.ecommerce.livros.model.Livro;
-import com.dac.ecommerce.livros.services.AutorService;
-import com.dac.ecommerce.livros.services.EstoqueService;
-import com.dac.ecommerce.livros.services.FormaPagamentoService;
-import com.dac.ecommerce.livros.services.ItemService;
-import com.dac.ecommerce.livros.services.LivroService;
-import com.dac.ecommerce.livros.services.PedidoService;
+import com.dac.ecommerce.livros.model.*;
+import com.dac.ecommerce.livros.model.pedido.PedidoFacade;
+import com.dac.ecommerce.livros.services.*;
 
 @SpringBootApplication
 public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	
-	private LivroService servicoLivro;
+	private LivroService livroService;
 	private AutorService autorService;
-	private PedidoService pedidoService;
 	private FormaPagamentoService formaPagamentoService;
 	private EstoqueService estoqueService;
 	private ItemService itemService;
+	private PedidoService pedidoService;
 	
-	public DacEcommerceLivrosApplication(LivroService servicoLivro,
-		AutorService autorService, PedidoService pedidoService, 
-		FormaPagamentoService formaPagamentoService,
-		EstoqueService estoqueService,
-		ItemService itemService) {
-		this.servicoLivro = servicoLivro;
-		this.autorService = autorService;
-		this.pedidoService = pedidoService;
-		this.formaPagamentoService = formaPagamentoService;
-		this.estoqueService = estoqueService;
-		this.itemService = itemService;
-		
+	public DacEcommerceLivrosApplication(
+		LivroService livroService, PedidoService pedidoService,
+		AutorService autorService, FormaPagamentoService formaPagamentoService,
+		EstoqueService estoqueService, ItemService itemService) {
+			this.livroService = livroService;
+			this.autorService = autorService;
+			this.formaPagamentoService = formaPagamentoService;
+			this.estoqueService = estoqueService;
+			this.itemService = itemService;
+			this.pedidoService = pedidoService;	
 	}
 
 	public static void main(String[] args) {
@@ -156,7 +147,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 								Integer edicao = Integer.parseInt(input.nextLine());
 								System.out.print("Ano do Livro: ");
 								Integer ano = Integer.parseInt(input.nextLine());
-								servicoLivro.salvarLivro(addAutores, isbn, categoria,
+								livroService.salvarLivro(addAutores, isbn, categoria,
 								tituloLivro, descricao,preco, null, edicao, ano);
 								System.out.println();
 								System.out.println("Livro Cadastrado Com Sucesso!");
@@ -167,17 +158,17 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					} else if(opcaoMenuLivro == 2) {
 						System.out.print("Digite o ISBN do Livro: ");
 						try {
-							Livro livro1 = servicoLivro.bucarLivroPeloIsbn(input.nextLine());
+							Livro livro1 = livroService.bucarLivroPeloIsbn(input.nextLine());
 							System.out.print("Digite um novo valor para o Livro: ");
 							livro1.setPreco(new BigDecimal(Float.parseFloat(input.nextLine())));
-							servicoLivro.alterarLivro(livro1);
+							livroService.alterarLivro(livro1);
 							System.out.println("Livro Alterado com Sucesso!");
 						} catch (Exception e) {
 							System.out.println(e.getMessage());
 						}
 					} else if(opcaoMenuLivro == 3) {
 						System.out.print("Digite o ISBN do Livro: ");
-						System.out.println(servicoLivro.excluirLivro(input.nextLine()));
+						System.out.println(livroService.excluirLivro(input.nextLine()));
 					} else if(opcaoMenuLivro == 4) {
 						try {
 							System.out.println();
@@ -190,7 +181,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							}
 							System.out.println();
 							System.out.print("Digite o ISBN do Livro: ");
-							Livro bucaLivro = servicoLivro.bucarLivroPeloIsbn(input.nextLine());
+							Livro bucaLivro = livroService.bucarLivroPeloIsbn(input.nextLine());
 							ItemEstoque itemEstoque = new ItemEstoque();
 							itemEstoque.setProduto(bucaLivro);
 							System.out.print("Digite a quantidade de livros: ");
@@ -210,7 +201,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						Integer numeroPagina = Integer.parseInt(input.nextLine());
 						
 						try {
-							System.out.println(servicoLivro.getAllLivrosPorPagina(numeroPagina));
+							System.out.println(livroService.listarLivrosPorPaginacao(numeroPagina));
 						} catch(PaginaInvalidaException erro) {
 							System.out.println(erro.getMessage());
 						}
@@ -230,8 +221,77 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					
 					if(opcaoMenuPedido == 1) {
 						
+						try {
+							PedidoFacade pedidoFacade = new PedidoFacade(pedidoService, estoqueService, livroService, formaPagamentoService);
+							pedidoFacade.criarPedido();
+							
+							// Adicionar Items
+							System.out.println("\nInforme o(s) livro(s) que deseja comprar");
+							while(true) {
+								pedidoFacade.imprimirLivros();
+								
+								System.out.print("\nNúmero do livro: ");
+								Long idLivro = Long.parseLong(input.nextLine());
+								
+								System.out.print("Quantidade: ");
+								Integer quantidade = Integer.parseInt(input.nextLine());
+								
+								pedidoFacade.adicionarLivro(idLivro, quantidade);
+								
+								// Verificar condição de parada
+								System.out.print("\nDeseja adicionar outro livro? [S - Sim | N - não]: ");
+								String flagParada = input.nextLine().toUpperCase();
+								
+								if(flagParada.equals("N")) {
+									break;
+								} else if(!flagParada.equals("S")) {
+									System.out.println(mensagemInputInvalido);
+								}
+							}
+							
+							// Definir endereço de entrega
+							System.out.println("\nInforme o endereço de entrega");
+							System.out.print("Cidade: ");
+							String cidade = input.nextLine();
+							
+							System.out.print("Rua: ");
+							String rua = input.nextLine();
+							
+							System.out.print("Complemento: ");
+							String complemento = input.nextLine();
+							
+							System.out.print("CEP: ");
+							String cep = input.nextLine();
+							
+							System.out.print("Número: ");
+							Integer numero = Integer.parseInt(input.nextLine());
+							
+							System.out.print("Bairro: ");
+							String bairro = input.nextLine();
+							
+							System.out.print("Estado: ");
+							String estado = input.nextLine();
+							
+							pedidoFacade.definirEnderecoEntrega(cep, numero, cidade, estado, bairro, rua, complemento);
+							
+							// Definir forma de pagamento
+							System.out.println("\nInforme o método de pagamento");
+							pedidoFacade.imprimirFormasPagamento();
+							
+							System.out.print("\nInforme o número da forma de pagamento: ");
+							Long idFormaPagamento = Long.parseLong(input.nextLine());
+							
+							pedidoFacade.definirFormaPagamento(idFormaPagamento);
+							
+							// Finalizar Pedido
+							pedidoFacade.finalizarPedido();
+							
+						} catch(Exception erro) {
+							System.out.println(erro.getMessage());
+						}
+						
 					} else if(opcaoMenuPedido == 2) {
-						System.out.print("Informe a forma de pagamento: ");
+						System.out.print("\nInforme a forma de pagamento: ");
 						String formaPagamento = input.nextLine();
 						formaPagamentoService.salvar(formaPagamento);
 					} else if(opcaoMenuPedido == 0) {

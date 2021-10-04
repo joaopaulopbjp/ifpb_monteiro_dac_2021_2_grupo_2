@@ -1,7 +1,6 @@
 package com.dac.ecommerce.livros.services;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,7 +56,6 @@ public class LivroService {
 		repositorioLivro.save(novoLivro);	
 	}
 	
-	
 	public String excluirLivro(String isbn){
 		try {
 			Livro livro = bucarLivroPeloIsbn(isbn);
@@ -73,26 +71,30 @@ public class LivroService {
 		return "[ERROR] - NÃO FOI POSSÍVEL EXCLUÍR O LIVRO!!";
 	}
 	
-	public Livro buscarLivro(Long id) throws Exception{
-		Optional<Livro> livro = repositorioLivro.findById(id);
+	public Livro buscarLivro(Long id) throws LivroException {
+		Livro livro = repositorioLivro.findById(id).get();
+		
 		if(livro == null) {
-			throw new Exception();
+			throw new LivroException("[ERROR LIVRO] - O LIVRO NÃO FOI ENCONTRADO!");
 		}
-		return livro.get();
+		
+		return livro;
 	}
 	
 	public List<Livro> recuperarTodosOsLivros() throws Exception{
-		List<Livro> livros = repositorioLivro.findAll(); 
+		List<Livro> livros = repositorioLivro.findAll();
+		
 		if(livros.size() == 0) {
-			throw new Exception("[ERROR] - NÃO EXISTE LIVROS CADASTRADOS!");
+			throw new Exception("[ERROR LIVRO] - NÃO EXISTE LIVROS CADASTRADOS!");
 		}
+		
 		return livros;
 	}
 	
 	public Livro bucarLivroPeloIsbn(String isbn) throws Exception{
 		Livro verificarISBN = repositorioLivro.findByIsbn(isbn);
 		if(verificarISBN == null) {
-			throw new Exception("[ERROR] - LIVRO NÃO CADASTRADO!");
+			throw new Exception("[ERROR LIVRO] - LIVRO NÃO CADASTRADO!");
 		}
 		return verificarISBN;
 	}
@@ -109,7 +111,7 @@ public class LivroService {
 		}
 	}
 	
-	public String getAllLivrosPorPagina(Integer numeroPagina) throws PaginaInvalidaException {
+	public String listarLivrosPorPaginacao(Integer numeroPagina) throws PaginaInvalidaException {
 		Pageable pageable = PageRequest.of((numeroPagina - 1), 5, Sort.by("titulo").ascending());
 		Page<Livro> pagina = repositorioLivro.findAll(pageable);
 		

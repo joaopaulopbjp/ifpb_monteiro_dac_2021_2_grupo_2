@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +23,7 @@ public class Estoque {
 	private Integer estoqueID;
 	
 	//itens atuais do estoque
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "estoque")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "estoque", fetch = FetchType.EAGER)
 	private List<ItemEstoque> itensDoEstoque = new ArrayList<>();
 	
 	public void adicionarNoEstoque(ItemEstoque livro) {

@@ -13,9 +13,11 @@ public class ItemService {
 	
 	public List<ItemEstoque> bucarTodosOsItensDoEstoque(){
 		List<ItemEstoque> itens = itemEstoqueRepository.findAll();
+		
 		if(itens.size() == 0) {
 			return null;
 		}
+		
 		return itens;
 	}
 }

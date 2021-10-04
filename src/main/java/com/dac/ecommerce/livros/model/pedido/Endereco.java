@@ -1,5 +1,6 @@
 package com.dac.ecommerce.livros.model.pedido;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ public class Endereco {
 	
 	private String rua;
 	
+	@Column(nullable = true)
 	private String complemento;
 	
 	public Endereco(String cep, Integer numero, String cidade, String estado, String bairro, String rua, String complemento) {
@@ -30,6 +32,8 @@ public class Endereco {
 		this.bairro = bairro;
 		this.complemento = complemento;
 	}
+	
+	public Endereco() {}
 	
 	public String toString() {
 		return "\nCEP: " + this.cep +

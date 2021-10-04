@@ -17,18 +17,21 @@ public class ItemPedido {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@JoinColumn(name = "livro_fk")
 	private Livro livro;
 	
-	@ManyToOne
-	@JoinColumn(name = "pedido_fk")
-	private Pedido pedido;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "pedido_fk", nullable = false)
+	private Pedido pedido_fk;
 	
 	private Integer quantidade;
 	
 	private BigDecimal subtotal;
 	
 	private BigDecimal total;
+	
+	public ItemPedido() {}
 	
 	public ItemPedido(Livro livro, Integer quantidade) {
 		this.livro = livro;

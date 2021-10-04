@@ -22,8 +22,10 @@ public class FormaPagamento {
 		this.isActive = true;
 	}
 	
+	public FormaPagamento() {}
+	
 	public String toString() {
-		return "ID: " + this.id + "Tipo: " + this.tipo + "Ativo: " + this.isActive;
+		return "\nID: " + this.id + "\nTipo: " + this.tipo + "\nAtivo: " + (this.isActive == true ? "Sim" : "Não");
 	}
 	
 }
