@@ -222,32 +222,8 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					if(opcaoMenuPedido == 1) {
 						
 						try {
-							PedidoFacade pedidoFacade = new PedidoFacade(pedidoService, estoqueService, livroService, formaPagamentoService);
+							PedidoFacade pedidoFacade = new PedidoFacade(pedidoService, livroService, formaPagamentoService);
 							pedidoFacade.criarPedido();
-							
-							// Adicionar Items
-							System.out.println("\nInforme o(s) livro(s) que deseja comprar");
-							while(true) {
-								pedidoFacade.imprimirLivros();
-								
-								System.out.print("\nNúmero do livro: ");
-								Long idLivro = Long.parseLong(input.nextLine());
-								
-								System.out.print("Quantidade: ");
-								Integer quantidade = Integer.parseInt(input.nextLine());
-								
-								pedidoFacade.adicionarLivro(idLivro, quantidade);
-								
-								// Verificar condição de parada
-								System.out.print("\nDeseja adicionar outro livro? [S - Sim | N - não]: ");
-								String flagParada = input.nextLine().toUpperCase();
-								
-								if(flagParada.equals("N")) {
-									break;
-								} else if(!flagParada.equals("S")) {
-									System.out.println(mensagemInputInvalido);
-								}
-							}
 							
 							// Definir endereço de entrega
 							System.out.println("\nInforme o endereço de entrega");
@@ -282,6 +258,29 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							Long idFormaPagamento = Long.parseLong(input.nextLine());
 							
 							pedidoFacade.definirFormaPagamento(idFormaPagamento);
+							pedidoFacade.registrarPedido();
+							
+							// Adicionar Items
+							System.out.println("\nInforme o(s) livro(s) que deseja comprar");
+							while(true) {
+								pedidoFacade.imprimirLivros();
+								
+								System.out.print("\nNúmero do livro: ");
+								Long idLivro = Long.parseLong(input.nextLine());
+								
+								System.out.print("Quantidade: ");
+								Integer quantidade = Integer.parseInt(input.nextLine());
+								
+								pedidoFacade.adicionarLivro(idLivro, quantidade);
+								
+								// Verificar condição de parada
+								System.out.print("\nDeseja adicionar outro livro? [S - Sim | N - não]: ");
+								String flagParada = input.nextLine().toUpperCase();
+								
+								if(flagParada.equals("N")) {
+									break;
+								}
+							}
 							
 							// Finalizar Pedido
 							pedidoFacade.finalizarPedido();

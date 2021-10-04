@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.joda.time.LocalDate;
-
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -24,7 +22,6 @@ public class Pedido {
 	@Temporal(TemporalType.DATE)
 	private Date dataCriacao;
 	
-	@Setter(value = AccessLevel.NONE)
 	@Temporal(TemporalType.DATE)
 	private Date dataFechamento;
 	
@@ -47,11 +44,23 @@ public class Pedido {
 		
 		// Setar data de criação e de fechamento
 		this.dataCriacao = new Date();
-		this.dataFechamento = LocalDate.fromDateFields(this.dataCriacao).plusWeeks(1).toDate();  // Adicionar 1 semanas na data de criação para obter o limite de cancelamento
 	}
 	
 	public void adicionarItem(ItemPedido item) {
 		this.itens.add(item);
+	}
+	
+	public String toString() {
+		String info = "\nID: " + this.id + "\nData de Criação: " + this.dataCriacao + "\nData de Fechamento: " + this.dataFechamento + 
+				"\nStatus; " + this.status;
+		
+		if(this.status == PedidoStatus.CANCELADO) {
+			info += "\nMotivo do Cancelamento: " + this.motivoCancelamento;
+		}
+		
+		info += "\nEndereço de Entrega: " + this.enderecoEntrega.toString() + "\nForma de Pagamento: " + this.formaPagamento.toString();
+		
+		return info;
 	}
 	
 }

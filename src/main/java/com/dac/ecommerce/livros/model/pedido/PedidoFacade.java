@@ -8,13 +8,11 @@ public class PedidoFacade {
 	
 	private Pedido pedido;
 	private PedidoService pedidoService;
-	private EstoqueService estoqueService;
 	private LivroService livroService;
 	private FormaPagamentoService formaPagamentoService;
 	
-	public PedidoFacade(PedidoService pedidoService, EstoqueService estoqueService, LivroService livroService, FormaPagamentoService formaPagamentoService) {
+	public PedidoFacade(PedidoService pedidoService, LivroService livroService, FormaPagamentoService formaPagamentoService) {
 		this.pedidoService = pedidoService;
-		this.estoqueService = estoqueService;
 		this.livroService = livroService;
 		this.formaPagamentoService = formaPagamentoService;
 	}
@@ -33,22 +31,8 @@ public class PedidoFacade {
 		}
 	}
 
-	public void adicionarLivro(Long id, int quantidade) throws LivroException, PedidoException {
-		
-		if(pedido != null) {
-			int quantidadeEstoque = estoqueService.consultarQuantidadeEmEstoque(id);
-			if(quantidadeEstoque > 0 && (quantidadeEstoque - quantidade) >= 0) {
-				Livro livro = livroService.buscarLivro(id);
-				ItemPedido itemPedido = new ItemPedido(livro, quantidade);
-				itemPedido.setPedido_fk(pedido);
-				pedido.adicionarItem(itemPedido);
-			} else {
-				throw new PedidoException("[ERROR ADICIONAR ITEM] - LIVRO SEM ESTOQUE!");
-			}
-		} else {
-			throw new PedidoException("[ERROR ADICIONAR ITEM] - NENHUM PEDIDO FOI INICIADO!");
-		}
-	
+	public void adicionarLivro(Long idLivro, int quantidade) throws LivroException, PedidoException {
+		pedidoService.adicionarItemAoPedido(pedido.getId(), idLivro, quantidade);
 	}
 	
 	public void definirFormaPagamento(Long id) {
@@ -56,16 +40,14 @@ public class PedidoFacade {
 		pedido.setFormaPagamento(formaPagamento);
 	}
 	
-	public void finalizarPedido() {
-		
-		// Reduzir o estoque
-		for(ItemPedido itemPedido : pedido.getItens()) {
-			estoqueService.reduzirEstoque(itemPedido.getLivro(), itemPedido.getQuantidade());
-		}
-		
+	public void registrarPedido() {
 		pedidoService.salvarPedido(pedido);
 	}
-
+	
+	public void finalizarPedido() {
+		pedidoService.finalizazrPedido(pedido.getId());
+	}
+	
 	public void imprimirLivros() {
 		try {
 			for(Livro livro : livroService.recuperarTodosOsLivros()) {

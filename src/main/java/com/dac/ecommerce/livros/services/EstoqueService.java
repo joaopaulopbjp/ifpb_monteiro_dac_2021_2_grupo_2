@@ -91,8 +91,22 @@ public class EstoqueService {
 	}
 	
 	public void reduzirEstoque(Livro livro, int quantidade) {
-		ItemEstoque itemEstoque = itemEstoqueRepository.findByProduto(livro);
+		ItemEstoque itemEstoque = pesquisarItemEstoquePorLivro(livro);
 		itemEstoque.setQuantidade(itemEstoque.getQuantidade() - quantidade);
+		salvarItemEstoque(itemEstoque);
+	}
+	
+	public void reporEstoquePedidoCancelado(Livro livro, int quantidade) {
+		ItemEstoque itemEstoque = pesquisarItemEstoquePorLivro(livro);
+		itemEstoque.setQuantidade(itemEstoque.getQuantidade() + quantidade);
+		salvarItemEstoque(itemEstoque);
+	}
+	
+	private void salvarItemEstoque(ItemEstoque itemEstoque) {
 		itemEstoqueRepository.save(itemEstoque);
+	}
+	
+	private ItemEstoque pesquisarItemEstoquePorLivro(Livro livro) {
+		return itemEstoqueRepository.findByProduto(livro);
 	}
 }
