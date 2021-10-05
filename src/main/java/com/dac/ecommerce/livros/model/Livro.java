@@ -49,6 +49,8 @@ public class Livro {
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Categoria categoria;
 	
+	public Livro(){}
+	
 	@Override
 	public String toString() {
 		return "\nID: " + this.id + 

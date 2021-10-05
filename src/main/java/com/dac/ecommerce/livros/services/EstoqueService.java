@@ -26,23 +26,27 @@ public class EstoqueService {
 	private LivroRepository livroRepository;
 	
 	//adicionar no estoque atual
-	public String adicionarNoEstoque(ItemEstoque item){
-		boolean verificarItem = verificaItemNoEstoque(item);
+	public String adicionarNoEstoque(String isbn, Integer quantidade){
+		Livro bucaLivro = livroRepository.findByIsbn(isbn);
+		ItemEstoque itemEstoque = new ItemEstoque();
+		itemEstoque.setProduto(bucaLivro);
+		itemEstoque.setQuantidade(quantidade);
+		boolean verificarItem = verificaItemNoEstoque(itemEstoque);
 		if(verificarItem) {
-			adicionarQtdEstoque(item);
+			adicionarQtdEstoque(itemEstoque);
 			return "ITEM DO ESTOQUE ALTERADO COM SUCESSO!";
 		}else {
 			Estoque novoEstoque = new Estoque();
-			novoEstoque.adicionarNoEstoque(item);
-			BigDecimal preco = item.getProduto().getPreco();
-			item.setPreco(preco);
-			item.setEstoque(novoEstoque);
+			novoEstoque.adicionarNoEstoque(itemEstoque);
+			BigDecimal preco = itemEstoque.getProduto().getPreco();
+			itemEstoque.setPreco(preco);
+			itemEstoque.setEstoque(novoEstoque);
 			repository.save(novoEstoque);
 			return "ITEM ADICIONADO AO ESTOQUE COM SUCESSO!";
 		}
 	}
 	
-	public boolean verificaItemNoEstoque(ItemEstoque item) {
+	private boolean verificaItemNoEstoque(ItemEstoque item) {
 		List<ItemEstoque> itens = itemEstoqueRepository.findAll();
 		for (ItemEstoque itemEstoque : itens) {
 			if(itemEstoque.getProduto()

@@ -24,6 +24,8 @@ public class Autor {
 	
 	private String nome;
 	
+	public Autor() {}
+	
 	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "autores")
 	private List<Livro> livros;
 	

@@ -6,6 +6,8 @@ import java.util.Scanner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.dac.ecommerce.livros.exceptions.LivroException;
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
 import com.dac.ecommerce.livros.model.*;
 import com.dac.ecommerce.livros.model.pedido.PedidoFacade;
@@ -108,6 +110,9 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						break;
 					} else if(opcaoMenuLivro == 1) {
 						try {
+							Autor autor1 = new Autor();
+							autor1.setNome("fulano");
+							autorService.salvar(autor1);
 							List<Autor> autores = autorService.todosAutores();
 							System.out.println("Autores cadastrados: ");
 							for (int i = 0; i < autores.size(); i++) {
@@ -127,7 +132,6 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 								System.out.println(mensagemInputInvalido);
 							}
 							if(addAutores != null) {
-//								novoLivro.setAutores(addAutores);
 								System.out.print("Digite ISBN do Livro: ");
 								String isbn = input.nextLine();
 								System.out.print("Digite o Título do Livro: ");
@@ -141,8 +145,6 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 //								//novoLivro.set(input.nextLine());
 								System.out.print("Digite a categoria do Livro: ");
 								String categoria = input.nextLine();
-//								Categoria categoria = new Categoria();
-//								categoria.setNome(categoriaNome);
 								System.out.print("Edição do Livro: ");
 								Integer edicao = Integer.parseInt(input.nextLine());
 								System.out.print("Ano do Livro: ");
@@ -167,8 +169,12 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							System.out.println(e.getMessage());
 						}
 					} else if(opcaoMenuLivro == 3) {
-						System.out.print("Digite o ISBN do Livro: ");
-						System.out.println(livroService.excluirLivro(input.nextLine()));
+						try {
+							System.out.print("Digite o ISBN do Livro: ");
+							System.out.println(livroService.excluirLivro(input.nextLine()));
+						} catch (LivroException e) {
+							System.out.println(e.getMessage());
+						}
 					} else if(opcaoMenuLivro == 4) {
 						try {
 							System.out.println();
@@ -181,12 +187,10 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							}
 							System.out.println();
 							System.out.print("Digite o ISBN do Livro: ");
-							Livro bucaLivro = livroService.bucarLivroPeloIsbn(input.nextLine());
-							ItemEstoque itemEstoque = new ItemEstoque();
-							itemEstoque.setProduto(bucaLivro);
+							String isbn = input.nextLine();
 							System.out.print("Digite a quantidade de livros: ");
-							itemEstoque.setQuantidade(Integer.parseInt(input.nextLine()));
-							System.out.println(estoqueService.adicionarNoEstoque(itemEstoque));
+							Integer qtd = Integer.parseInt(input.nextLine());
+							System.out.println(estoqueService.adicionarNoEstoque(isbn, qtd));
 						} catch (Exception e) {
 							System.out.println(e.getMessage());
 						}

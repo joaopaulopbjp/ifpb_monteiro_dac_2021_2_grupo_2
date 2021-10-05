@@ -56,12 +56,13 @@ public class LivroService {
 		repositorioLivro.save(novoLivro);	
 	}
 	
-	public String excluirLivro(String isbn){
+	public String excluirLivro(String isbn) throws LivroException{
 		try {
 			Livro livro = bucarLivroPeloIsbn(isbn);
 			ItemEstoque item = itemEstoqueRepository.findByProduto(livro);
 			if(item != null) {
-				itemEstoqueRepository.delete(item);
+				throw new LivroException("[ERROR] - LIVRO CADASTRADO NO ESTOQUE!!");
+//				itemEstoqueRepository.delete(item);
 			}
 			repositorioLivro.delete(livro);
 			return "LIVRO EXCLUÍDO COM SUCESSO!";
@@ -73,21 +74,17 @@ public class LivroService {
 	
 	public Livro buscarLivro(Long id) throws LivroException {
 		Livro livro = repositorioLivro.findById(id).get();
-		
 		if(livro == null) {
 			throw new LivroException("[ERROR LIVRO] - O LIVRO NÃO FOI ENCONTRADO!");
 		}
-		
 		return livro;
 	}
 	
 	public List<Livro> recuperarTodosOsLivros() throws Exception{
 		List<Livro> livros = repositorioLivro.findAll();
-		
 		if(livros.size() == 0) {
 			throw new Exception("[ERROR LIVRO] - NÃO EXISTE LIVROS CADASTRADOS!");
 		}
-		
 		return livros;
 	}
 	

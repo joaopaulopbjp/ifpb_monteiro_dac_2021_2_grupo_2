@@ -33,6 +33,8 @@ public class ItemEstoque {
 	private Integer quantidade;
 	
 	private BigDecimal preco;
+	
+	public ItemEstoque(){}
 
 	@Override
 	public String toString() {
