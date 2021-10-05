@@ -8,7 +8,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
 import com.dac.ecommerce.livros.model.*;
+import com.dac.ecommerce.livros.model.pedido.Endereco;
 import com.dac.ecommerce.livros.model.pedido.PedidoFacade;
+import com.dac.ecommerce.livros.repository.UsuarioRepository;
 import com.dac.ecommerce.livros.services.*;
 
 @SpringBootApplication
@@ -20,17 +22,20 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	private EstoqueService estoqueService;
 	private ItemService itemService;
 	private PedidoService pedidoService;
+	private UsuarioService usuarioService;
 	
 	public DacEcommerceLivrosApplication(
 		LivroService livroService, PedidoService pedidoService,
 		AutorService autorService, FormaPagamentoService formaPagamentoService,
-		EstoqueService estoqueService, ItemService itemService) {
+		EstoqueService estoqueService, ItemService itemService, UsuarioService usuarioService) {
 			this.livroService = livroService;
 			this.autorService = autorService;
 			this.formaPagamentoService = formaPagamentoService;
 			this.estoqueService = estoqueService;
 			this.itemService = itemService;
-			this.pedidoService = pedidoService;	
+			this.pedidoService = pedidoService;
+			this.usuarioService = usuarioService;
+			this.usuarioService = usuarioService;
 	}
 
 	public static void main(String[] args) {
@@ -55,22 +60,71 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 			Integer opcaoMenuPrincipal = Integer.parseInt(input.nextLine());
 			
 			switch(opcaoMenuPrincipal) {
+			
 			case 0:
 				flag = false;
 				System.out.println("Volte Sempre!! :)");
 				break;
+				
 			case 1:
 				while(true) {
 					System.out.println("\n-- MENU USUÁRIO --");
 					System.out.print("[1] - Registrar Novo Usuário \n[2] - Consultar Usuário por E-mail \n[0] - Voltar \nOpção: ");
 					Integer opcaoMenuUsuario = Integer.parseInt(input.nextLine());
-					
+					Scanner leitor = new Scanner(System.in);
+					Usuario user = new Usuario();
+					Endereco endereco = new Endereco();
 					if(opcaoMenuUsuario == 0) {
 						break;
 					} else if(opcaoMenuUsuario == 1) {
 						
+						leitor = new Scanner(System.in);
+						System.out.println("Digite seus dados");
+						String cond = leitor.nextLine();
+						System.out.println("Digite seu CPF: ");
+						String cpf = leitor.nextLine();
+						System.out.println("Digite seu nome: ");
+						String nome = leitor.nextLine();
+						System.out.println("Digite seu email: ");
+						String email = leitor.nextLine();
+						System.out.println("Digite sua senha: ");
+						String senha = leitor.nextLine();
+						System.out.println("Digite o estado onde reside: ");
+						String estado = leitor.nextLine();
+						System.out.println("Digite a cidade: ");
+						String cidade = leitor.nextLine();
+						System.out.println("Digite seu bairro: ");
+						String bairro = leitor.nextLine();
+						System.out.println("Digite sua rua: ");
+						String rua = leitor.nextLine();
+						System.out.println("Digite o numero da residência: ");
+						int numero = leitor.nextInt();
+						
+						//set usuario
+						user.setCpf(cpf);
+						user.setNome(nome);
+						user.setEmail(email);
+						user.setSenha(senha);
+						endereco.setRua(rua);
+						endereco.setBairro(bairro);
+						endereco.setNumero(numero);
+						endereco.setEstado(estado);
+						usuarioService.save(user);
+						//user.setEndereco(endereco);
+						
+						break;
+						
 					} else if(opcaoMenuUsuario == 2) {
 					
+						leitor = new Scanner(System.in);
+						System.out.println("Digite seus dados");
+						String cond = leitor.nextLine();
+						System.out.println("Digite o email: ");
+						String email = leitor.nextLine();
+						user = usuarioService.findByEmail(email);
+						System.out.println(user.getNome());
+
+						break;
 					} else {
 						System.out.println(mensagemInputInvalido);
 					}
