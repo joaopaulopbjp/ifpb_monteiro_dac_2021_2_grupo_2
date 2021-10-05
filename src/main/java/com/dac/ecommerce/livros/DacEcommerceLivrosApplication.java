@@ -215,7 +215,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					System.out.println("\n-- MENU PEDIDO --");
 					System.out.print(
 							"[1] - Novo Pedido \n[2] - Cadastrar Forma Pagamento " + 
-							"\n[0] - Voltar \nOpção: "
+							"\n[3] - Cancelar Pedido \n[0] - Voltar \nOpção: "
 							);
 					Integer opcaoMenuPedido = Integer.parseInt(input.nextLine());
 					
@@ -293,6 +293,18 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						System.out.print("\nInforme a forma de pagamento: ");
 						String formaPagamento = input.nextLine();
 						formaPagamentoService.salvar(formaPagamento);
+					} else if(opcaoMenuPedido == 3) {
+						try {
+							System.out.print("\nInforme o ID do pedido: ");
+							Long idPedido = Long.parseLong(input.nextLine());
+							
+							System.out.print("Informa o motivo do cancelamento: ");
+							String motivo = input.nextLine();
+							
+							pedidoService.cancelarPedido(idPedido, motivo);
+						} catch(Exception erro) {
+							System.out.println(erro.getMessage());
+						}
 					} else if(opcaoMenuPedido == 0) {
 						break;
 					} else {
