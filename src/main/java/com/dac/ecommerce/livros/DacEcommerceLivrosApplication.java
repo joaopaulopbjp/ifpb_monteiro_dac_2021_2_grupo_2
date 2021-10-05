@@ -171,7 +171,8 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					} else if(opcaoMenuLivro == 3) {
 						try {
 							System.out.print("Digite o ISBN do Livro: ");
-							System.out.println(livroService.excluirLivro(input.nextLine()));
+							livroService.excluirLivro(input.nextLine());
+							System.out.println("Livro excluído com sucesso!");
 						} catch (LivroException e) {
 							System.out.println(e.getMessage());
 						}

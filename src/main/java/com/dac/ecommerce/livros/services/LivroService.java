@@ -15,6 +15,7 @@ import com.dac.ecommerce.livros.model.Autor;
 import com.dac.ecommerce.livros.model.Categoria;
 import com.dac.ecommerce.livros.model.ItemEstoque;
 import com.dac.ecommerce.livros.model.Livro;
+import com.dac.ecommerce.livros.repository.CategoriaRepository;
 import com.dac.ecommerce.livros.repository.ItemEstoqueRepository;
 import com.dac.ecommerce.livros.repository.LivroRepository;
 
@@ -56,20 +57,18 @@ public class LivroService {
 		repositorioLivro.save(novoLivro);	
 	}
 	
-	public String excluirLivro(String isbn) throws LivroException{
+	public void excluirLivro(String isbn) throws LivroException{
+		Livro livro = null;
 		try {
-			Livro livro = bucarLivroPeloIsbn(isbn);
-			ItemEstoque item = itemEstoqueRepository.findByProduto(livro);
-			if(item != null) {
-				throw new LivroException("[ERROR] - LIVRO CADASTRADO NO ESTOQUE!!");
-//				itemEstoqueRepository.delete(item);
-			}
-			repositorioLivro.delete(livro);
-			return "LIVRO EXCLUÍDO COM SUCESSO!";
+			livro = bucarLivroPeloIsbn(isbn);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		return "[ERROR] - NÃO FOI POSSÍVEL EXCLUÍR O LIVRO!!";
+		ItemEstoque item = itemEstoqueRepository.findByProduto(livro);
+		if(item != null) {
+			throw new LivroException("[ERROR] - LIVRO CADASTRADO NO ESTOQUE!!");
+		}
+		repositorioLivro.delete(livro);
 	}
 	
 	public Livro buscarLivro(Long id) throws LivroException {
