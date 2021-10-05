@@ -96,10 +96,16 @@ public class LivroService {
 		return verificarISBN;
 	}
 	
-	public void alterarLivro(Livro livro) {
+	public void alterarValorDoLivro(String isbn, BigDecimal valor) throws Exception{
+		Livro livro = repositorioLivro.findByIsbn(isbn);
+		if(livro == null) {
+			throw new Exception("[ERROR] LIVRO NÃO PODE SER ALTERADO");
+		}
+		livro.setPreco(valor);
 		try {
 			ItemEstoque item = itemEstoqueRepository.findByProduto(livro);
 			if(item != null) {
+				item.setPreco(valor);
 				itemEstoqueRepository.save(item);
 			}
 			repositorioLivro.save(livro);

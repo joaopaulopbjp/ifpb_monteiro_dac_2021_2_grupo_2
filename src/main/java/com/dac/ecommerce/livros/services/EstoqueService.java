@@ -26,10 +26,14 @@ public class EstoqueService {
 	private LivroRepository livroRepository;
 	
 	//adicionar no estoque atual
-	public String adicionarNoEstoque(String isbn, Integer quantidade){
-		Livro bucaLivro = livroRepository.findByIsbn(isbn);
+	public String adicionarNoEstoque(String isbn, Integer quantidade) throws Exception{
+		Livro buscaLivro = livroRepository.findByIsbn(isbn);
+		
+		if(buscaLivro == null) {
+			throw new Exception("[ERROR] NÃO FOI POSSÍVEL ADICIONAR ITEM NO ESTOUE");
+		}
 		ItemEstoque itemEstoque = new ItemEstoque();
-		itemEstoque.setProduto(bucaLivro);
+		itemEstoque.setProduto(buscaLivro);
 		itemEstoque.setQuantidade(quantidade);
 		boolean verificarItem = verificaItemNoEstoque(itemEstoque);
 		if(verificarItem) {

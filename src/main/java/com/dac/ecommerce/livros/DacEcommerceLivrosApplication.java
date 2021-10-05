@@ -160,10 +160,10 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					} else if(opcaoMenuLivro == 2) {
 						System.out.print("Digite o ISBN do Livro: ");
 						try {
-							Livro livro1 = livroService.bucarLivroPeloIsbn(input.nextLine());
+							String buscarPeloIsbn = input.nextLine();
 							System.out.print("Digite um novo valor para o Livro: ");
-							livro1.setPreco(new BigDecimal(Float.parseFloat(input.nextLine())));
-							livroService.alterarLivro(livro1);
+							BigDecimal valorLivro = new BigDecimal(Float.parseFloat(input.nextLine()));
+							livroService.alterarValorDoLivro(buscarPeloIsbn, valorLivro);
 							System.out.println("Livro Alterado com Sucesso!");
 						} catch (Exception e) {
 							System.out.println(e.getMessage());
