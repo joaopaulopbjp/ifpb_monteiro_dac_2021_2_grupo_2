@@ -110,9 +110,6 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						break;
 					} else if(opcaoMenuLivro == 1) {
 						try {
-							Autor autor1 = new Autor();
-							autor1.setNome("fulano");
-							autorService.salvar(autor1);
 							List<Autor> autores = autorService.todosAutores();
 							System.out.println("Autores cadastrados: ");
 							for (int i = 0; i < autores.size(); i++) {
