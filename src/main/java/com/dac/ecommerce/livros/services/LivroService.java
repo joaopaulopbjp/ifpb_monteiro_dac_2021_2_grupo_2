@@ -63,11 +63,9 @@ public class LivroService {
 	}
 	
 	public void excluirLivro(String isbn) throws LivroException{
-		Livro livro = null;
-		try {
-			livro = bucarLivroPeloIsbn(isbn);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+		Livro livro = repositorioLivro.findByIsbn(isbn);
+		if(livro == null) {
+			throw new LivroException("[ERROR] - O LIVRO NÃO CADASTRADO!");
 		}
 		ItemEstoque item = itemEstoqueRepository.findByProduto(livro);
 		if(item != null) {
@@ -79,7 +77,7 @@ public class LivroService {
 	public Livro buscarLivro(Long id) throws LivroException {
 		Livro livro = repositorioLivro.findById(id).get();
 		if(livro == null) {
-			throw new LivroException("[ERROR LIVRO] - O LIVRO NÃO FOI ENCONTRADO!");
+			throw new LivroException("[ERROR] - O LIVRO NÃO FOI ENCONTRADO!");
 		}
 		return livro;
 	}
@@ -95,7 +93,7 @@ public class LivroService {
 	public Livro bucarLivroPeloIsbn(String isbn) throws Exception{
 		Livro verificarISBN = repositorioLivro.findByIsbn(isbn);
 		if(verificarISBN == null) {
-			throw new Exception("[ERROR LIVRO] - LIVRO NÃO CADASTRADO!");
+			throw new Exception("[ERROR LIVRO] - LIVRO NÃO ENCONTRADO!");
 		}
 		return verificarISBN;
 	}

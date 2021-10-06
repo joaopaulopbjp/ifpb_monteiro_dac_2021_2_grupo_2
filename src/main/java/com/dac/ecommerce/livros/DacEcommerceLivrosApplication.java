@@ -6,6 +6,7 @@ import java.util.Scanner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.util.SystemPropertyUtils;
 
 import com.dac.ecommerce.livros.exceptions.LivroException;
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
@@ -142,7 +143,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 //								//novoLivro.set(input.nextLine());
 								System.out.print("Digite o nome da editora: ");
 								String nomeEditora = input.nextLine();
-								System.out.println("Ditgite a cidade da Editora: ");
+								System.out.print("Ditgite a cidade da Editora: ");
 								String cidadeEditora = input.nextLine();
 								System.out.print("Digite a categoria do Livro: ");
 								String categoria = input.nextLine();
@@ -171,11 +172,11 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							System.out.println(e.getMessage());
 						}
 					} else if(opcaoMenuLivro == 3) {
+						System.out.print("Digite o ISBN do Livro: ");
 						try {
-							System.out.print("Digite o ISBN do Livro: ");
 							livroService.excluirLivro(input.nextLine());
-							System.out.println("Livro excluído com sucesso!");
-						} catch (LivroException e) {
+							System.out.println("Livro Excluído com sucesso");
+						} catch (Exception e) {
 							System.out.println(e.getMessage());
 						}
 					} else if(opcaoMenuLivro == 4) {
@@ -199,7 +200,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						}
 					} else if(opcaoMenuLivro == 5) {
 						try {
-							System.out.println(estoqueService.consultarLivrosMaisBaratosDoEstoque());
+							System.out.println(estoqueService.consultarItensMaisBaratosDoEstoque());
 						} catch (Exception e) {
 							System.out.println(e.getMessage());
 						}

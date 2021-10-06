@@ -61,7 +61,7 @@ public class EstoqueService {
 		return false;
 	}
 
-	public String consultarLivrosMaisBaratosDoEstoque() throws Exception{
+	public String consultarItensMaisBaratosDoEstoque() throws Exception{
 		Page<ItemEstoque> paginaItens = itemEstoqueRepository
 		.findAll(PageRequest.of(0,5, Sort.by(Sort.Direction.ASC, "preco")));
 		String itens = "";
