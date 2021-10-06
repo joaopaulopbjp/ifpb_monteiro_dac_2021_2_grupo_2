@@ -39,5 +39,12 @@ public class ItemPedido {
 		this.subtotal = livro.getPreco();
 		this.total = livro.getPreco().multiply(new BigDecimal(quantidade));
 	}
+	
+	public String toString() {
+		return "Livro: " + livro.toString() +
+				"\nQuantidade: " + this.quantidade +
+				"\nSubtotal: R$ " + this.subtotal +
+				"\nTotal: R$ " + this.total;
+	}
 		
 }

@@ -6,9 +6,7 @@ import java.util.Scanner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.util.SystemPropertyUtils;
 
-import com.dac.ecommerce.livros.exceptions.LivroException;
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
 import com.dac.ecommerce.livros.model.*;
 import com.dac.ecommerce.livros.model.pedido.PedidoFacade;
@@ -43,7 +41,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		menu();
-	}		
+	}
 
 	public void menu() {
 		
@@ -223,11 +221,12 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					System.out.println("\n-- MENU PEDIDO --");
 					System.out.print(
 							"[1] - Novo Pedido \n[2] - Cadastrar Forma Pagamento " + 
-							"\n[3] - Cancelar Pedido \n[0] - Voltar \nOpção: "
+							"\n[3] - Cancelar Pedido \n[4] - Listar Carrinho de Compras de um Pedido" +
+							"\n[0] - Voltar \nOpção: "
 							);
 					Integer opcaoMenuPedido = Integer.parseInt(input.nextLine());
 					
-					if(opcaoMenuPedido == 1) {
+					if(opcaoMenuPedido == 1) {											// Novo pedido
 						
 						try {
 							PedidoFacade pedidoFacade = new PedidoFacade(pedidoService, livroService, formaPagamentoService);
@@ -297,11 +296,11 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							System.out.println(erro.getMessage());
 						}
 						
-					} else if(opcaoMenuPedido == 2) {
+					} else if(opcaoMenuPedido == 2) {											// Cadastrar forma de pagamento
 						System.out.print("\nInforme a forma de pagamento: ");
 						String formaPagamento = input.nextLine();
 						formaPagamentoService.salvar(formaPagamento);
-					} else if(opcaoMenuPedido == 3) {
+					} else if(opcaoMenuPedido == 3) {											// Cancelar um pedido
 						try {
 							System.out.print("\nInforme o ID do pedido: ");
 							Long idPedido = Long.parseLong(input.nextLine());
@@ -313,7 +312,16 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						} catch(Exception erro) {
 							System.out.println(erro.getMessage());
 						}
-					} else if(opcaoMenuPedido == 0) {
+					} else if(opcaoMenuPedido == 4) {											// Listar carrinho de compra
+						try {
+							System.out.print("\nInforme o ID do pedido: ");
+							Long idPedido = Long.parseLong(input.nextLine());
+							
+							System.out.println(pedidoService.listarItemsPedido(idPedido));
+						} catch(Exception erro) {
+							System.out.println(erro.getMessage());
+						}
+					} else if(opcaoMenuPedido == 0) {											// Voltar
 						break;
 					} else {
 						System.out.println(mensagemInputInvalido);

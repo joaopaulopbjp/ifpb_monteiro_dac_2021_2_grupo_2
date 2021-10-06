@@ -2,17 +2,15 @@ package com.dac.ecommerce.livros.services;
 
 
 import java.util.Date;
+import java.util.List;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dac.ecommerce.livros.exceptions.LivroException;
-import com.dac.ecommerce.livros.exceptions.PedidoException;
+import com.dac.ecommerce.livros.exceptions.*;
 import com.dac.ecommerce.livros.model.Livro;
-import com.dac.ecommerce.livros.model.pedido.ItemPedido;
-import com.dac.ecommerce.livros.model.pedido.Pedido;
-import com.dac.ecommerce.livros.model.pedido.PedidoStatus;
+import com.dac.ecommerce.livros.model.pedido.*;
 import com.dac.ecommerce.livros.repository.PedidoRepository;
 
 @Service
@@ -27,8 +25,16 @@ public class PedidoService {
 	@Autowired
 	private LivroService livroService;
 	
-	public void finalizazrPedido(Long id) {
+	public void finalizarPedido(Long id) throws PedidoException {
 		Pedido pedido = pedidoRepository.findById(id).get();
+
+		// Verificar estoque
+		for(ItemPedido item : pedido.getItens()) {
+			if(!consultarEstoque(item.getLivro().getId(), item.getQuantidade())) {
+				throw new PedidoException("[ERRO FINALIZAR PEDIDO] - O ITEM ABAIXO ESTÁ SEM ESTOQUE! \n" + item.toString());
+			}
+		}
+		
 		pedido.setDataFechamento(new Date());
 		pedido.setStatus(PedidoStatus.FINALIZADO);
 		
@@ -83,8 +89,35 @@ public class PedidoService {
 		}
 	}
 	
+	public String detalharPedido(Long id) {
+		Pedido pedido = pedidoRepository.findById(id).get();
+		return pedido.toString();
+	}
+	
+	public String listarItemsPedido(Long id) throws PedidoException {
+		List<ItemPedido> itens = pedidoRepository.findCarrinhoDeCompras(id);
+		
+		if(itens.size() == 0) {
+			throw new PedidoException("[ERROR PEDIDO] - NÃO EXISTE ITENS ADICIONADO AO PEDIDO OU PEDIDO NÃO ENCONTRADO!");
+		}
+		
+		String carrinhoDeCompra = "";
+		for(ItemPedido item : itens) {
+			carrinhoDeCompra += item.toString();
+		}
+		
+		return carrinhoDeCompra;
+	}
+	
 	public void salvarPedido(Pedido pedido) {
 		pedidoRepository.save(pedido);
 	}
 
+	private boolean consultarEstoque(Long idLivro, int quantidade) {
+		int quantidadeEstoque = estoqueService.consultarQuantidadeEmEstoque(idLivro);
+		if(quantidadeEstoque >= quantidade) {
+			return true;
+		}
+		return false;
+	}
 }
