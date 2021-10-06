@@ -6,11 +6,7 @@ import java.util.Scanner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.util.SystemPropertyUtils;
-
-import com.dac.ecommerce.livros.exceptions.LivroException;
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
-import com.dac.ecommerce.livros.model.*;
 import com.dac.ecommerce.livros.model.pedido.PedidoFacade;
 import com.dac.ecommerce.livros.services.*;
 
@@ -111,89 +107,92 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						break;
 					} else if(opcaoMenuLivro == 1) {
 						try {
-							List<Autor> autores = autorService.todosAutores();
-							System.out.println("Autores cadastrados: ");
-							for (int i = 0; i < autores.size(); i++) {
-								System.out.println(autores.get(i).toString());
-							}
+							System.out.println(autorService.todosAutores().toString());
+							System.out.println();
+							
 							System.out.print("Qual a quantidade de autores do livro?: ");
-							int qtdAutores = Integer.parseInt(input.nextLine());
-							List<Autor> addAutores = null;
-							if(qtdAutores <= autores.size() && qtdAutores > 0) {
-								addAutores = new ArrayList<>();
-								for (int i = 0; i < qtdAutores; i++) {
-									System.out.print("Digite o ID do Autor: ");
-									Autor recuperarAutor = autorService.recuperarAutor(Long.parseLong(input.nextLine()));
-									addAutores.add(recuperarAutor);
-								}
-							}else {
-								System.out.println(mensagemInputInvalido);
+							Integer qtdAutores = Integer.parseInt(input.nextLine());
+							
+							List<Long> idsAutores = new ArrayList<>();
+							for (int i = 0; i < qtdAutores; i++) {
+								System.out.print("Digite o id do Autor:");
+								Long ids = Long.parseLong(input.nextLine());
+								idsAutores.add(ids);
 							}
-							if(addAutores != null) {
-								System.out.print("Digite ISBN do Livro: ");
-								String isbn = input.nextLine();
-								System.out.print("Digite o Título do Livro: ");
-								String tituloLivro = input.nextLine();
-								System.out.print("Digite a Decrição do Livro: ");
-								String descricao = input.nextLine();
-								System.out.print("Digite o preço do Livro: ");
-								BigDecimal preco = new BigDecimal(Float.parseFloat
-								(input.nextLine()));
-//								//System.out.print("ImagemCapa: ");
-//								//novoLivro.set(input.nextLine());
-								System.out.print("Digite o nome da editora: ");
-								String nomeEditora = input.nextLine();
-								System.out.print("Ditgite a cidade da Editora: ");
-								String cidadeEditora = input.nextLine();
-								System.out.print("Digite a categoria do Livro: ");
-								String categoria = input.nextLine();
-								System.out.print("Edição do Livro: ");
-								Integer edicao = Integer.parseInt(input.nextLine());
-								System.out.print("Ano do Livro: ");
-								Integer ano = Integer.parseInt(input.nextLine());
-								livroService.salvarLivro(addAutores, isbn, categoria,
-								tituloLivro, descricao,preco, null, nomeEditora,
-								cidadeEditora, edicao, ano);
-								System.out.println();
-								System.out.println("Livro Cadastrado Com Sucesso!");
-							}
+							
+							System.out.print("Digite ISBN do Livro: ");
+							String isbn = input.nextLine();
+							
+							System.out.print("Digite o Título do Livro: ");
+							String tituloLivro = input.nextLine();
+							
+							System.out.print("Digite a Decrição do Livro: ");
+							String descricao = input.nextLine();
+							
+							System.out.print("Digite o preço do Livro: ");
+							BigDecimal preco = new BigDecimal(Float.parseFloat
+							(input.nextLine()));
+//							
+							//System.out.print("ImagemCapa: ");
+//							//novoLivro.set(input.nextLine());
+							
+							System.out.print("Digite o nome da editora: ");
+							String nomeEditora = input.nextLine();
+							
+							System.out.print("Ditgite a cidade da Editora: ");
+							String cidadeEditora = input.nextLine();
+							
+							System.out.print("Digite a categoria do Livro: ");
+							String categoria = input.nextLine();
+							
+							System.out.print("Edição do Livro: ");
+							Integer edicao = Integer.parseInt(input.nextLine());
+							
+							System.out.print("Ano do Livro: ");
+							Integer ano = Integer.parseInt(input.nextLine());
+							
+							livroService.salvarLivro(qtdAutores, idsAutores, isbn, categoria,
+							tituloLivro, descricao,preco, null, nomeEditora,
+							cidadeEditora, edicao, ano);
+							System.out.println();
+							System.out.println("Livro Cadastrado Com Sucesso!");
 						} catch (Exception e) {
 							System.out.println(e.getMessage());
 						}
 					} else if(opcaoMenuLivro == 2) {
-						System.out.print("Digite o ISBN do Livro: ");
 						try {
+							System.out.print("Digite o ISBN do Livro: ");
 							String buscarPeloIsbn = input.nextLine();
+							
 							System.out.print("Digite um novo valor para o Livro: ");
 							BigDecimal valorLivro = new BigDecimal(Float.parseFloat(input.nextLine()));
+							
 							livroService.alterarValorDoLivro(buscarPeloIsbn, valorLivro);
+							
 							System.out.println("Livro Alterado com Sucesso!");
 						} catch (Exception e) {
 							System.out.println(e.getMessage());
 						}
 					} else if(opcaoMenuLivro == 3) {
-						System.out.print("Digite o ISBN do Livro: ");
 						try {
+							System.out.print("Digite o ISBN do Livro: ");
 							livroService.excluirLivro(input.nextLine());
+							
 							System.out.println("Livro Excluído com sucesso");
 						} catch (Exception e) {
 							System.out.println(e.getMessage());
 						}
 					} else if(opcaoMenuLivro == 4) {
 						try {
+							System.out.println(itemService.bucarTodosOsItensDoEstoque().toString());
 							System.out.println();
-							if(itemService.bucarTodosOsItensDoEstoque() != null) {
-								System.out.println("***LIVROS CADASTRADOS NO ESTOQUE***");
-								for(int i = 0;i < itemService.bucarTodosOsItensDoEstoque().size();i++) {
-									System.out.println("ITEM : "+itemService
-									.bucarTodosOsItensDoEstoque().get(i));
-								}
-							}
-							System.out.println();
+							
 							System.out.print("Digite o ISBN do Livro: ");
 							String isbn = input.nextLine();
+							
 							System.out.print("Digite a quantidade de livros: ");
 							Integer qtd = Integer.parseInt(input.nextLine());
+							
 							System.out.println(estoqueService.adicionarNoEstoque(isbn, qtd));
 						} catch (Exception e) {
 							System.out.println(e.getMessage());
