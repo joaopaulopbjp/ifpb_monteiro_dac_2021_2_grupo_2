@@ -1,5 +1,6 @@
 package com.dac.ecommerce.livros.services;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import com.dac.ecommerce.livros.model.Categoria;
 import com.dac.ecommerce.livros.model.Editora;
 import com.dac.ecommerce.livros.model.ItemEstoque;
 import com.dac.ecommerce.livros.model.Livro;
+import com.dac.ecommerce.livros.repository.AutorRepository;
 import com.dac.ecommerce.livros.repository.ItemEstoqueRepository;
 import com.dac.ecommerce.livros.repository.LivroRepository;
 
@@ -28,14 +30,28 @@ public class LivroService {
 	@Autowired
 	private ItemEstoqueRepository itemEstoqueRepository;
 	
-	public void salvarLivro(List<Autor> autores, String isbn, String categoria,
-		String titulo,String descricao, BigDecimal preco, byte[] imagemCapa, 
-		String nomeDaEditora, String cidadeEditora,Integer edicao,
-		Integer ano) throws LivroException,LivroAutorException, 
-		LivroCategoriaException{
-		if(autores.size() == 0) {
+	@Autowired
+	private AutorRepository autorRepository;
+	
+	public void salvarLivro(Integer autores, List<Long> idsAutores,
+		String isbn, String categoria,String titulo,String descricao,
+		BigDecimal preco, byte[] imagemCapa, String nomeDaEditora, 
+		String cidadeEditora,Integer edicao,Integer ano) throws 
+		LivroException,LivroAutorException, LivroCategoriaException{
+		if(autores == 0) {
 			throw new LivroAutorException();
 		}
+		
+		//pega os autores previamente cadastrados
+		List<Autor> autoresLista = new ArrayList<>();
+		for (int i = 0; i < idsAutores.size(); i++) {
+			Autor a = autorRepository.findById(idsAutores.get(i)).get();
+			if(a == null) {
+				throw new LivroAutorException();
+			}
+			autoresLista.add(a);
+		}
+		
 		Livro livro = repositorioLivro.findByIsbn(isbn);
 		if(livro != null) {
 			throw new LivroException("[ERROR] LIVRO JÁ CADASTRADO");
@@ -44,7 +60,7 @@ public class LivroService {
 			throw new LivroCategoriaException();
 		}
 		Livro novoLivro = new Livro();
-		novoLivro.setAutores(autores);
+		novoLivro.setAutores(autoresLista);
 		novoLivro.setIsbn(isbn);
 		Editora editora = new Editora();
 		editora.setNome(nomeDaEditora);
@@ -63,11 +79,9 @@ public class LivroService {
 	}
 	
 	public void excluirLivro(String isbn) throws LivroException{
-		Livro livro = null;
-		try {
-			livro = bucarLivroPeloIsbn(isbn);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+		Livro livro = repositorioLivro.findByIsbn(isbn);
+		if(livro == null) {
+			throw new LivroException("[ERROR] - O LIVRO NÃO CADASTRADO!");
 		}
 		ItemEstoque item = itemEstoqueRepository.findByProduto(livro);
 		if(item != null) {
@@ -79,7 +93,7 @@ public class LivroService {
 	public Livro buscarLivro(Long id) throws LivroException {
 		Livro livro = repositorioLivro.findById(id).get();
 		if(livro == null) {
-			throw new LivroException("[ERROR LIVRO] - O LIVRO NÃO FOI ENCONTRADO!");
+			throw new LivroException("[ERROR] - O LIVRO NÃO FOI ENCONTRADO!");
 		}
 		return livro;
 	}
@@ -95,7 +109,7 @@ public class LivroService {
 	public Livro bucarLivroPeloIsbn(String isbn) throws Exception{
 		Livro verificarISBN = repositorioLivro.findByIsbn(isbn);
 		if(verificarISBN == null) {
-			throw new Exception("[ERROR LIVRO] - LIVRO NÃO CADASTRADO!");
+			throw new Exception("[ERROR LIVRO] - LIVRO NÃO ENCONTRADO!");
 		}
 		return verificarISBN;
 	}
@@ -106,16 +120,12 @@ public class LivroService {
 			throw new Exception("[ERROR] LIVRO NÃO PODE SER ALTERADO");
 		}
 		livro.setPreco(valor);
-		try {
-			ItemEstoque item = itemEstoqueRepository.findByProduto(livro);
-			if(item != null) {
-				item.setPreco(valor);
-				itemEstoqueRepository.save(item);
-			}
-			repositorioLivro.save(livro);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+		ItemEstoque item = itemEstoqueRepository.findByProduto(livro);
+		if(item != null) {
+			item.setPreco(valor);
+			itemEstoqueRepository.save(item);
 		}
+		repositorioLivro.save(livro);
 	}
 	
 	public String listarLivrosPorPaginacao(Integer numeroPagina) throws PaginaInvalidaException {

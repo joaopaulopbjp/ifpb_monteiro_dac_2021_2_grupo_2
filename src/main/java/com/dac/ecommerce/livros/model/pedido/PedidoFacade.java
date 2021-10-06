@@ -45,7 +45,11 @@ public class PedidoFacade {
 	}
 	
 	public void finalizarPedido() {
-		pedidoService.finalizazrPedido(pedido.getId());
+		try {
+			pedidoService.finalizarPedido(pedido.getId());
+		} catch (PedidoException erro) {
+			System.out.println(erro.getMessage());
+		}
 	}
 	
 	public void imprimirLivros() {
