@@ -108,7 +108,6 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						break;
 					} else if(opcaoMenuLivro == 1) {
 						try {
-							System.out.println(autorService.todosAutores().toString());
 							System.out.println();
 							
 							System.out.print("Qual a quantidade de autores do livro?: ");
@@ -185,7 +184,6 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						}
 					} else if(opcaoMenuLivro == 4) {
 						try {
-							System.out.println(itemService.bucarTodosOsItensDoEstoque().toString());
 							System.out.println();
 							
 							System.out.print("Digite o ISBN do Livro: ");
