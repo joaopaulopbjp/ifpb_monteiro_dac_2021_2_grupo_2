@@ -94,7 +94,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						System.out.println("Digite sua rua: ");
 						String rua = input.nextLine();
 						
-						//set users
+						
 						user.setCpf(cpf);
 						user.setNome(nome);
 						user.setEmail(email);
