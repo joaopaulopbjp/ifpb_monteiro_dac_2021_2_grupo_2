@@ -272,15 +272,20 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							// Adicionar Items
 							System.out.println("\nInforme o(s) livro(s) que deseja comprar");
 							while(true) {
-								pedidoFacade.imprimirLivros();
-								
-								System.out.print("\nNúmero do livro: ");
-								Long idLivro = Long.parseLong(input.nextLine());
-								
-								System.out.print("Quantidade: ");
-								Integer quantidade = Integer.parseInt(input.nextLine());
-								
-								pedidoFacade.adicionarLivro(idLivro, quantidade);
+								try {
+									pedidoFacade.imprimirLivros();
+									
+									System.out.print("\nNúmero do livro: ");
+									Long idLivro = Long.parseLong(input.nextLine());
+									
+									System.out.print("Quantidade: ");
+									Integer quantidade = Integer.parseInt(input.nextLine());
+									
+									pedidoFacade.adicionarLivro(idLivro, quantidade);
+									
+								} catch(Exception erro) {
+									System.out.println(erro.getMessage());
+								}
 								
 								// Verificar condição de parada
 								System.out.print("\nDeseja adicionar outro livro? [S - Sim | N - não]: ");

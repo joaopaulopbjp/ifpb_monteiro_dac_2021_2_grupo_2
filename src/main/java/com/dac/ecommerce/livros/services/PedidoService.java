@@ -27,22 +27,28 @@ public class PedidoService {
 	
 	public void finalizarPedido(Long id) throws PedidoException {
 		Pedido pedido = pedidoRepository.findById(id).get();
-
-		// Verificar estoque
-		for(ItemPedido item : pedido.getItens()) {
-			if(!consultarEstoque(item.getLivro().getId(), item.getQuantidade())) {
-				throw new PedidoException("[ERRO FINALIZAR PEDIDO] - O ITEM ABAIXO ESTÁ SEM ESTOQUE! \n" + item.toString());
+		
+		if(pedido.getStatus() == PedidoStatus.NAO_FINALIZADO && pedido.getItens().size() > 0) {
+			// Verificar estoque
+			for(ItemPedido item : pedido.getItens()) {
+				if(!consultarEstoque(item.getLivro().getId(), item.getQuantidade())) {
+					throw new PedidoException("[ERRO FINALIZAR PEDIDO] - O ITEM ABAIXO ESTÁ SEM ESTOQUE! \n" + item.toString());
+				}
 			}
+			
+			pedido.setDataFechamento(new Date());
+			pedido.setStatus(PedidoStatus.FINALIZADO);
+			
+			for(ItemPedido itemPedido : pedido.getItens()) {
+				estoqueService.reduzirEstoque(itemPedido.getLivro(), itemPedido.getQuantidade());
+			}
+			
+			salvarPedido(pedido);
+		} else {
+			throw new PedidoException("[ERRO PEDIDO] - NÃO FOI POSSÍVEL FINALIZAR O PEDIDO!");
 		}
+
 		
-		pedido.setDataFechamento(new Date());
-		pedido.setStatus(PedidoStatus.FINALIZADO);
-		
-		for(ItemPedido itemPedido : pedido.getItens()) {
-			estoqueService.reduzirEstoque(itemPedido.getLivro(), itemPedido.getQuantidade());
-		}
-		
-		salvarPedido(pedido);
 	}
 	
 	public void cancelarPedido(Long id, String motivo) throws PedidoException {
@@ -74,8 +80,7 @@ public class PedidoService {
 	public void adicionarItemAoPedido(Long idPedido, Long idLivro, int quantidade) throws LivroException, PedidoException {
 		Pedido pedido = pedidoRepository.findById(idPedido).get();
 		if(pedido != null) {
-			int quantidadeEstoque = estoqueService.consultarQuantidadeEmEstoque(idLivro);
-			if(quantidadeEstoque > 0 && (quantidadeEstoque - quantidade) >= 0) {
+			if(consultarEstoque(idLivro, quantidade)) {
 				Livro livro = livroService.buscarLivro(idLivro);
 				ItemPedido itemPedido = new ItemPedido(livro, quantidade);
 				itemPedido.setPedido_fk(pedido);
