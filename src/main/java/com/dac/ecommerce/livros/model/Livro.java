@@ -36,6 +36,9 @@ public class Livro {
 	
 	private byte[] imagemCapa;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Editora editora;
+	
 	private Integer edicao;
 	
 	private Integer ano;
@@ -60,5 +63,6 @@ public class Livro {
 			   "\nAno: " + this.ano +
 			   "\nPreço: " + this.preco +
 			   "\nISBN: " + this.isbn;
+		
 	}
 }

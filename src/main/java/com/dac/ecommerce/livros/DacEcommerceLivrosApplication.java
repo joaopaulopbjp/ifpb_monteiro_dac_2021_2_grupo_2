@@ -140,6 +140,10 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 								(input.nextLine()));
 //								//System.out.print("ImagemCapa: ");
 //								//novoLivro.set(input.nextLine());
+								System.out.print("Digite o nome da editora: ");
+								String nomeEditora = input.nextLine();
+								System.out.println("Ditgite a cidade da Editora: ");
+								String cidadeEditora = input.nextLine();
 								System.out.print("Digite a categoria do Livro: ");
 								String categoria = input.nextLine();
 								System.out.print("Edição do Livro: ");
@@ -147,7 +151,8 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 								System.out.print("Ano do Livro: ");
 								Integer ano = Integer.parseInt(input.nextLine());
 								livroService.salvarLivro(addAutores, isbn, categoria,
-								tituloLivro, descricao,preco, null, edicao, ano);
+								tituloLivro, descricao,preco, null, nomeEditora,
+								cidadeEditora, edicao, ano);
 								System.out.println();
 								System.out.println("Livro Cadastrado Com Sucesso!");
 							}

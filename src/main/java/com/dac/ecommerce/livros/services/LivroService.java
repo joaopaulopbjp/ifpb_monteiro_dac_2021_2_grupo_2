@@ -13,9 +13,9 @@ import com.dac.ecommerce.livros.exceptions.LivroException;
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
 import com.dac.ecommerce.livros.model.Autor;
 import com.dac.ecommerce.livros.model.Categoria;
+import com.dac.ecommerce.livros.model.Editora;
 import com.dac.ecommerce.livros.model.ItemEstoque;
 import com.dac.ecommerce.livros.model.Livro;
-import com.dac.ecommerce.livros.repository.CategoriaRepository;
 import com.dac.ecommerce.livros.repository.ItemEstoqueRepository;
 import com.dac.ecommerce.livros.repository.LivroRepository;
 
@@ -29,8 +29,9 @@ public class LivroService {
 	private ItemEstoqueRepository itemEstoqueRepository;
 	
 	public void salvarLivro(List<Autor> autores, String isbn, String categoria,
-		String titulo,String descricao, BigDecimal preco, byte[] imagemCapa,
-		Integer edicao, Integer ano) throws LivroException,LivroAutorException, 
+		String titulo,String descricao, BigDecimal preco, byte[] imagemCapa, 
+		String nomeDaEditora, String cidadeEditora,Integer edicao,
+		Integer ano) throws LivroException,LivroAutorException, 
 		LivroCategoriaException{
 		if(autores.size() == 0) {
 			throw new LivroAutorException();
@@ -45,6 +46,10 @@ public class LivroService {
 		Livro novoLivro = new Livro();
 		novoLivro.setAutores(autores);
 		novoLivro.setIsbn(isbn);
+		Editora editora = new Editora();
+		editora.setNome(nomeDaEditora);
+		editora.setCidade(cidadeEditora);
+		novoLivro.setEditora(editora);
 		Categoria c = new Categoria();
 		c.setNome(categoria);
 		novoLivro.setCategoria(c);
