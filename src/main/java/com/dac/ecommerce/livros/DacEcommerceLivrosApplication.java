@@ -77,7 +77,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					if(opcaoMenuUsuario == 0) {
 						break;
 					} else if(opcaoMenuUsuario == 1) {
-						try {
+				
 						System.out.println("Digite seus dados");
 						cond = input.nextLine();
 						System.out.println("Digite seu CPF: ");
@@ -104,11 +104,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						user.setCep(cep);
 						user.setTipoUsuario(TipoUsuario.ADMINISTRADOR);
 						usuarioService.save(user);
-						
-						} catch(Exception erro) {
-							System.out.println(erro.getMessage());
-						}
-						
+					
 						break;
 						
 					} else if(opcaoMenuUsuario == 2) {
