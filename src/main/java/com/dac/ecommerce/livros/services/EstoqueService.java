@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.dac.ecommerce.livros.exceptions.EstoqueException;
 import com.dac.ecommerce.livros.model.estoque.Estoque;
 import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
 import com.dac.ecommerce.livros.model.livro.Livro;
@@ -24,7 +26,7 @@ public class EstoqueService {
 	private LivroRepository livroRepository;
 	
 	//adicionar no estoque atual
-	public String adicionarNoEstoque(String isbn, Integer quantidade) throws Exception{
+	public String adicionarNoEstoque(String isbn, Integer quantidade) throws Exception {
 		Livro buscaLivro = livroRepository.findByIsbn(isbn);
 		
 		if(buscaLivro == null) {
@@ -108,8 +110,13 @@ public class EstoqueService {
 		return itemEstoque.getQuantidade();
 	}
 	
-	public void reduzirEstoque(Livro livro, int quantidade) {
+	public void reduzirEstoque(Livro livro, int quantidade) throws EstoqueException {
 		ItemEstoque itemEstoque = pesquisarItemEstoquePorLivro(livro);
+		
+		if(itemEstoque.getQuantidade() == 0) {
+			throw new EstoqueException("[ERROR ESTOQUE] - ESTOQUE DO ITEM ESTÁ ZERADO!");
+		}
+		
 		itemEstoque.setQuantidade(itemEstoque.getQuantidade() - quantidade);
 		salvarItemEstoque(itemEstoque);
 	}

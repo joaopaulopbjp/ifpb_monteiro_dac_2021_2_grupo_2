@@ -25,10 +25,12 @@ public class PedidoService {
 	@Autowired
 	private LivroService livroService;
 	
-	public void finalizarPedido(Long id) throws PedidoException {
+	public void finalizarPedido(Long id) throws PedidoException, EstoqueException {
+		
 		Pedido pedido = pedidoRepository.findById(id).get();
 		
 		if(pedido.getStatus() == PedidoStatus.NAO_FINALIZADO && pedido.getItens().size() > 0) {
+			
 			// Verificar estoque
 			for(ItemPedido item : pedido.getItens()) {
 				if(!consultarEstoque(item.getLivro().getId(), item.getQuantidade())) {
@@ -36,19 +38,19 @@ public class PedidoService {
 				}
 			}
 			
-			pedido.setDataFechamento(new Date());
-			pedido.setStatus(PedidoStatus.FINALIZADO);
-			
+			// Reduzir Estoque
 			for(ItemPedido itemPedido : pedido.getItens()) {
 				estoqueService.reduzirEstoque(itemPedido.getLivro(), itemPedido.getQuantidade());
 			}
+			
+			pedido.setDataFechamento(new Date());
+			pedido.setStatus(PedidoStatus.FINALIZADO);
 			
 			salvarPedido(pedido);
 		} else {
 			throw new PedidoException("[ERRO PEDIDO] - NÃO FOI POSSÍVEL FINALIZAR O PEDIDO!");
 		}
 
-		
 	}
 	
 	public void cancelarPedido(Long id, String motivo) throws PedidoException {
@@ -56,8 +58,11 @@ public class PedidoService {
 		Pedido pedido = pedidoRepository.findById(id).get();
 		
 		if(pedido.getStatus() != PedidoStatus.CANCELADO) {
+			
+			// Obter data limite de cancelamento adicionado 1 semana depois da data de fechamento
 			LocalDate dataAtual = LocalDate.now();
 			LocalDate dataLimiteCancelamento = LocalDate.fromDateFields(pedido.getDataFechamento()).plusWeeks(1);
+			
 			if(dataAtual.isBefore(dataLimiteCancelamento) || dataAtual.isEqual(dataLimiteCancelamento)) {
 				pedido.setStatus(PedidoStatus.CANCELADO);
 				pedido.setMotivoCancelamento(motivo);
@@ -80,7 +85,7 @@ public class PedidoService {
 	public void adicionarItemAoPedido(Long idPedido, Long idLivro, int quantidade) throws LivroException, PedidoException {
 		Pedido pedido = pedidoRepository.findById(idPedido).get();
 		if(pedido != null) {
-			if(consultarEstoque(idLivro, quantidade)) {
+			if(consultarEstoque(idLivro, quantidade)) {								// Verificar se existe estoque do livro
 				Livro livro = livroService.buscarLivro(idLivro);
 				ItemPedido itemPedido = new ItemPedido(livro, quantidade);
 				itemPedido.setPedido_fk(pedido);

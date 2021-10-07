@@ -57,7 +57,6 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 			Integer opcaoMenuPrincipal = Integer.parseInt(input.nextLine());
 			Usuario user = new Usuario();
 
-			
 			switch(opcaoMenuPrincipal) {
 			
 			case 0:
@@ -158,8 +157,9 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						System.out.println("- AUTOR CADASTRADO COM SUCESSO! -");
 					} else if(opcaoMenuAutor == 2) {
 						
-						input = new Scanner(System.in);
-						System.out.println(autorService.retornarListaDeAutores().toString());
+						for(Autor autor : autorService.retornarListaDeAutores()) {
+							System.out.println(autor.toString());
+						}
 						
 						System.out.println("Qual o ID do autor deseja editar? ");
 						long idAutor = Long.parseLong(input.nextLine());

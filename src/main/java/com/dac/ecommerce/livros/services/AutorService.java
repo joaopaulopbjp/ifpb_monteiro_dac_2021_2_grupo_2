@@ -1,5 +1,4 @@
 package com.dac.ecommerce.livros.services;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,9 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
 import com.dac.ecommerce.livros.model.livro.Autor;
-import com.dac.ecommerce.livros.model.livro.Livro;
 import com.dac.ecommerce.livros.repository.AutorRepository;
 
 @Service
