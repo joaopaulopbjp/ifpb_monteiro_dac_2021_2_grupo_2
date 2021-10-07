@@ -94,6 +94,10 @@ public class PedidoService {
 		}
 	}
 	
+	public void salvarPedido(Pedido pedido) {
+		pedidoRepository.save(pedido);
+	}
+
 	public String detalharPedido(Long id) {
 		Pedido pedido = pedidoRepository.findById(id).get();
 		return pedido.toString();
@@ -124,10 +128,6 @@ public class PedidoService {
 		return pedidos;
 	}
 	
-	public void salvarPedido(Pedido pedido) {
-		pedidoRepository.save(pedido);
-	}
-
 	private boolean consultarEstoque(Long idLivro, int quantidade) {
 		int quantidadeEstoque = estoqueService.consultarQuantidadeEmEstoque(idLivro);
 		if(quantidadeEstoque >= quantidade) {

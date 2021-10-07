@@ -16,7 +16,8 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 	@Query("SELECT itens FROM Pedido pedido JOIN ItemPedido itens ON pedido.id = itens.pedido_fk WHERE pedido.id = ?1")
 	List<ItemPedido> findCarrinhoDeCompras(Long idProduto);
 	
-	@Query("SELECT pedido FROM Cliente cliente JOIN Pedido pedido ON pedido.cliente_fk = cliente.id WHERE cliente.id = ?1 AND pedido.status = 'FINALIZADO'")
+	// Seleciona todos os pedidos concluídos de um cliente
+	@Query("SELECT pedido FROM Usuario cliente JOIN Pedido pedido ON pedido.cliente = cliente.id WHERE cliente.id = ?1 AND pedido.status = 'FINALIZADO' AND cliente.tipoUsuario = 'CLIENTE'")
 	List<Pedido> findPedidosConcluidos(Long idCliente);
 
 }
