@@ -114,6 +114,16 @@ public class PedidoService {
 		return carrinhoDeCompra;
 	}
 	
+	public List<Pedido> meusPedidos(Long idCliente) throws PedidoException {
+		List<Pedido> pedidos = pedidoRepository.findPedidosConcluidos(idCliente);
+		
+		if(pedidos.size() == 0) {
+			throw new PedidoException("ERROR");
+		}
+		
+		return pedidos;
+	}
+	
 	public void salvarPedido(Pedido pedido) {
 		pedidoRepository.save(pedido);
 	}
