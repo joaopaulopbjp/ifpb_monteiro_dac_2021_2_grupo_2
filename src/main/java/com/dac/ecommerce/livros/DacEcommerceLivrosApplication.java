@@ -10,9 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
 import com.dac.ecommerce.livros.model.livro.Autor;
 import com.dac.ecommerce.livros.model.pedido.PedidoFacade;
-import com.dac.ecommerce.livros.model.user.Endereco;
-import com.dac.ecommerce.livros.model.user.TipoUsuario;
-import com.dac.ecommerce.livros.model.user.Usuario;
+import com.dac.ecommerce.livros.model.user.*;
 import com.dac.ecommerce.livros.services.*;
 
 @SpringBootApplication
@@ -42,7 +40,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	}
 	
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String... args) throws Exception {		
 		menu();
 	}
 

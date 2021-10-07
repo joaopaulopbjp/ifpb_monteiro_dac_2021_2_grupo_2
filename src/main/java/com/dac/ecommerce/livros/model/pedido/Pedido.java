@@ -58,14 +58,17 @@ public class Pedido {
 	}
 	
 	public String toString() {
-		String info = "\nID: " + this.id + "\nData de Criação: " + this.dataCriacao + "\nData de Fechamento: " + this.dataFechamento + 
-				"\nStatus; " + this.status;
+		String info = "\n- Inforamções do Pedido" +
+					  "\nID: " + this.id +
+					  "\nData de Criação: " + this.dataCriacao +
+					  "\nData de Fechamento: " + this.dataFechamento + 
+					  "\nStatus; " + this.status;
 		
 		if(this.status == PedidoStatus.CANCELADO) {
 			info += "\nMotivo do Cancelamento: " + this.motivoCancelamento;
 		}
 		
-		info += "\nEndereço de Entrega: " + this.enderecoEntrega.toString() + "\nForma de Pagamento: " + this.formaPagamento.toString();
+		info += "\n\n- Endereço de Entrega" + this.enderecoEntrega.toString() + "\n\n- Forma de Pagamento: " + this.formaPagamento.toString();
 		
 		return info;
 	}
