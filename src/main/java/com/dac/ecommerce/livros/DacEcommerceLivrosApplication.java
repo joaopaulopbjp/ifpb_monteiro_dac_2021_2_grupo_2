@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
 import com.dac.ecommerce.livros.model.*;
+import com.dac.ecommerce.livros.model.livro.Autor;
 import com.dac.ecommerce.livros.model.pedido.PedidoFacade;
 import com.dac.ecommerce.livros.model.user.Endereco;
 import com.dac.ecommerce.livros.model.user.TipoUsuario;
@@ -148,8 +149,17 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					if(opcaoMenuAutor == 0) {
 						break;
 					} else if(opcaoMenuAutor == 1) {
-						
+						System.out.println("Digite seus dados");
+						String cond = input.nextLine();
+						Autor autorNovo = new Autor();
+						System.out.print("Nome do autor: ");
+						String nomeAutor = input.nextLine();
+						autorNovo.setNome(nomeAutor);
+						autorService.salvar(autorNovo);
+						System.out.println("Autor cadastrado");
+						break;
 					} else if(opcaoMenuAutor == 2) {
+					
 						
 					} else {
 						System.out.println(mensagemInputInvalido);

@@ -2,6 +2,7 @@ package com.dac.ecommerce.livros.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +45,7 @@ public class AutorService {
 		return listaDeAutores;
 	}
 	
+
 	public Autor pesquisarAutorPorNome(String nome) {
 		Autor autor = repository.findUniqueByNome(nome);
 		return autor;
