@@ -66,7 +66,9 @@ public class EstoqueService {
 		.findAll(PageRequest.of(0,5, Sort.by(Sort.Direction.ASC, "preco")));
 		String itens = "";
 		for (ItemEstoque itemEstoque : paginaItens) {
-			itens += itemEstoque.toString();
+			if(itemEstoque.getQuantidade() != 0) {
+				itens += itemEstoque.toString();
+			}
 		}
 		if(itens.length() == 0) {
 			throw new Exception("[ERROR] NÃO FOI POSSÍVEL BUSCAR OS LIVROS!");

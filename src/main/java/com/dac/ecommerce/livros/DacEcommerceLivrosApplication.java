@@ -8,6 +8,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
+import com.dac.ecommerce.livros.model.*;
+import com.dac.ecommerce.livros.model.pedido.Endereco;
 import com.dac.ecommerce.livros.model.pedido.PedidoFacade;
 import com.dac.ecommerce.livros.services.*;
 
@@ -20,17 +22,19 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	private EstoqueService estoqueService;
 	private ItemService itemService;
 	private PedidoService pedidoService;
+	private UsuarioService usuarioService;
 	
 	public DacEcommerceLivrosApplication(
 		LivroService livroService, PedidoService pedidoService,
 		AutorService autorService, FormaPagamentoService formaPagamentoService,
-		EstoqueService estoqueService, ItemService itemService) {
+		EstoqueService estoqueService, ItemService itemService, UsuarioService usuarioService) {
 			this.livroService = livroService;
 			this.autorService = autorService;
 			this.formaPagamentoService = formaPagamentoService;
 			this.estoqueService = estoqueService;
 			this.itemService = itemService;
 			this.pedidoService = pedidoService;	
+			this.usuarioService = usuarioService;
 	}
 
 	public static void main(String[] args) {
@@ -53,8 +57,11 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 			System.out.println("\n-- MENU PRINCIPAL --");
 			System.out.print("[1] - Usuário \n[2] - Autor \n[3] - Livro \n[4] - Pedido \n[0] - Finalizar\nOpção: ");
 			Integer opcaoMenuPrincipal = Integer.parseInt(input.nextLine());
+			Usuario user = new Usuario();
+
 			
 			switch(opcaoMenuPrincipal) {
+			
 			case 0:
 				flag = false;
 				System.out.println("Volte Sempre!! :)");
@@ -64,13 +71,52 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					System.out.println("\n-- MENU USUÁRIO --");
 					System.out.print("[1] - Registrar Novo Usuário \n[2] - Consultar Usuário por E-mail \n[0] - Voltar \nOpção: ");
 					Integer opcaoMenuUsuario = Integer.parseInt(input.nextLine());
-					
+					String cond;
+					String email;
 					if(opcaoMenuUsuario == 0) {
 						break;
 					} else if(opcaoMenuUsuario == 1) {
+				
+						System.out.println("Digite seus dados");
+						cond = input.nextLine();
+						System.out.println("Digite seu CPF: ");
+						String cpf = input.nextLine();
+						System.out.println("Digite seu nome: ");
+						String nome = input.nextLine();
+						System.out.println("Digite seu email: ");
+						email = input.nextLine();
+						System.out.println("Digite sua senha: ");
+						String senha = input.nextLine();
+						System.out.println("Digite seu telefone: ");
+						String telefone = input.nextLine();
+						System.out.println("Digite o estado cep: ");
+						String cep = input.nextLine();
+						System.out.println("Digite sua rua: ");
+						String rua = input.nextLine();
+						
+						
+						user.setCpf(cpf);
+						user.setNome(nome);
+						user.setEmail(email);
+						user.setSenha(senha);
+						user.setTelefone(telefone);
+						user.setEndereco(rua);
+						user.setCep(cep);
+						user.setTipoUsuario(TipoUsuario.ADMINISTRADOR);
+						usuarioService.save(user);
+					
+						break;
 						
 					} else if(opcaoMenuUsuario == 2) {
 					
+						input = new Scanner(System.in);
+						System.out.println("Digite seus dados");
+						cond = input.nextLine();
+						System.out.println("Digite o email: ");
+						email = input.nextLine();
+						user = usuarioService.findByEmail(email);
+						System.out.println(user.getNome());
+						
 					} else {
 						System.out.println(mensagemInputInvalido);
 					}
@@ -108,7 +154,6 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						break;
 					} else if(opcaoMenuLivro == 1) {
 						try {
-							System.out.println(autorService.todosAutores().toString());
 							System.out.println();
 							
 							System.out.print("Qual a quantidade de autores do livro?: ");
@@ -185,7 +230,6 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						}
 					} else if(opcaoMenuLivro == 4) {
 						try {
-							System.out.println(itemService.bucarTodosOsItensDoEstoque().toString());
 							System.out.println();
 							
 							System.out.print("Digite o ISBN do Livro: ");
