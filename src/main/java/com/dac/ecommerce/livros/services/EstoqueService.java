@@ -1,12 +1,9 @@
 package com.dac.ecommerce.livros.services;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import com.dac.ecommerce.livros.model.estoque.Estoque;
 import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
 import com.dac.ecommerce.livros.model.livro.Livro;
@@ -63,16 +60,26 @@ public class EstoqueService {
 	}
 
 	public String consultarItensMaisBaratosDoEstoque() throws Exception{
-		Page<ItemEstoque> paginaItens = itemEstoqueRepository
-		.findAll(PageRequest.of(0,5, Sort.by(Sort.Direction.ASC, "preco")));
+		List<ItemEstoque> itensOrdenados = itemEstoqueRepository.ordenarItensDoEstoquePeloPreco();
+		
+		if(itensOrdenados.size() == 0) {
+			throw new Exception("[ERROR] NÃO FOI POSSÍVEL BUSCAR OS LIVROS!");
+		}
 		String itens = "";
-		for (ItemEstoque itemEstoque : paginaItens) {
+		List<ItemEstoque> itensDisponiveis = new ArrayList<>();
+		for (ItemEstoque itemEstoque : itensOrdenados) {
 			if(itemEstoque.getQuantidade() != 0) {
-				itens += itemEstoque.toString();
+				itensDisponiveis.add(itemEstoque);
 			}
 		}
-		if(itens.length() == 0) {
-			throw new Exception("[ERROR] NÃO FOI POSSÍVEL BUSCAR OS LIVROS!");
+		if(itensDisponiveis.size() > 5) {
+			for (int i = 0; i < 5; i++) {
+				itens += itensDisponiveis.get(i).toString();
+			}
+		}else {
+			for (ItemEstoque itemEstoque : itensDisponiveis) {
+				itens += itemEstoque.toString();
+			}
 		}
 		return itens;
 	}

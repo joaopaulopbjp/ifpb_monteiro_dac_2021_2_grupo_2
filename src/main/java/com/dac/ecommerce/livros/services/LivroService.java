@@ -38,7 +38,7 @@ public class LivroService {
 		BigDecimal preco, byte[] imagemCapa, String nomeDaEditora, 
 		String cidadeEditora,Integer edicao,Integer ano) throws 
 		LivroException,LivroAutorException, LivroCategoriaException{
-		if(autores == 0) {
+		if(autores <= 0) {
 			throw new LivroAutorException();
 		}
 		
@@ -46,9 +46,6 @@ public class LivroService {
 		List<Autor> autoresLista = new ArrayList<>();
 		for (int i = 0; i < idsAutores.size(); i++) {
 			Autor a = autorRepository.findById(idsAutores.get(i)).get();
-			if(a == null) {
-				throw new LivroAutorException();
-			}
 			autoresLista.add(a);
 		}
 		
