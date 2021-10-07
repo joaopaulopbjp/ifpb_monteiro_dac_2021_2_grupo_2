@@ -158,6 +158,20 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						System.out.println("- AUTOR CADASTRADO COM SUCESSO! -");
 					} else if(opcaoMenuAutor == 2) {
 						
+						input = new Scanner(System.in);
+						System.out.println(autorService.retornarListaDeAutores().toString());
+						
+						System.out.println("Qual o ID do autor deseja editar? ");
+						long idAutor = Long.parseLong(input.nextLine());
+						
+						System.out.println("Digite o novo nome para esse autor: ");
+						String novoNomeAutor = input.nextLine();
+						
+						Autor novoAutor = autorService.findByID(idAutor);
+						novoAutor.setNome(novoNomeAutor);
+						
+						autorService.editarAutor(novoAutor, idAutor);
+						
 					} else {
 						System.out.println(mensagemInputInvalido);
 					}

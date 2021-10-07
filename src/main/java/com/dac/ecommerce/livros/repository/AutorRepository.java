@@ -15,4 +15,6 @@ public interface AutorRepository extends JpaRepository<Autor, Long>{
 	
 	public Optional<Autor> findById(Long ID);
 	
+	public Autor findById(long idAntigo);
+
 }

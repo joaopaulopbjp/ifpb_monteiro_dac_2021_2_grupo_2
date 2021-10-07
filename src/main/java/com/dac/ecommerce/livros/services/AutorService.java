@@ -1,4 +1,5 @@
 package com.dac.ecommerce.livros.services;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -6,7 +7,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
 import com.dac.ecommerce.livros.model.livro.Autor;
+import com.dac.ecommerce.livros.model.livro.Livro;
 import com.dac.ecommerce.livros.repository.AutorRepository;
 
 @Service
@@ -45,10 +48,22 @@ public class AutorService {
 		return listaDeAutores;
 	}
 	
-
 	public Autor pesquisarAutorPorNome(String nome) {
 		Autor autor = repository.findUniqueByNome(nome);
 		return autor;
 	}	
+	
+	public Autor findByID(long ID) {
+		Autor autor = repository.findById(ID);
+
+		return autor;
+	}
+	
+	public void editarAutor(Autor novoAutor, long idAntigo) {
+		Autor autorSalvo = repository.findById(idAntigo);
+		BeanUtils.copyProperties(novoAutor, autorSalvo);
+		repository.save(autorSalvo);
+	}
+
 }
 
