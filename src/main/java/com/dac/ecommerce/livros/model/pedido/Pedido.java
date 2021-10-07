@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.dac.ecommerce.livros.model.user.Endereco;
+import com.dac.ecommerce.livros.model.user.Usuario;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -17,6 +20,10 @@ public class Pedido {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@JoinColumn(name = "cliente_fk")
+	private Usuario cliente;
 	
 	@Setter(value = AccessLevel.NONE)
 	@Temporal(TemporalType.DATE)

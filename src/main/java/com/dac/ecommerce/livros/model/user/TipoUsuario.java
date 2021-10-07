@@ -1,4 +1,4 @@
-package com.dac.ecommerce.livros.model;
+package com.dac.ecommerce.livros.model.user;
 
 public enum TipoUsuario {
 	CLIENTE, ADMINISTRADOR

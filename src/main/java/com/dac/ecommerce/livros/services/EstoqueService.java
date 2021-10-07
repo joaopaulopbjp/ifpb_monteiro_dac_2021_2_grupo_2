@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import com.dac.ecommerce.livros.model.Estoque;
-import com.dac.ecommerce.livros.model.ItemEstoque;
-import com.dac.ecommerce.livros.model.Livro;
+
+import com.dac.ecommerce.livros.model.estoque.Estoque;
+import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
+import com.dac.ecommerce.livros.model.livro.Livro;
 import com.dac.ecommerce.livros.repository.EstoqueRepository;
 import com.dac.ecommerce.livros.repository.ItemEstoqueRepository;
 import com.dac.ecommerce.livros.repository.LivroRepository;

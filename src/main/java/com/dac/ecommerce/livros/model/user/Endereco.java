@@ -1,4 +1,4 @@
-package com.dac.ecommerce.livros.model.pedido;
+package com.dac.ecommerce.livros.model.user;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

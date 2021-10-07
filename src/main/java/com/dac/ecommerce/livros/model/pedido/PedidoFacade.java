@@ -1,36 +1,36 @@
 package com.dac.ecommerce.livros.model.pedido;
 
 import com.dac.ecommerce.livros.exceptions.*;
-import com.dac.ecommerce.livros.model.Livro;
+import com.dac.ecommerce.livros.model.livro.Livro;
+import com.dac.ecommerce.livros.model.user.TipoUsuario;
+import com.dac.ecommerce.livros.model.user.Usuario;
 import com.dac.ecommerce.livros.services.*;
 
 public class PedidoFacade {
 	
 	private Pedido pedido;
+	
+	// Serviços
 	private PedidoService pedidoService;
 	private LivroService livroService;
 	private FormaPagamentoService formaPagamentoService;
+	private UsuarioService usuarioService;
 	
-	public PedidoFacade(PedidoService pedidoService, LivroService livroService, FormaPagamentoService formaPagamentoService) {
+	public PedidoFacade(PedidoService pedidoService, LivroService livroService, FormaPagamentoService formaPagamentoService, UsuarioService usuarioService) {
 		this.pedidoService = pedidoService;
 		this.livroService = livroService;
 		this.formaPagamentoService = formaPagamentoService;
+		this.usuarioService = usuarioService;
 	}
 	
-	// Métodos
+	/*
+	 * Métodos uteis para a criação de um pedido.
+	 * Evita criar focos de acompleto direto com o menu.
+	 */
 	public void criarPedido() {
 		this.pedido = new Pedido();
 	}
 	
-	public void definirEnderecoEntrega(String cep, Integer numero, String cidade, String estado, String bairro, String rua, String complemento) throws PedidoException {
-		if(pedido != null) {
-			Endereco enderecoEntrega = new Endereco(cep, numero, cidade, estado, bairro, rua, complemento);
-			pedido.setEnderecoEntrega(enderecoEntrega);
-		} else {
-			throw new PedidoException("[ERROR ENDEREÇO DE ENTREGA] - NENHUM PEDIDO FOI INICIADO!");
-		}
-	}
-
 	public void adicionarLivro(Long idLivro, int quantidade) throws LivroException, PedidoException {
 		pedidoService.adicionarItemAoPedido(pedido.getId(), idLivro, quantidade);
 	}
@@ -40,16 +40,19 @@ public class PedidoFacade {
 		pedido.setFormaPagamento(formaPagamento);
 	}
 	
-	public void registrarPedido() {
-		pedidoService.salvarPedido(pedido);
+	public void definirCliente(Long id) throws UsuarioException {
+		Usuario cliente = usuarioService.findById(id);
+		
+		if(cliente.getTipoUsuario() == TipoUsuario.CLIENTE) {
+			pedido.setCliente(cliente);
+			pedido.setEnderecoEntrega(cliente.getEndereco());
+		} else {
+			throw new UsuarioException("[ERRO USUÁRIO] - USUÁRIO NÃO É CLIENTE!");
+		}
 	}
 	
-	public void finalizarPedido() {
-		try {
-			pedidoService.finalizarPedido(pedido.getId());
-		} catch (PedidoException erro) {
-			System.out.println(erro.getMessage());
-		}
+	public void registrarPedido() {
+		pedidoService.salvarPedido(pedido);
 	}
 	
 	public void imprimirLivros() {

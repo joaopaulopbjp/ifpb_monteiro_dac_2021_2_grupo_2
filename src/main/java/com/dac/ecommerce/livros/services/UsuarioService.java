@@ -6,7 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.dac.ecommerce.livros.model.Usuario;
+import com.dac.ecommerce.livros.exceptions.UsuarioException;
+import com.dac.ecommerce.livros.model.user.Usuario;
 import com.dac.ecommerce.livros.repository.UsuarioRepository;
 
 @Service
@@ -27,12 +28,17 @@ public class UsuarioService {
 		
 	}
 	
-	public void delete(long id) {
+	public void delete(long id) throws IllegalArgumentException {
 		repository.deleteById(id);
 	}
 	
-	public Usuario findById(long id) {
+	public Usuario findById(long id) throws UsuarioException {
 		Usuario usuario = repository.findById(id).get();
+		
+		if(usuario == null) {
+			throw new UsuarioException("[ERROR USUÁRIO] - USUÁRIO NÃO ENCONTRADO!");
+		}
+		
 		return usuario;
 	}
 	
@@ -44,7 +50,13 @@ public class UsuarioService {
 		return repository.findAll(page);
 	}
 
-	public Usuario findByEmail(String email) {
-		return repository.findByEmail(email);
+	public Usuario findByEmail(String email) throws UsuarioException {
+		Usuario usuario = repository.findByEmail(email);
+		
+		if(usuario == null) {
+			throw new UsuarioException("[ERROR USUÁRIO] - USUÁRIO NÃO ENCONTRADO!");
+		}
+		
+		return usuario;
 	}
 }

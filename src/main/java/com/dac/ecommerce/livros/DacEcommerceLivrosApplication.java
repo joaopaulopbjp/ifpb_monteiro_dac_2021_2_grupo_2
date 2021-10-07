@@ -9,8 +9,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
 import com.dac.ecommerce.livros.model.*;
-import com.dac.ecommerce.livros.model.pedido.Endereco;
 import com.dac.ecommerce.livros.model.pedido.PedidoFacade;
+import com.dac.ecommerce.livros.model.user.Endereco;
+import com.dac.ecommerce.livros.model.user.TipoUsuario;
+import com.dac.ecommerce.livros.model.user.Usuario;
 import com.dac.ecommerce.livros.services.*;
 
 @SpringBootApplication
@@ -20,7 +22,6 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	private AutorService autorService;
 	private FormaPagamentoService formaPagamentoService;
 	private EstoqueService estoqueService;
-	private ItemService itemService;
 	private PedidoService pedidoService;
 	private UsuarioService usuarioService;
 	
@@ -32,7 +33,6 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 			this.autorService = autorService;
 			this.formaPagamentoService = formaPagamentoService;
 			this.estoqueService = estoqueService;
-			this.itemService = itemService;
 			this.pedidoService = pedidoService;	
 			this.usuarioService = usuarioService;
 	}
@@ -71,52 +71,69 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					System.out.println("\n-- MENU USUÁRIO --");
 					System.out.print("[1] - Registrar Novo Usuário \n[2] - Consultar Usuário por E-mail \n[0] - Voltar \nOpção: ");
 					Integer opcaoMenuUsuario = Integer.parseInt(input.nextLine());
-					String cond;
-					String email;
+
 					if(opcaoMenuUsuario == 0) {
 						break;
 					} else if(opcaoMenuUsuario == 1) {
 				
-						System.out.println("Digite seus dados");
-						cond = input.nextLine();
-						System.out.println("Digite seu CPF: ");
+						System.out.println("Informe seus dados");
+						System.out.print("Digite seu CPF: ");
 						String cpf = input.nextLine();
-						System.out.println("Digite seu nome: ");
+						
+						System.out.print("Digite seu nome: ");
 						String nome = input.nextLine();
-						System.out.println("Digite seu email: ");
-						email = input.nextLine();
-						System.out.println("Digite sua senha: ");
+						
+						System.out.print("Digite seu email: ");
+						String email = input.nextLine();
+						
+						System.out.print("Digite sua senha: ");
 						String senha = input.nextLine();
-						System.out.println("Digite seu telefone: ");
+						
+						System.out.print("Digite seu telefone: ");
 						String telefone = input.nextLine();
-						System.out.println("Digite o estado cep: ");
-						String cep = input.nextLine();
-						System.out.println("Digite sua rua: ");
+						
+						System.out.println("Informe o seu endereço");
+						System.out.print("Cidade: ");
+						String cidade = input.nextLine();
+						
+						System.out.print("Rua: ");
 						String rua = input.nextLine();
 						
+						System.out.print("Complemento: ");
+						String complemento = input.nextLine();
+						
+						System.out.print("CEP: ");
+						String cep = input.nextLine();
+						
+						System.out.print("Número: ");
+						Integer numero = Integer.parseInt(input.nextLine());
+						
+						System.out.print("Bairro: ");
+						String bairro = input.nextLine();
+						
+						System.out.print("Estado: ");
+						String estado = input.nextLine();
+						
+						Endereco endereco = new Endereco(cep, numero, cidade, estado, bairro, rua, complemento);
 						
 						user.setCpf(cpf);
 						user.setNome(nome);
 						user.setEmail(email);
 						user.setSenha(senha);
 						user.setTelefone(telefone);
-						user.setEndereco(rua);
-						user.setCep(cep);
-						user.setTipoUsuario(TipoUsuario.ADMINISTRADOR);
+						user.setEndereco(endereco);
+						user.setTipoUsuario(TipoUsuario.CLIENTE);
 						usuarioService.save(user);
 					
-						break;
-						
 					} else if(opcaoMenuUsuario == 2) {
-					
-						input = new Scanner(System.in);
-						System.out.println("Digite seus dados");
-						cond = input.nextLine();
-						System.out.println("Digite o email: ");
-						email = input.nextLine();
-						user = usuarioService.findByEmail(email);
-						System.out.println(user.getNome());
-						
+						try {
+							System.out.print("Digite o email: ");
+							String email = input.nextLine();
+							
+							System.out.println(usuarioService.findByEmail(email).toString());
+						} catch(Exception erro) {
+							System.out.println(erro.getMessage());
+						}
 					} else {
 						System.out.println(mensagemInputInvalido);
 					}
@@ -156,12 +173,12 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						try {
 							System.out.println();
 							
-							System.out.print("Qual a quantidade de autores do livro?: ");
+							System.out.print("Qual a quantidade de autores do livro: ");
 							Integer qtdAutores = Integer.parseInt(input.nextLine());
 							
 							List<Long> idsAutores = new ArrayList<>();
 							for (int i = 0; i < qtdAutores; i++) {
-								System.out.print("Digite o id do Autor:");
+								System.out.print("Digite o ID do Autor: ");
 								Long ids = Long.parseLong(input.nextLine());
 								idsAutores.add(ids);
 							}
@@ -176,8 +193,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							String descricao = input.nextLine();
 							
 							System.out.print("Digite o preço do Livro: ");
-							BigDecimal preco = new BigDecimal(Float.parseFloat
-							(input.nextLine()));
+							BigDecimal preco = new BigDecimal(Float.parseFloat(input.nextLine()));
 //							
 							//System.out.print("ImagemCapa: ");
 //							//novoLivro.set(input.nextLine());
@@ -201,7 +217,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							tituloLivro, descricao,preco, null, nomeEditora,
 							cidadeEditora, edicao, ano);
 							System.out.println();
-							System.out.println("Livro Cadastrado Com Sucesso!");
+							System.out.println("- LIVRO CADASTRADO COM SUCESSO! -");
 						} catch (Exception e) {
 							System.out.println(e.getMessage());
 						}
@@ -215,7 +231,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							
 							livroService.alterarValorDoLivro(buscarPeloIsbn, valorLivro);
 							
-							System.out.println("Livro Alterado com Sucesso!");
+							System.out.println("- LIVRO ALTERADO COM SUCESSO! -");
 						} catch (Exception e) {
 							System.out.println(e.getMessage());
 						}
@@ -224,7 +240,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							System.out.print("Digite o ISBN do Livro: ");
 							livroService.excluirLivro(input.nextLine());
 							
-							System.out.println("Livro Excluído com sucesso");
+							System.out.println("- LIVRO EXCLUÍDO COM SUCECSSO! -");
 						} catch (Exception e) {
 							System.out.println(e.getMessage());
 						}
@@ -265,41 +281,14 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 			case 4:
 				while(true) {
 					System.out.println("\n-- MENU PEDIDO --");
-					System.out.print(
-							"[1] - Novo Pedido \n[2] - Cadastrar Forma Pagamento \n[0] - Voltar \nOpção: "
-							);
+					System.out.print("[1] - Novo Pedido \n[2] - Cadastrar Forma Pagamento \n[0] - Voltar \nOpção: ");
 					Integer opcaoMenuPedido = Integer.parseInt(input.nextLine());
 					
 					if(opcaoMenuPedido == 1) {											// Novo pedido
 						
 						try {
-							PedidoFacade pedidoFacade = new PedidoFacade(pedidoService, livroService, formaPagamentoService);
+							PedidoFacade pedidoFacade = new PedidoFacade(pedidoService, livroService, formaPagamentoService, usuarioService);
 							pedidoFacade.criarPedido();
-							
-							// Definir endereço de entrega
-							System.out.println("\nInforme o endereço de entrega");
-							System.out.print("Cidade: ");
-							String cidade = input.nextLine();
-							
-							System.out.print("Rua: ");
-							String rua = input.nextLine();
-							
-							System.out.print("Complemento: ");
-							String complemento = input.nextLine();
-							
-							System.out.print("CEP: ");
-							String cep = input.nextLine();
-							
-							System.out.print("Número: ");
-							Integer numero = Integer.parseInt(input.nextLine());
-							
-							System.out.print("Bairro: ");
-							String bairro = input.nextLine();
-							
-							System.out.print("Estado: ");
-							String estado = input.nextLine();
-							
-							pedidoFacade.definirEnderecoEntrega(cep, numero, cidade, estado, bairro, rua, complemento);
 							
 							// Definir forma de pagamento
 							System.out.println("\nInforme o método de pagamento");
@@ -308,7 +297,11 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							System.out.print("\nInforme o número da forma de pagamento: ");
 							Long idFormaPagamento = Long.parseLong(input.nextLine());
 							
+							System.out.print("Informe o ID do cliente: ");
+							Long idCliente = Long.parseLong(input.nextLine());
+							
 							pedidoFacade.definirFormaPagamento(idFormaPagamento);
+							pedidoFacade.definirCliente(idCliente);
 							pedidoFacade.registrarPedido();
 							
 							// Adicionar Items
@@ -334,6 +327,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 								String flagParada = input.nextLine().toUpperCase();
 								
 								if(flagParada.equals("N")) {
+									System.out.println("- PEDIDO CRIADO COM SUCESSO! -");
 									break;
 								}
 							}

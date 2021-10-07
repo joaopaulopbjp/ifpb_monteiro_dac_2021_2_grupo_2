@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dac.ecommerce.livros.exceptions.*;
-import com.dac.ecommerce.livros.model.Livro;
+import com.dac.ecommerce.livros.model.livro.Livro;
 import com.dac.ecommerce.livros.model.pedido.*;
 import com.dac.ecommerce.livros.repository.PedidoRepository;
 

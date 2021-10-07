@@ -2,7 +2,8 @@ package com.dac.ecommerce.livros.services;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.dac.ecommerce.livros.model.ItemEstoque;
+
+import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
 import com.dac.ecommerce.livros.repository.ItemEstoqueRepository;
 
 @Service

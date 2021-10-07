@@ -1,7 +1,8 @@
 package com.dac.ecommerce.livros.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.dac.ecommerce.livros.model.Categoria;
+
+import com.dac.ecommerce.livros.model.livro.Categoria;
 import com.dac.ecommerce.livros.repository.CategoriaRepository;
 
 @Service

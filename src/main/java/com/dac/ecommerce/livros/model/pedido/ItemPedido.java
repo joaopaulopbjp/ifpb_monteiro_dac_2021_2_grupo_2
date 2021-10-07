@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.*;
 
-import com.dac.ecommerce.livros.model.Livro;
+import com.dac.ecommerce.livros.model.livro.Livro;
 
 import lombok.Data;
 

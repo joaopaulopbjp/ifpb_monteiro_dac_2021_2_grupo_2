@@ -1,4 +1,4 @@
-package com.dac.ecommerce.livros.model;
+package com.dac.ecommerce.livros.model.livro;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

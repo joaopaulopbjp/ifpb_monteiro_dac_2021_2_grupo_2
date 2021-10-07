@@ -1,4 +1,4 @@
-package com.dac.ecommerce.livros.model;
+package com.dac.ecommerce.livros.model.livro;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
