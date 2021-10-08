@@ -4,6 +4,9 @@ import javax.persistence.*;
 
 import lombok.Data;
 
+
+//Classe que representa o usuário no Banco de Dados
+
 @Entity
 @Data
 @Table(name="TB_USUARIO")

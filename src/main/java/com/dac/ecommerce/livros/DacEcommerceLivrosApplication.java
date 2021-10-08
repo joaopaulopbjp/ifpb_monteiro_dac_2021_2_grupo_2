@@ -145,6 +145,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					if(opcaoMenuAutor == 0) {
 						break;
 					} else if(opcaoMenuAutor == 1) {
+						try {
 						System.out.println("Infome seus dados");
 						Autor autorNovo = new Autor();
 						
@@ -155,8 +156,12 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						autorService.salvar(autorNovo);
 						
 						System.out.println("- AUTOR CADASTRADO COM SUCESSO! -");
-					} else if(opcaoMenuAutor == 2) {
 						
+						} catch(Exception erro) {
+							System.out.println(erro.getMessage());
+						}
+					} else if(opcaoMenuAutor == 2) {
+						try {
 						for(Autor autor : autorService.retornarListaDeAutores()) {
 							System.out.println(autor.toString());
 						}
@@ -171,6 +176,12 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						novoAutor.setNome(novoNomeAutor);
 						
 						autorService.editarAutor(novoAutor, idAutor);
+						
+						System.out.println("- AUTOR ALTERADO COM SUCESSO! -");
+
+						} catch(Exception erro) {
+							System.out.println(erro.getMessage());
+						}
 						
 					} else {
 						System.out.println(mensagemInputInvalido);

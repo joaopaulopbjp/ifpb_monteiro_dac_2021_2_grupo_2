@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+//Classe que representa um Autor no Banco de dados
 @Data
 @Entity
 @Table(name = "TB_AUTOR")
@@ -20,7 +21,7 @@ public class Autor {
 	@Id
 	@Column(name = "autor_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
 	private String nome;
 	

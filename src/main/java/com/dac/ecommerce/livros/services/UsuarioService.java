@@ -16,10 +16,14 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository repository;
 	
+	
+	//Salva o usuário no Banco de Dados
 	public Usuario save(Usuario usuario) {
 		return repository.save(usuario);
 	}
 
+	//Atualiza o usuário. É feita a busca pelo id do cliente informado fazendo uma
+	//cópia das suas informações pelo BeanUtils
 	public Usuario update(Long id ,Usuario usuario) {
 		Usuario usuarioSalvo = repository.findById(id).get();
 		BeanUtils.copyProperties(usuario, usuarioSalvo,"id");
@@ -27,11 +31,12 @@ public class UsuarioService {
 		return usuarioSalvo;	
 		
 	}
-	
+	//Método deleta um usuário do Banco
 	public void delete(long id) throws IllegalArgumentException {
 		repository.deleteById(id);
 	}
 	
+	//Método busca um usuário pelo ID
 	public Usuario findById(long id) throws UsuarioException {
 		Usuario usuario = repository.findById(id).get();
 		
@@ -42,14 +47,17 @@ public class UsuarioService {
 		return usuario;
 	}
 	
+	//Método Busca usuário pelo nome
 	public Usuario findByNome(String nome) {
 		return repository.findByNome(nome);
 	}
+
 
 	public Page<Usuario> findAll(Pageable page) {
 		return repository.findAll(page);
 	}
 
+	//Método busca usuário pelo Email
 	public Usuario findByEmail(String email) throws UsuarioException {
 		Usuario usuario = repository.findByEmail(email);
 		
