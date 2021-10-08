@@ -3,15 +3,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.dac.ecommerce.livros.exceptions.LivroAutorException;
 import com.dac.ecommerce.livros.exceptions.LivroCategoriaException;
 import com.dac.ecommerce.livros.exceptions.LivroException;
-import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
 import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
 import com.dac.ecommerce.livros.model.livro.Autor;
 import com.dac.ecommerce.livros.model.livro.Categoria;
@@ -124,20 +119,5 @@ public class LivroService {
 		}
 		repositorioLivro.save(livro);
 	}
-	
-	public String listarLivrosPorPaginacao(Integer numeroPagina) throws PaginaInvalidaException {
-		Pageable pageable = PageRequest.of((numeroPagina - 1), 5, Sort.by("titulo").ascending());
-		Page<Livro> pagina = repositorioLivro.findAll(pageable);
-		
-		if(pagina.isEmpty()) {
-			throw new PaginaInvalidaException();
-		}
-		
-		String livros = "";
-		for(Livro livro : pagina) {
-			livros += livro.toString();
-		}
-				
-		return livros;
-	}
+
 }

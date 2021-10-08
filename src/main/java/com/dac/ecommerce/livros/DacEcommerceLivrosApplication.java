@@ -120,8 +120,12 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						user.setTelefone(telefone);
 						user.setEndereco(endereco);
 						user.setTipoUsuario(TipoUsuario.CLIENTE);
-						usuarioService.save(user);
-					
+						
+						try {
+							usuarioService.save(user);
+						} catch(Exception erro) {
+							System.out.println("- USUÁRIO JÁ CADASTRADO -");
+						}
 					} else if(opcaoMenuUsuario == 2) {
 						try {
 							System.out.print("Digite o email: ");
@@ -146,38 +150,38 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						break;
 					} else if(opcaoMenuAutor == 1) {
 						try {
-						System.out.println("Infome seus dados");
-						Autor autorNovo = new Autor();
-						
-						System.out.print("Nome do autor: ");
-						String nomeAutor = input.nextLine();
-						
-						autorNovo.setNome(nomeAutor);
-						autorService.salvar(autorNovo);
-						
-						System.out.println("- AUTOR CADASTRADO COM SUCESSO! -");
-						
+							System.out.println("Infome seus dados");
+							Autor autorNovo = new Autor();
+							
+							System.out.print("Nome do autor: ");
+							String nomeAutor = input.nextLine();
+							
+							autorNovo.setNome(nomeAutor);
+							autorService.salvar(autorNovo);
+							
+							System.out.println("- AUTOR CADASTRADO COM SUCESSO! -");
+							
 						} catch(Exception erro) {
 							System.out.println(erro.getMessage());
 						}
 					} else if(opcaoMenuAutor == 2) {
 						try {
-						for(Autor autor : autorService.retornarListaDeAutores()) {
-							System.out.println(autor.toString());
-						}
-						
-						System.out.println("Qual o ID do autor deseja editar? ");
-						long idAutor = Long.parseLong(input.nextLine());
-						
-						System.out.println("Digite o novo nome para esse autor: ");
-						String novoNomeAutor = input.nextLine();
-						
-						Autor novoAutor = autorService.findByID(idAutor);
-						novoAutor.setNome(novoNomeAutor);
-						
-						autorService.editarAutor(novoAutor, idAutor);
-						
-						System.out.println("- AUTOR ALTERADO COM SUCESSO! -");
+							for(Autor autor : autorService.retornarListaDeAutores()) {
+								System.out.println(autor.toString());
+							}
+							
+							System.out.print("Qual o ID do autor deseja editar? ");
+							long idAutor = Long.parseLong(input.nextLine());
+							
+							System.out.print("Digite o novo nome para esse autor: ");
+							String novoNomeAutor = input.nextLine();
+							
+							Autor novoAutor = autorService.findByID(idAutor);
+							novoAutor.setNome(novoNomeAutor);
+							
+							autorService.editarAutor(novoAutor, idAutor);
+							
+							System.out.println("- AUTOR ALTERADO COM SUCESSO! -");
 
 						} catch(Exception erro) {
 							System.out.println(erro.getMessage());
@@ -207,6 +211,10 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							
 							System.out.print("Qual a quantidade de autores do livro: ");
 							Integer qtdAutores = Integer.parseInt(input.nextLine());
+							
+							for(Autor autor : autorService.retornarListaDeAutores()) {
+								System.out.println(autor.toString());
+							}
 							
 							List<Long> idsAutores = new ArrayList<>();
 							for (int i = 0; i < qtdAutores; i++) {
@@ -301,7 +309,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						Integer numeroPagina = Integer.parseInt(input.nextLine());
 						
 						try {
-							System.out.println(livroService.listarLivrosPorPaginacao(numeroPagina));
+							System.out.println(estoqueService.listarLivrosPorPaginacao(numeroPagina));
 						} catch(PaginaInvalidaException erro) {
 							System.out.println(erro.getMessage());
 						}
