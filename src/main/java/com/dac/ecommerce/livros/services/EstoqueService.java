@@ -30,7 +30,7 @@ public class EstoqueService {
 	@Autowired
 	private LivroRepository livroRepository;
 		
-	//adicionar no estoque atual
+	//adicionar no estoque atual e altera a quantidade de itens de um item já salvo.
 	public String adicionarNoEstoque(String isbn, Integer quantidade, Long idEstoque) throws Exception {
 		
 		Livro buscaLivro = livroRepository.findByIsbn(isbn);
@@ -63,7 +63,7 @@ public class EstoqueService {
 			return "- ITEM ADICIONADO AO ESTOQUE COM SUCESSO! -";
 		}
 	}
-	
+	//método privado pois é apenas usado no método adicionarNoEstoque()
 	private boolean verificaItemNoEstoque(ItemEstoque item) {
 		List<ItemEstoque> itens = itemEstoqueRepository.findAll();
 		for (ItemEstoque itemEstoque : itens) {
@@ -82,12 +82,16 @@ public class EstoqueService {
 			throw new Exception("[ERROR] NÃO FOI POSSÍVEL BUSCAR OS LIVROS!");
 		}
 		String itens = "";
+		
+		//coloco aqui todos os itens que possuem a quantidade diferente de 0.
 		List<ItemEstoque> itensDisponiveis = new ArrayList<>();
+		
 		for (ItemEstoque itemEstoque : itensOrdenados) {
 			if(itemEstoque.getQuantidade() != 0) {
 				itensDisponiveis.add(itemEstoque);
 			}
 		}
+		
 		if(itensDisponiveis.size() > 5) {
 			for (int i = 0; i < 5; i++) {
 				itens += itensDisponiveis.get(i).toString();
@@ -99,8 +103,9 @@ public class EstoqueService {
 		}
 		return itens;
 	}
-
-	public void adicionarQtdEstoque(ItemEstoque item) {
+	
+	//método privado pois é apenas usado no método adicionarNoEstoque()
+	private void adicionarQtdEstoque(ItemEstoque item) {
 		List<ItemEstoque> itens = itemEstoqueRepository.findAll();
 		ItemEstoque iEstoque = null;
 		for (ItemEstoque itemEstoque : itens) {
