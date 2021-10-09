@@ -36,7 +36,7 @@ public class Livro {
 	
 	private byte[] imagemCapa;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Editora editora;
 	
 	private Integer edicao;
@@ -49,7 +49,7 @@ public class Livro {
 	inverseJoinColumns = @JoinColumn(name ="autor_id"))
 	private List<Autor> autores;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Categoria categoria;
 	
 	public Livro(){}

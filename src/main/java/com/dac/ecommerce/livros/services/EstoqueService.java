@@ -29,28 +29,37 @@ public class EstoqueService {
 	
 	@Autowired
 	private LivroRepository livroRepository;
-	
+		
 	//adicionar no estoque atual
-	public String adicionarNoEstoque(String isbn, Integer quantidade) throws Exception {
+	public String adicionarNoEstoque(String isbn, Integer quantidade, Long idEstoque) throws Exception {
+		
 		Livro buscaLivro = livroRepository.findByIsbn(isbn);
 		
 		if(buscaLivro == null) {
-			throw new Exception("[ERROR] NÃO FOI POSSÍVEL ADICIONAR ITEM NO ESTOUE");
+			throw new Exception("[ERROR ESTOQUE] - LIVRO NÃO FOI ENCONTRADO!");
 		}
+		
 		ItemEstoque itemEstoque = new ItemEstoque();
 		itemEstoque.setProduto(buscaLivro);
 		itemEstoque.setQuantidade(quantidade);
 		boolean verificarItem = verificaItemNoEstoque(itemEstoque);
+		
 		if(verificarItem) {
 			adicionarQtdEstoque(itemEstoque);
 			return "- ITEM DO ESTOQUE ALTERADO COM SUCESSO! -";
 		}else {
-			Estoque novoEstoque = new Estoque();
-			novoEstoque.adicionarNoEstoque(itemEstoque);
+			Estoque estoque = estoqueRepository.findByEstoqueID(idEstoque);
+			
+			if(estoque == null) {
+				estoque = new Estoque();
+			}
+			
 			BigDecimal preco = itemEstoque.getProduto().getPreco();
 			itemEstoque.setPreco(preco);
-			itemEstoque.setEstoque(novoEstoque);
-			estoqueRepository.save(novoEstoque);
+			itemEstoque.setEstoque(estoque);
+			estoque.adicionarNoEstoque(itemEstoque);
+			estoqueRepository.save(estoque);
+			
 			return "- ITEM ADICIONADO AO ESTOQUE COM SUCESSO! -";
 		}
 	}
@@ -140,17 +149,17 @@ public class EstoqueService {
 		}
 		
 		itemEstoque.setQuantidade(itemEstoque.getQuantidade() - quantidade);
-		salvarItemEstoque(itemEstoque);
+		alterarItemEstoque(itemEstoque);
 	}
 	
 	public void reporEstoquePedidoCancelado(Livro livro, int quantidade) {
 		ItemEstoque itemEstoque = pesquisarItemEstoquePorLivro(livro);
 		itemEstoque.setQuantidade(itemEstoque.getQuantidade() + quantidade);
-		salvarItemEstoque(itemEstoque);
+		alterarItemEstoque(itemEstoque);
 	}
-	
-	private void salvarItemEstoque(ItemEstoque itemEstoque) {
-		itemEstoqueRepository.save(itemEstoque);
+
+	public List<Estoque> listarEstoques() {
+		return estoqueRepository.findAll();
 	}
 	
 	private ItemEstoque pesquisarItemEstoquePorLivro(Livro livro) {

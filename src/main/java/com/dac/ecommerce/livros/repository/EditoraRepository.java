@@ -1,11 +1,13 @@
 package com.dac.ecommerce.livros.repository;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.dac.ecommerce.livros.model.livro.Categoria;
+import com.dac.ecommerce.livros.model.livro.Editora;
 
 @Repository
-public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
+public interface EditoraRepository extends JpaRepository<Editora, Long> {
 
-	Categoria findByNome(String nome);
+	Editora findByNome(String nome);
+	
 }

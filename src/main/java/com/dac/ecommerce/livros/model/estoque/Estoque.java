@@ -21,22 +21,21 @@ public class Estoque {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "estoque_id")
-	private Integer estoqueID;
+	private Long estoqueID;
 	
-	//itens atuais do estoque
+	// Itens atuais do estoque
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "estoque", fetch = FetchType.EAGER)
 	private List<ItemEstoque> itensDoEstoque = new ArrayList<>();
-	
-	public Estoque() {}
-	
+		
+	// Métodos
 	public void adicionarNoEstoque(ItemEstoque livro) {
 		itensDoEstoque.add(livro);
 	}
 
 	@Override
 	public String toString() {
-		return "Estoque [estoqueID=" + estoqueID 
-		+ ", itensDoEstoque=" + itensDoEstoque + "]";
+		return "\nID: " + this.estoqueID +
+			   "\nQuantidade atual de itens: " + this.itensDoEstoque.size();
 	}
 	
 }

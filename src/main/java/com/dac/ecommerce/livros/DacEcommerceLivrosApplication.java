@@ -3,11 +3,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
+import com.dac.ecommerce.livros.model.estoque.Estoque;
 import com.dac.ecommerce.livros.model.livro.Autor;
 import com.dac.ecommerce.livros.model.pedido.PedidoFacade;
 import com.dac.ecommerce.livros.model.user.*;
@@ -16,31 +19,30 @@ import com.dac.ecommerce.livros.services.*;
 @SpringBootApplication
 public class DacEcommerceLivrosApplication implements CommandLineRunner {
 	
+	@Autowired
 	private LivroService livroService;
-	private AutorService autorService;
-	private FormaPagamentoService formaPagamentoService;
-	private EstoqueService estoqueService;
-	private PedidoService pedidoService;
-	private UsuarioService usuarioService;
 	
-	public DacEcommerceLivrosApplication(
-		LivroService livroService, PedidoService pedidoService,
-		AutorService autorService, FormaPagamentoService formaPagamentoService,
-		EstoqueService estoqueService, ItemService itemService, UsuarioService usuarioService) {
-			this.livroService = livroService;
-			this.autorService = autorService;
-			this.formaPagamentoService = formaPagamentoService;
-			this.estoqueService = estoqueService;
-			this.pedidoService = pedidoService;	
-			this.usuarioService = usuarioService;
-	}
+	@Autowired
+	private AutorService autorService;
+	
+	@Autowired
+	private FormaPagamentoService formaPagamentoService;
+	
+	@Autowired
+	private EstoqueService estoqueService;
+	
+	@Autowired
+	private PedidoService pedidoService;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DacEcommerceLivrosApplication.class, args);
 	}
 	
 	@Override
-	public void run(String... args) throws Exception {		
+	public void run(String... args) throws Exception {				
 		menu();
 	}
 
@@ -286,7 +288,13 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 						}
 					} else if(opcaoMenuLivro == 4) {
 						try {
-							System.out.println();
+							
+							for(Estoque estoque : estoqueService.listarEstoques()) {
+								System.out.println(estoque.toString() + "\n");
+							}
+							
+							System.out.print("Digite o ID do estoque (0 para criar um novo estoque): ");
+							Long idEstoque = Long.parseLong(input.nextLine());
 							
 							System.out.print("Digite o ISBN do Livro: ");
 							String isbn = input.nextLine();
@@ -294,7 +302,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							System.out.print("Digite a quantidade de livros: ");
 							Integer qtd = Integer.parseInt(input.nextLine());
 							
-							System.out.println(estoqueService.adicionarNoEstoque(isbn, qtd));
+							System.out.println(estoqueService.adicionarNoEstoque(isbn, qtd, idEstoque));
 						} catch (Exception e) {
 							System.out.println(e.getMessage());
 						}

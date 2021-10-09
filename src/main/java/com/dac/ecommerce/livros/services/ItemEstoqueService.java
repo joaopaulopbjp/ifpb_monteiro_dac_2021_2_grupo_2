@@ -7,7 +7,7 @@ import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
 import com.dac.ecommerce.livros.repository.ItemEstoqueRepository;
 
 @Service
-public class ItemService {
+public class ItemEstoqueService {
 
 	@Autowired
 	private ItemEstoqueRepository itemEstoqueRepository;

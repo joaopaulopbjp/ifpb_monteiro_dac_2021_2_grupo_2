@@ -17,12 +17,13 @@ public class Categoria {
 	@Column(name = "categoria_id")
 	private Long id;
 	
+	@Column(unique = true)
 	private String nome;
 	
 	public Categoria() {}
 	
 	@Override
 	public String toString() {
-		return "Categoria [id=" + id + ", nome=" + nome + "]";
+		return "\nID: " + this.id + "\nNome: " + this.nome;
 	}
 }

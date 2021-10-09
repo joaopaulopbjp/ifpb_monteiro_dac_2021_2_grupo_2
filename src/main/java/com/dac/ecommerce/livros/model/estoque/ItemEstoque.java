@@ -40,11 +40,9 @@ public class ItemEstoque {
 
 	@Override
 	public String toString() {
-		return "ItemEstoque [id=" +
-				id + ", quantidade=" + 
-				quantidade + ", produto=" 
-				+ produto + ", estoque=" 
-				+ "]";
+		return "\nID: " + this.id +
+				"\nQuantidade: " + this.estoque + 
+				"\n- Livro " + produto.toString();
 	}
 
 }

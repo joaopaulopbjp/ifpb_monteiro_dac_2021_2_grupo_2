@@ -28,46 +28,53 @@ public class LivroService {
 	@Autowired
 	private AutorRepository autorRepository;
 	
+	@Autowired
+	private CategoriaService categoriaService;
+	
+	@Autowired
+	private EditoraService editoraService;
+	
 	public void salvarLivro(Integer autores, List<Long> idsAutores,
 		String isbn, String categoria,String titulo,String descricao,
 		BigDecimal preco, byte[] imagemCapa, String nomeDaEditora, 
 		String cidadeEditora,Integer edicao,Integer ano) throws 
-		LivroException,LivroAutorException, LivroCategoriaException{
-		if(autores <= 0) {
-			throw new LivroAutorException();
-		}
+		Exception {
 		
-		//pega os autores previamente cadastrados
-		List<Autor> autoresLista = new ArrayList<>();
-		for (int i = 0; i < idsAutores.size(); i++) {
-			Autor a = autorRepository.findById(idsAutores.get(i)).get();
-			autoresLista.add(a);
-		}
-		
-		Livro livro = repositorioLivro.findByIsbn(isbn);
-		if(livro != null) {
-			throw new LivroException("[ERROR] LIVRO JÁ CADASTRADO");
-		}
-		if(categoria.equals("")) {
-			throw new LivroCategoriaException();
-		}
-		Livro novoLivro = new Livro();
-		novoLivro.setAutores(autoresLista);
-		novoLivro.setIsbn(isbn);
-		Editora editora = new Editora();
-		editora.setNome(nomeDaEditora);
-		editora.setCidade(cidadeEditora);
-		novoLivro.setEditora(editora);
-		Categoria c = new Categoria();
-		c.setNome(categoria);
-		novoLivro.setCategoria(c);
-		novoLivro.setTitulo(titulo);
-		novoLivro.setDescricao(descricao);
-		novoLivro.setPreco(preco);
-		novoLivro.setImagemCapa(imagemCapa);
-		novoLivro.setEdicao(edicao);
-		novoLivro.setAno(ano);
-		repositorioLivro.save(novoLivro);	
+			if(autores <= 0) {
+				throw new LivroAutorException();
+			}
+			
+			//pega os autores previamente cadastrados
+			List<Autor> autoresLista = new ArrayList<>();
+			for (int i = 0; i < idsAutores.size(); i++) {
+				Autor a = autorRepository.findById(idsAutores.get(i)).get();
+				autoresLista.add(a);
+			}
+			
+			Livro livro = repositorioLivro.findByIsbn(isbn);
+			if(livro != null) {
+				throw new LivroException("[ERROR] LIVRO JÁ CADASTRADO");
+			}
+			if(categoria.equals("")) {
+				throw new LivroCategoriaException();
+			}
+			Livro novoLivro = new Livro();
+			novoLivro.setAutores(autoresLista);
+			novoLivro.setIsbn(isbn);
+			
+			Editora editora = editoraService.recuperarEditora(nomeDaEditora, cidadeEditora);
+			novoLivro.setEditora(editora);
+			
+			Categoria c = categoriaService.recuperarCategoria(categoria);
+			novoLivro.setCategoria(c);
+			
+			novoLivro.setTitulo(titulo);
+			novoLivro.setDescricao(descricao);
+			novoLivro.setPreco(preco);
+			novoLivro.setImagemCapa(imagemCapa);
+			novoLivro.setEdicao(edicao);
+			novoLivro.setAno(ano);
+			repositorioLivro.save(novoLivro);	
 	}
 	
 	public void excluirLivro(String isbn) throws LivroException{

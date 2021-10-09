@@ -12,13 +12,23 @@ public class CategoriaService {
 	private CategoriaRepository categoriaRepository;
 	
 	
-	public void salvarCategoria(String nome) throws Exception{
+	public Categoria recuperarCategoria(String nome) throws Exception {
+		
 		if(nome.equals("")) {
 			throw new Exception("[ERROR] CATEGORIA NÃO PODE SER CADASTRADA!");
 		}
-		Categoria categoria = new Categoria();
-		categoria.setNome(nome);
-		categoriaRepository.save(categoria);
+		
+		Categoria categoria = categoriaRepository.findByNome(nome);
+		
+		if(categoria == null) {
+			categoria = new Categoria();
+			categoria.setNome(nome);
+			categoriaRepository.save(categoria);
+		}
+		
+		return categoria;
+		
+		
 	}
 	
 	
