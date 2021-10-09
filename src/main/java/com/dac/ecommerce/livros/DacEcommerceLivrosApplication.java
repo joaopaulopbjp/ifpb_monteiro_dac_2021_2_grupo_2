@@ -341,54 +341,57 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					Integer opcaoMenuPedido = Integer.parseInt(input.nextLine());
 					
 					if(opcaoMenuPedido == 1) {											// Novo pedido
-						
-						try {
-							PedidoFacade pedidoFacade = new PedidoFacade(pedidoService, livroService, formaPagamentoService, usuarioService);
-							pedidoFacade.criarPedido();
-							
-							// Definir forma de pagamento
-							System.out.println("\nInforme o método de pagamento");
-							pedidoFacade.imprimirFormasPagamento();
-							
-							System.out.print("\nInforme o número da forma de pagamento: ");
-							Long idFormaPagamento = Long.parseLong(input.nextLine());
-							
-							System.out.print("Informe o ID do cliente: ");
-							Long idCliente = Long.parseLong(input.nextLine());
-							
-							pedidoFacade.definirFormaPagamento(idFormaPagamento);
-							pedidoFacade.definirCliente(idCliente);
-							pedidoFacade.registrarPedido();
-							
-							// Adicionar Items
-							System.out.println("\nInforme o(s) livro(s) que deseja comprar");
-							while(true) {
-								try {
-									pedidoFacade.imprimirLivros();
-									
-									System.out.print("\nNúmero do livro: ");
-									Long idLivro = Long.parseLong(input.nextLine());
-									
-									System.out.print("Quantidade: ");
-									Integer quantidade = Integer.parseInt(input.nextLine());
-									
-									pedidoFacade.adicionarLivro(idLivro, quantidade);
-									
-								} catch(Exception erro) {
-									System.out.println(erro.getMessage());
-								}
+						if(formaPagamentoService.listar().size() == 0) {
+							System.out.println("- NÃO EXISTE FORMAS DE PAGAMENTO CADASTRADO NO MOMENTO! -");
+						} else {
+							try {
+								PedidoFacade pedidoFacade = new PedidoFacade(pedidoService, livroService, formaPagamentoService, usuarioService);
+								pedidoFacade.criarPedido();
 								
-								// Verificar condição de parada
-								System.out.print("\nDeseja adicionar outro livro? [S - Sim | N - não]: ");
-								String flagParada = input.nextLine().toUpperCase();
+								// Definir forma de pagamento
+								System.out.println("\nInforme o método de pagamento");
+								pedidoFacade.imprimirFormasPagamento();
 								
-								if(flagParada.equals("N")) {
-									System.out.println("- PEDIDO CRIADO COM SUCESSO! -");
-									break;
+								System.out.print("\nInforme o número da forma de pagamento: ");
+								Long idFormaPagamento = Long.parseLong(input.nextLine());
+								
+								System.out.print("Informe o ID do cliente: ");
+								Long idCliente = Long.parseLong(input.nextLine());
+								
+								pedidoFacade.definirFormaPagamento(idFormaPagamento);
+								pedidoFacade.definirCliente(idCliente);
+								pedidoFacade.registrarPedido();
+								
+								// Adicionar Items
+								System.out.println("\nInforme o(s) livro(s) que deseja comprar");
+								while(true) {
+									try {
+										pedidoFacade.imprimirLivros();
+										
+										System.out.print("\nNúmero do livro: ");
+										Long idLivro = Long.parseLong(input.nextLine());
+										
+										System.out.print("Quantidade: ");
+										Integer quantidade = Integer.parseInt(input.nextLine());
+										
+										pedidoFacade.adicionarLivro(idLivro, quantidade);
+										
+									} catch(Exception erro) {
+										System.out.println(erro.getMessage());
+									}
+									
+									// Verificar condição de parada
+									System.out.print("\nDeseja adicionar outro livro? [S - Sim | N - não]: ");
+									String flagParada = input.nextLine().toUpperCase();
+									
+									if(flagParada.equals("N")) {
+										System.out.println("- PEDIDO CRIADO COM SUCESSO! -");
+										break;
+									}
 								}
+							} catch(Exception erro) {
+								System.out.println(erro.getMessage());
 							}
-						} catch(Exception erro) {
-							System.out.println(erro.getMessage());
 						}
 					} else if(opcaoMenuPedido == 2) {											// Cadastrar forma de pagamento
 						System.out.print("\nInforme a forma de pagamento: ");
