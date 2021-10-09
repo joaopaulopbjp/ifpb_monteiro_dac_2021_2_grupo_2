@@ -22,13 +22,4 @@ public interface ItemEstoqueRepository extends JpaRepository<ItemEstoque, Long>{
 	@Query("SELECT l FROM Livro l JOIN ItemEstoque i ON l.id = i.produto")
 	Page<Livro> consultarTodosLivrosPaginado(Pageable pageable);
 	
-	
-	// Selecionar item a ser excluído do estoque
-	@Query(
-		"SELECT ie FROM ItemEstoque ie " +
-		"JOIN ItemPedido ip ON ie.produto = ip.livro " +
-		"JOIN Pedido p ON p.id = ip.pedido_fk " +
-		"WHERE p.status = 'FINALIZADO' AND ie.id = ?1"
-	)
-	ItemEstoque buscarItemEstoqueParaExclusao(Long id);
 }
