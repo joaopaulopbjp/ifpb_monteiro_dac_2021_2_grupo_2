@@ -210,9 +210,17 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 					} else if(opcaoMenuLivro == 1) {
 						try {
 							System.out.println();
-							
-							System.out.print("Qual a quantidade de autores do livro: ");
-							Integer qtdAutores = Integer.parseInt(input.nextLine());
+							Integer qtdAutores;
+							while(true) {
+								System.out.print("Qual a quantidade de autores do livro: ");
+								qtdAutores = Integer.parseInt(input.nextLine());
+								
+								if(qtdAutores > autorService.retornarListaDeAutores().size()) {
+									System.out.println("- A QUANTIDADE DE AUTORES CADASTRADOS É MENOR QUE O INFORMADO!");
+								} else {
+									break;
+								}
+							}
 							
 							for(Autor autor : autorService.retornarListaDeAutores()) {
 								System.out.println(autor.toString());
