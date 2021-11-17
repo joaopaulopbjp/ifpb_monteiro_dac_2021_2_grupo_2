@@ -34,7 +34,19 @@ public class LivroService {
 	@Autowired
 	private EditoraService editoraService;
 	
-	public void salvarLivro(Integer autores, List<Long> idsAutores,
+	
+	public void salvar(Livro livro) throws Exception {
+		Editora editora = editoraService.recuperarEditora(livro.getEditora()
+				.getNome(), livro.getEditora().getCidade());
+		livro.setEditora(editora);
+		
+		Categoria c = categoriaService.recuperarCategoria(livro.getCategoria().getNome());
+		livro.setCategoria(c);
+		
+		repositorioLivro.save(livro);
+	}
+	
+	public void salvar(Integer autores, List<Long> idsAutores,
 		String isbn, String categoria,String titulo,String descricao,
 		BigDecimal preco, byte[] imagemCapa, String nomeDaEditora, 
 		String cidadeEditora,Integer edicao,Integer ano) throws 
@@ -71,7 +83,7 @@ public class LivroService {
 			novoLivro.setTitulo(titulo);
 			novoLivro.setDescricao(descricao);
 			novoLivro.setPreco(preco);
-			novoLivro.setImagemCapa(imagemCapa);
+			//novoLivro.setImagemCapa(imagemCapa);
 			novoLivro.setEdicao(edicao);
 			novoLivro.setAno(ano);
 			repositorioLivro.save(novoLivro);	
@@ -89,6 +101,10 @@ public class LivroService {
 		repositorioLivro.delete(livro);
 	}
 	
+	public void excluir(Long id) {
+		repositorioLivro.deleteById(id);
+	}
+	
 	public Livro buscarLivro(Long id) throws LivroException {
 		Livro livro = repositorioLivro.findById(id).get();
 		if(livro == null) {
@@ -99,9 +115,9 @@ public class LivroService {
 	
 	public List<Livro> recuperarTodosOsLivros() throws Exception{
 		List<Livro> livros = repositorioLivro.findAll();
-		if(livros.size() == 0) {
-			throw new Exception("[ERROR LIVRO] - NÃO EXISTE LIVROS CADASTRADOS!");
-		}
+//		if(livros.size() == 0) {
+//			throw new Exception("[ERROR LIVRO] - NÃO EXISTE LIVROS CADASTRADOS!");
+//		}
 		return livros;
 	}
 	

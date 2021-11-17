@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos :: head('Livro')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos :: header}"></header>
+
+	<style th:replace="~{fragmentos :: style}"></style>
+
+	<style>
+		.sub_menu {
+			margin-top: 15px;
+			text-align: center;
+			margin-bottom: 15px;
+		}
+
+		.imagem {
+			max-height: 50px;
+			border: 1px solid black;
+		}
+
+		#btn_editar,
+		#btn_excluir {
+			max-width: 40px;
+		}
+
+		.jumbotron {
+			margin-left: -15px;
+		}
+
+		.fab {
+			position: fixed;
+			bottom: 10px;
+			right: 10px;
+		}
+
+		.fab button {
+			cursor: pointer;
+			width: 48px;
+			height: 48px;
+			border-radius: 30px;
+			background-color: #3CB371;
+			border: none;
+			box-shadow: 0 1px 5px rgba(0, 0, 0, .4);
+			font-size: 24px;
+			color: white;
+
+			-webkit-transition: .2s ease-out;
+			-moz-transition: .2s ease-out;
+			transition: .2s ease-out;
+		}
+
+		.fab button:focus {
+			outline: none;
+		}
+
+		.fab button.main {
+			position: absolute;
+			width: 60px;
+			height: 60px;
+			border-radius: 30px;
+			background-color: #006400;
+			right: 0;
+			bottom: 0;
+			z-index: 20;
+		}
+
+		.fab button.main:before {
+			content: '⏚';
+		}
+
+		.fab ul {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			padding: 0;
+			padding-right: 5px;
+			margin: 0;
+			list-style: none;
+			z-index: 10;
+
+			-webkit-transition: .2s ease-out;
+			-moz-transition: .2s ease-out;
+			transition: .2s ease-out;
+		}
+
+		.fab ul li {
+			display: flex;
+			justify-content: flex-start;
+			position: relative;
+			margin-bottom: -10%;
+			opacity: 0;
+
+			-webkit-transition: .3s ease-out;
+			-moz-transition: .3s ease-out;
+			transition: .3s ease-out;
+		}
+
+
+		.fab.show button.main,
+		.fab.show button.main {
+			outline: none;
+			background-color: #008000;
+			box-shadow: 0 3px 8px rgba(0, 0, 0, .5);
+		}
+
+		.fab.show button.main:before,
+		.fab.show button.main:before {
+			content: '↑';
+		}
+
+		.fab.show button.main+ul,
+		.fab.show button.main+ul {
+			bottom: 70px;
+		}
+
+		.fab.show button.main+ul li,
+		.fab.show button.main+ul li {
+			margin-bottom: 10px;
+			opacity: 1;
+		}
+
+		.fab.show button.main+ul li:hover label,
+		.fab.show button.main+ul li:hover label {
+			opacity: 1;
+		}
+	</style>
+
+
+	<div class="jumbotron">
+		<div class="container" style="height: 600px;">
+			<h5 style="text-align: center;">Catálogo de Livros</h5>
+			<table class="table" id="tabelaLivro">
+				<thead>
+					<tr>
+						<th scope="col">Título</th>
+						<th scope="col">Preço</th>
+						<th scope="col">Imagem</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${livros.empty}">
+						<td colspan="2">Não há livros cadastrados</td>
+					</tr>
+					<tr th:each="livro : ${livros}">
+						<td><span th:text="${livro.titulo}">Título</span></td>
+						<td><span th:text="${livro.preco}">Preço</span></td>
+						<td> <img class="imagem" th:src="${livro.imagemCapa}" alt="Sem visualização" style="width: 50px"></td>
+						<td>
+							<button id="btn_editar" type="button" class="btn btn-primary">&#x270e;</button>
+							<a th:href="@{/livro/deletar/{id}(id = ${livro.id})}">
+								<button id="btn_excluir" type="button" class="btn btn-danger">
+									&#x2718;
+								</button>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<footer th:replace="~{fragmentos :: footer}"></footer>
+
+	<div class="fab">
+		<button class="main">
+		</button>
+		<ul>
+			<li>
+				<a href="http://localhost:8080/livro/cadastrar">
+					<button id="opcao1" href="#">
+						&#x2b;
+					</button>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+	<script>
+		function toggleFAB(fab) {
+			if (document.querySelector(fab).classList.contains('show')) {
+				document.querySelector(fab).classList.remove('show');
+			} else {
+				document.querySelector(fab).classList.add('show');
+			}
+		}
+
+		document.querySelector('.fab .main').addEventListener('click', function () {
+			toggleFAB('.fab');
+		});
+
+		document.querySelectorAll('.fab ul li button').forEach((item) => {
+			item.addEventListener('click', function () {
+				toggleFAB('.fab');
+			});
+		});
+	</script>
+</body>
+
+</html>

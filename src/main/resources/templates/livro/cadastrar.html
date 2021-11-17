@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos :: head('Cadastrar Livro')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos :: header}"></header>
+
+
+	<body>
+		<style>
+			.col {
+				margin-bottom: 15px;
+			}
+
+			#titulo {
+				text-align: center;
+			}
+
+			.checkbox-inline {
+				margin-right: 15px;
+			}
+
+			.jumbotron {
+				margin-bottom: 0px;
+			}
+		</style>
+
+		<div class="jumbotron">
+			<form method="post" id="formulario" th:object="${livro}" th:action="@{'/livro/salvar'}" enctype="multipart/form-data">
+				<div class="form-group" id="grupo">
+					<h4 id="titulo">Autores do Livro</h4>
+					<div class="container">
+						<div class="row justify-content-md-center">
+							<div class="col-md-auto" th:if="${autores.empty}">
+								<div>
+									<h5>Não há autores cadastr ados</h5>
+								</div>
+							</div>
+							<div class="col-md-auto" th:if="${!autores.empty}">
+								<label class="checkbox-inline" th:each="autor : ${autores}">
+									<input type="checkbox" th:value="${autor.id}" th:text="${autor.nome}"
+										name="autoresCadastrados" />
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<input type="text" class="form-control" placeholder="Isbn do Livro" name="isbn" />
+					</div>
+					<div class="col">
+						<input type="text" class="form-control" id="titulo_livro" placeholder="Título do Livro"
+							name="titulo" />
+					</div>
+				</div>
+				<div class="form-group">
+					<textarea class="form-control" placeholder="Descrição do Livro" rows="1" id="descricao"
+						name="descricao"></textarea>
+				</div>
+				<div class="form-group">
+				</div>
+				<div class="row">
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text">R$</span>
+							</div>
+							<input type="text" class="form-control" id="preco" name="preco">
+							<div class="input-group-append">
+								<span class="input-group-text">.00</span>
+							</div>
+						</div>
+					</div>
+					<div class="col" id="file">
+						<label for="imagem" class="form-label">Escolha uma imagem para capa do Livro</label>
+						<input type="file" name="fileLivro" id="imagem">
+					</div>
+				</div>
+				<div class="mb-3">
+					<input type="text" class="form-control" placeholder="Nome da Editora" name="nomeEditora">
+				</div>
+				<div class="mb-3">
+					<input type="text" class="form-control" placeholder="Cidade da Editora" name="cidadeEditora">
+				</div>
+				<div class="mb-3">
+					<input type="text" class="form-control" placeholder="Categoria" name="nomeCategoria">
+				</div>
+				<div class="row">
+					<div class="col">
+						<input type="" class="form-control" placeholder="Edição" id="edicao" name="edicao" />
+					</div>
+					<div class="col">
+						<input type="" class="form-control" placeholder="Ano" id="ano" name="ano">
+					</div>
+				</div>
+				<div class="btn-salve">
+					<button type="submit" class="btn btn-primary">Salvar</button>
+				</div>
+			</form>
+		</div>
+
+		<footer th:replace="~{fragmentos :: footer}"></footer>
+
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+			integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+			crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+			integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+			crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+			integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+			crossorigin="anonymous"></script>
+	</body>
+
+</html>

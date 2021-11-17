@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -34,7 +35,8 @@ public class Livro {
 	
 	private BigDecimal preco;
 	
-	private byte[] imagemCapa;
+	@Lob
+	private String imagemCapa;
 	
 	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Editora editora;

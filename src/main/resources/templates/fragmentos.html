@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head th:fragment="head(titulo)">
+	<!-- Meta tags Obrigatórias -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<title th:text="${titulo}">fragment</title>
+</head>
+
+<body>
+	<style th:fragment="style">
+		footer {
+			position: fixed;
+			height: 50px;
+			bottom: 0;
+			width: 100%;
+			text-align: center;
+		}
+	</style>
+
+	<header th:fragment="header">
+		<div class="pos-f-t">
+			<div class="collapse" id="navbarToggleExternalContent">
+				<div class="bg-primary p-4">
+					<h5 class="text-white h4">Menu</h5>
+					<a href="#"><span class="text-white">Usuário</span><br></a>
+					<a href="#"><span class="text-white">Autor</span><br></a>
+					<a href="http://localhost:8080/livro/index"><span class="text-white">Livro</span><br></a>
+					<a href="#"><span class="text-white">Pedido</span></a>
+				</div>
+			</div>
+			<nav class="navbar navbar-dark bg-primary">
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+			</nav>
+		</div>
+	</header>
+
+	<footer class="bg-light text-center text-lg-start" th:fragment="footer">
+		<!-- Copyright -->
+		<div class="text-center p-3" style="background-color: #0069D9;">
+			<span style="color: white;">© 2021 Copyright:</span>
+			<a class="text-dark" href="#"><span style="color: white;">Projeto DAC</span></a>
+		</div>
+		<!-- Copyright -->
+	</footer>
+
+</body>
+
+</html>

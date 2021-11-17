@@ -263,7 +263,7 @@ public class DacEcommerceLivrosApplication implements CommandLineRunner {
 							System.out.print("Ano do Livro: ");
 							Integer ano = Integer.parseInt(input.nextLine());
 							
-							livroService.salvarLivro(qtdAutores, idsAutores, isbn, categoria,
+							livroService.salvar(qtdAutores, idsAutores, isbn, categoria,
 							tituloLivro, descricao,preco, null, nomeEditora,
 							cidadeEditora, edicao, ano);
 							System.out.println();

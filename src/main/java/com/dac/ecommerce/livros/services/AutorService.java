@@ -18,11 +18,12 @@ public class AutorService {
 	//Retorna os autores cadastrados
 	public List<Autor> todosAutores() throws Exception{
 		List<Autor> autores = repository.findAll();
-		if(autores.size() == 0) {
-			throw new Exception("[ERROR] NÃO EXISTE AUTORES CADASTRADOS");
-		}else {
-			return repository.findAll();
-		}
+		return autores;
+		//if(autores.size() == 0) {
+			//throw new Exception("[ERROR] NÃO EXISTE AUTORES CADASTRADOS");
+		//}else {
+			//return repository.findAll();
+		//}
 	}
 	
 	//Salva um autor no Banco de Dados
