@@ -1,8 +1,6 @@
 package com.dac.ecommerce.livros.dto;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import com.dac.ecommerce.livros.model.livro.Autor;
 import com.dac.ecommerce.livros.model.livro.Categoria;
