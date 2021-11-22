@@ -11,19 +11,17 @@ import org.springframework.stereotype.Service;
 import com.dac.ecommerce.livros.exceptions.*;
 import com.dac.ecommerce.livros.model.livro.Livro;
 import com.dac.ecommerce.livros.model.pedido.*;
+import com.dac.ecommerce.livros.model.user.Endereco;
 import com.dac.ecommerce.livros.repository.PedidoRepository;
 
 @Service
 public class PedidoService {
 	
-	@Autowired
-	private PedidoRepository pedidoRepository;
+	@Autowired private PedidoRepository pedidoRepository;
+	@Autowired private EstoqueService estoqueService;
+	@Autowired private LivroService livroService;
 	
-	@Autowired
-	private EstoqueService estoqueService;
-	
-	@Autowired
-	private LivroService livroService;
+
 	
 	public void finalizarPedido(Long id) throws PedidoException, EstoqueException {
 		

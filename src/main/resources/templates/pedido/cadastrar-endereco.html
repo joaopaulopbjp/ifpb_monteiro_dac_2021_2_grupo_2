@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+	<head th:replace="~{fragmentos :: head('Cadastrar Endereço')}"></head>
+	
+	<body>
+	
+		<style th:replace="~{fragmentos :: style}"></style>
+	
+		<style>
+			/* Chrome, Safari, Edge, Opera */
+			input::-webkit-outer-spin-button,
+			input::-webkit-inner-spin-button {
+			  -webkit-appearance: none;
+			  margin: 0;
+			}
+			
+			/* Firefox */
+			input[type=number] {
+			  -moz-appearance: textfield;
+}
+		
+			h4 {
+				text-align: center;
+			}
+			
+			label {
+				margin: 20px 0 5px 0;
+			}
+			
+			.container-options {
+				margin: 20px 0 20px 0;
+			}
+			
+			.container {
+				margin-top: 50px;
+			}
+		</style>
+	
+		<header th:replace="~{fragmentos :: header}"></header>
+	
+		<div class="container">
+		
+			<h4>Informe o Endereço de Entrega</h4>
+			
+			<form  method="POST" th:action="@{/cadastrar-endereco-entrega}" class="needs-validation" novalidate>
+				
+				<div class="row">
+				
+					<div class="col-4">
+						<label for="input-cep" class="form-label">CEP:</label>
+						<input id="input-cep" class="form-control" value="" th:onblur="pesquisar(this.value)" required/>
+						<div class="valid-feedback">
+							Informe um CEP válido.
+						</div>
+					</div>
+					
+					<div class="col-8">
+						<label for="input-cidade" class="form-label">Cidade:</label>
+						<input id="input-cidade" class="form-control" type="text" required/>
+						<div class="valid-feedback">
+							Informe a cidade.
+						</div>
+					</div>
+					
+					<div class="col-10">
+						<label for="input-rua" class="form-label">Rua:</label>
+						<input id="input-rua" class="form-control" type="text" required/>
+						<div class="valid-feedback">
+							Informe a rua.
+						</div>
+					</div>
+					
+					<div class="col-2">
+						<label for="input-numero" class="form-label">Número:</label>
+						<input id="input-numero" class="form-control" type="number" required/>
+						<div class="valid-feedback">
+							Informe o número do imóvel.
+						</div>
+					</div>
+					
+					<div class="col-6">
+						<label for="input-bairro" class="form-label">Bairro:</label>
+						<input id="input-bairro" class="form-control" type="text" required/>
+						<div class="valid-feedback">
+							Informe o bairro.
+						</div>
+					</div>
+					
+					<div class="col-6">
+						<label for="input-estado" class="form-label">Estado:</label>
+						<input id="input-estado" class="form-control" required maxlength(2) minlength(2)/>
+						<div class="valid-feedback">
+							Informe o estado. Somente siglas.
+						</div>
+					</div>
+					
+					<div class="col-12">
+						<label for="input-complemento" class="form-label">Complemento:</label>
+						<input id="input-complemento" class="form-control" type="text"/>
+					</div>
+				</div>
+				
+				<div class="container-options">
+					<button class="btn btn-primary" value="prosseguir" type="submit">Prosseguir</button> 
+					<button class="btn btn-primary" value="cancelar">Cancelar</button>
+				</div>
+				
+			</form>
+		</div>
+	
+		<footer th:replace="~{fragmentos :: footer}"></footer>
+	
+		<!-- Scripts -->
+		<script type="text/javascript" th:src="@{/js/consultar-cep.js}"></script>
+		<script type="text/javascript" th:src="@{/js/validation.js}"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+		<script>	
+			// Aplicar Máscara no input cep
+			$(document).ready(() => {
+				$('#input-cep').mask('00000-000');
+			});
+		</script>
+
+
+	</body>
+</html>
