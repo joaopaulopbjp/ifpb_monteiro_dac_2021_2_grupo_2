@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+	<head th:replace="~{fragmentos :: head('Cadastrar Endereço')}"></head>
+	
+	<body>
+		
+		<style th:replace="~{fragmentos :: style}"></style>
+	
+		<style>
+			.container-menu {
+				margin: 40px 50px;
+			}
+			
+			.card {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-bottom: 20px;
+				padding: 20px;
+				height: 150px;
+				background-color: #F8F9FA;
+				font-weight: bold;
+			}
+			
+			h4 {
+				margin-bottom: 20px;
+			}
+			
+			a:hover {
+				text-decoration: none;
+			}
+			
+			.card:hover {
+				background-color: rgb(246, 245, 244);
+			}
+			
+			
+		</style>
+			
+		<header th:replace="~{fragmentos :: header}"></header>
+		
+		
+	
+		<div class="container-menu row">
+			
+			<div class="col-12">
+				<h4>Sua conta</h4>
+			</div>
+			
+			<div class="col-4">
+				<a href="#">
+					<div class="card">
+						Meus Pedidos
+					</div>
+				</a>
+			</div>
+			
+			<div class="col-4">
+				<a href="#">
+					<div class="card">
+						Carrinho de Compras
+					</div>
+				</a>
+			</div>
+			
+			<div class="col-4">
+				<a href="#">
+					<div class="card">
+						Finalizar Pedido
+					</div>
+				</a>
+			</div>
+			
+			<div class="col-4">
+				<a href="#">
+					<div class="card">
+						Cancelar Pedido
+					</div>
+				</a>
+			</div>
+			
+			<div class="col-4">
+				<a href="#">
+					<div class="card">
+						Alterar Dados
+					</div>
+				</a>
+			</div>
+			
+			<div class="col-4">
+				<a href="#">
+					<div class="card">
+						Endereço de Entrega
+					</div>
+				</a>
+			</div>
+			
+		</div>
+				
+		<footer th:replace="~{fragmentos :: footer}"></footer>
+
+	</body>
+</html>
