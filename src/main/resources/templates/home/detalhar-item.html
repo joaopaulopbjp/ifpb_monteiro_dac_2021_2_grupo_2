@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+	<head th:replace="~{fragmentos :: head('Detalhar')}"></head>
+
+	<body>
+	
+		<style th:replace="~{fragmentos :: style}"></style>
+		
+		<style>
+			/* Chrome, Safari, Edge, Opera */
+			input::-webkit-outer-spin-button,
+			input::-webkit-inner-spin-button {
+			  -webkit-appearance: none;
+			  margin: 0;
+			}
+			
+			input[type=number] {
+			  -moz-appearance: textfield;
+			  text-align: center;
+			  border-radius: 0;
+			}
+		
+			img {
+				width: 250px;
+				height: 100%;
+			}
+			
+			p {
+				text-align: justify;
+			}
+			
+			#label-estoque {
+				color: gray;
+				size: 10px;
+				float: right;
+				margin-top: 15px;
+			}
+			
+			#btn-close {
+				background-color: transparent;
+				border: none;
+			}
+			
+			#input-quantidade {
+				width: 50px;
+			}
+			
+			#btn-incremento {
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+			
+			#btn-decremento {
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+			}
+			
+			.card {
+				margin-top: 50px;
+				padding: 10px;
+			}
+
+			.container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				
+			}
+			
+			.container-card {
+				display: flex;
+				flex-direction: row;
+			}
+			
+			.container-conteudo {
+				margin: 0 20px;
+			}
+			
+			.container-header {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+			}
+			
+			.container-quantidade {
+				display: flex;
+				flex-direction: row;
+				margin-bottom: 10px;
+			}	
+			
+		</style>	
+
+		<header th:replace="~{fragmentos :: header}"></header>
+			
+		<div class="container">
+			
+			<div class="card" style="width: 50em;"> 
+				
+				<div class="container-card">
+					<div>
+						<img th:src="${item.produto.imagemCapa}" class="img-capa" alt="Capa do Livro"/>
+					</div>
+					
+					<div class="container-conteudo">
+						<div class="container-header">
+							<h4 th:text="${item.produto.titulo}"></h4>
+							<a id="btn-close" th:href="@{'http://localhost:8080/'}"><i class="bi bi-x-circle"></i></a>
+						</div>
+					
+						<p th:text="${item.produto.descricao}"></p>
+						<hr>
+						<p><strong>Categoria: </strong><span th:text="${item.produto.categoria.nome}"></span></p>
+						<p><strong>ISBN: </strong><span th:text="${item.produto.isbn}"></span></p>
+						<p><strong>Edição: </strong><span th:text="${item.produto.edicao} + 'ª'"></span></p>
+						<p><strong>Ano: </strong><span th:text="${item.produto.ano}"></span></p>
+						<p><strong>Editora: </strong><span th:text="${item.produto.editora.nome}"></span></p>
+						
+						<div>
+							<div class="container-quantidade">
+								<button id="btn-decremento" class="btn btn-success" onclick="decrementar()"><i class="bi bi-dash-square"></i></button>
+								<input type="number" class="form-control" id="input-quantidade" value="1">
+								<button id="btn-incremento" class="btn btn-success" th:onclick="'incrementar(\'' + ${item.quantidade} + '\')'"><i class="bi bi-plus-square"></i></button>
+							</div>
+			
+							<button class="btn btn-success"><i class="bi bi-cart-plus"></i> Adicionar ao carrinho</button>
+							<span id="label-estoque" th:text="'Disponíveis: ' + ${item.quantidade}"></span>
+						</div>
+					</div>
+					
+				</div>
+				
+			</div>
+		
+			
+		</div>
+	
+		<footer th:replace="~{fragmentos :: footer}"></footer>
+		
+		<script th:replace="~{fragmentos :: script1}"></script>
+		<script th:replace="~{fragmentos :: script2}"></script>
+		<script th:replace="~{fragmentos :: script3}"></script>
+		
+		<script>
+		
+			function getInput() {
+				return input = document.getElementById('input-quantidade');
+			}
+			
+			function incrementar(limite) {
+				
+				input = this.getInput();
+				
+				if(Number(input.value) < Number(limite)) {
+					input.value++;
+				}
+				
+			}
+			
+			function decrementar() {
+				input = this.getInput();
+				
+				if(input.value > 0) {
+					input.value--;
+				}
+			}
+			
+		</script>
+	
+	</body>
+</html>

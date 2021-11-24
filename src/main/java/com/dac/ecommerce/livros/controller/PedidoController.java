@@ -7,8 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.dac.ecommerce.livros.exceptions.PedidoException;
-import com.dac.ecommerce.livros.model.user.Endereco;
-import com.dac.ecommerce.livros.model.user.Usuario;
 import com.dac.ecommerce.livros.services.PedidoService;
 
 @Controller

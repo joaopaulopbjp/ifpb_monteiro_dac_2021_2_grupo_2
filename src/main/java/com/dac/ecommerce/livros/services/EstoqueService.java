@@ -3,13 +3,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import com.dac.ecommerce.livros.exceptions.EstoqueException;
@@ -17,9 +12,7 @@ import com.dac.ecommerce.livros.exceptions.PaginaInvalidaException;
 import com.dac.ecommerce.livros.model.estoque.Estoque;
 import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
 import com.dac.ecommerce.livros.model.livro.Livro;
-import com.dac.ecommerce.livros.repository.EstoqueRepository;
-import com.dac.ecommerce.livros.repository.ItemEstoqueRepository;
-import com.dac.ecommerce.livros.repository.LivroRepository;
+import com.dac.ecommerce.livros.repository.*;
 
 @Service
 public class EstoqueService {
@@ -164,6 +157,10 @@ public class EstoqueService {
 	
 	public List<ItemEstoque> itensDisponiveis() {
 		return itemEstoqueRepository.consultarTodosLivrosDisponiveis();
+	}
+	
+	public ItemEstoque pesquisarItemEstoque(Long id) {
+		return itemEstoqueRepository.findById(id).get();
 	}
 
 	public List<Estoque> listarEstoques() {
