@@ -121,7 +121,8 @@ public class PedidoService {
 		return carrinhoDeCompra;
 	}
 	
-	public List<Pedido> meusPedidos(Long idCliente) throws PedidoException {
+	public List<Pedido> pedidosFinalizados(Long idCliente) throws PedidoException {
+		
 		List<Pedido> pedidos = pedidoRepository.findPedidosConcluidos(idCliente);
 		
 		if(pedidos.size() == 0) {

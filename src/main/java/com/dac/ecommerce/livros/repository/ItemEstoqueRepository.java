@@ -6,10 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
 import com.dac.ecommerce.livros.model.livro.Livro;
 
 @Repository
+@Transactional
 public interface ItemEstoqueRepository extends JpaRepository<ItemEstoque, Long>{
 	
 	ItemEstoque findByProduto(Livro livro);
@@ -21,5 +24,8 @@ public interface ItemEstoqueRepository extends JpaRepository<ItemEstoque, Long>{
 	// Selecionar todos os livros presente no estoque
 	@Query("SELECT l FROM Livro l JOIN ItemEstoque i ON l.id = i.produto")
 	Page<Livro> consultarTodosLivrosPaginado(Pageable pageable);
-	
+
+	// Selecionar todos os livros com quantidade maior ou igual a 1
+	@Query("SELECT i FROM ItemEstoque i WHERE i.quantidade > 0")
+	List<ItemEstoque> consultarTodosLivrosDisponiveis();
 }

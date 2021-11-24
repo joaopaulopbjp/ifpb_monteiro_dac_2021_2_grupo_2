@@ -2,22 +2,37 @@ package com.dac.ecommerce.livros.model.user;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import lombok.Data;
 
 @Data
 @Embeddable
 public class Endereco {
 	
+	@NotEmpty
 	private String cep;
 	
+	@NotNull
 	private Integer numero;
 	
+	@NotEmpty
+	@Length(min=4)
 	private String cidade;
 	
+	@NotEmpty
+	@Length(max=2, min=2)
 	private String estado;
 	
+	@NotEmpty
+	@Length(min=4)
 	private String bairro;
 	
+	@NotEmpty
+	@Length(min=4)
 	private String rua;
 	
 	@Column(nullable = true)

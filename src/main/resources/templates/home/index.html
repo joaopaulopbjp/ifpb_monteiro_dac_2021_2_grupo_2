@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+	<head th:replace="~{fragmentos :: head('Home')}"></head>
+	
+	<style>
+		.container-pesquisar {
+			display: flex;
+			flex-direction: row;
+			margin: 30px 400px;
+		}
+		
+		.container-pesquisar input {
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		
+		.container-pesquisar button {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+		
+		.alert {
+			text-align: center;
+			margin: 40px 300px;
+		}
+	</style>
+	
+	<body>
+	
+		<style th:replace="~{fragmentos :: style}"></style>
+	
+		<style>
+			.container {
+				margin-bottom: 50px !important;
+			}
+		
+			.icon {
+				margin-right: 10px;
+			}
+			
+			.img-capa {
+				width: 100%;
+				height: 280px;
+			}
+			
+			.card {
+				padding: 10px;
+			}
+		</style>
+	
+		<header th:replace="~{fragmentos :: header}"></header>
+			
+		<div class="container">
+			
+			<div class="alert alert-primary" th:if="${livrosDisponiveis.empty}">
+				Não há livros disponíveis no estoque! <i class="bi bi-emoji-frown"></i>
+			</div>
+			
+			<div th:if="${!livrosDisponiveis.empty}">
+				<div class="container-pesquisar">
+					<input class="form-control" placeholder="Pesquisar por um livro..."/>
+					<button class="btn btn-primary"type="button"><i class="bi bi-search"></i></button>
+				</div>
+				
+				<div class="row">
+					<div class="col-4" th:each="item : ${livrosDisponiveis}">
+						<div class="card" style="width: 18em; margin-bottom: 20px;">
+							<img th:src="${item.produto.imagemCapa}" class="img-capa" alt="Capa do Livro"/>
+							
+							<div class="card-body">
+								<h5 class="card-title" th:text="${item.produto.titulo}"></h5>
+								<p class="card-text" th:text="'R$ ' + ${item.produto.preco}"></p>
+							</div>
+							
+							<button class="btn btn-primary" type="button"><i class="icon bi bi-box-arrow-in-up-right"></i>Detalhar</button>
+						</div>
+					</div>		
+				</div>		
+			</div>
+		</div>
+	
+		<footer th:replace="~{fragmentos :: footer}"></footer>
+		
+		<script th:replace="~{fragmentos :: script1}"></script>
+		<script th:replace="~{fragmentos :: script2}"></script>
+		<script th:replace="~{fragmentos :: script3}"></script>
+	
+	</body>
+</html>

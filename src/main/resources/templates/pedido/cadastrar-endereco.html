@@ -18,9 +18,9 @@
 			/* Firefox */
 			input[type=number] {
 			  -moz-appearance: textfield;
-}
+			}
 		
-			h4 {
+			.container h4 {
 				text-align: center;
 			}
 			
@@ -103,7 +103,8 @@
 				
 				<div class="container-options">
 					<button class="btn btn-primary" value="prosseguir" type="submit">Prosseguir</button> 
-					<button class="btn btn-primary" value="cancelar">Cancelar</button>
+					<button class="btn btn-primary" value="cancelar" type="button"
+						th:onclick="cancelar()">Cancelar</button>
 				</div>
 				
 			</form>
@@ -114,13 +115,22 @@
 		<!-- Scripts -->
 		<script type="text/javascript" th:src="@{/js/consultar-cep.js}"></script>
 		<script type="text/javascript" th:src="@{/js/validation.js}"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script th:replace="~{fragmentos :: script1}"></script>
+		<script th:replace="~{fragmentos :: script2}"></script>
+		<script th:replace="~{fragmentos :: script3}"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
 		<script>	
 			// Aplicar Máscara no input cep
 			$(document).ready(() => {
 				$('#input-cep').mask('00000-000');
 			});
+			
+			
+			function cancelar() {
+				const link = "http://localhost:8080/user/menu-conta";
+				window.location.href = link;
+				
+			}
 		</script>
 
 

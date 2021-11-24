@@ -89,7 +89,7 @@
 			</div>
 			
 			<div class="col-4">
-				<a href="#">
+				<a th:href="@{'http://localhost:8080/user/endereco-entrega'}">
 					<div class="card">
 						Endereço de Entrega
 					</div>
@@ -99,6 +99,10 @@
 		</div>
 				
 		<footer th:replace="~{fragmentos :: footer}"></footer>
+		
+		<script th:replace="~{fragmentos :: script1}"></script>
+		<script th:replace="~{fragmentos :: script2}"></script>
+		<script th:replace="~{fragmentos :: script3}"></script>
 
 	</body>
 </html>

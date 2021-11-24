@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+#<!DOCTYPE html>
 <html>
 
 <head th:fragment="head(titulo)">
@@ -30,14 +30,32 @@
 	</style>
 
 	<header th:fragment="header">
+	
+		<style>
+			
+			.container-nav h4 {
+				color: #FFF;
+			}
+			
+			.container-nav a {
+				color: #FFF;
+			}
+			
+			.container-nav a:hover {
+				text-decoration: none;
+				color: #a6a6a6;
+			}
+				
+		</style>
+	
 		<div class="pos-f-t">
 			<div class="collapse" id="navbarToggleExternalContent">
-				<div class="bg-primary p-4">
-					<h5 class="text-white h4">Menu</h5>
-					<a href="#"><span class="text-white">Usuário</span><br></a>
-					<a href="#"><span class="text-white">Autor</span><br></a>
-					<a href="http://localhost:8080/livro/index"><span class="text-white">Livro</span><br></a>
-					<a href="#"><span class="text-white">Pedido</span></a>
+				<div class="bg-primary p-4 container-nav">
+					<h4>Menu</h4>
+					<a href="#">Sign In<br></a>
+					<a href="#">Sign Up<br></a>
+					<a th:href="@{'http://localhost:8080/user/menu-conta'}">Minha Conta<br></a>
+					<a th:href="@{'http://localhost:8080/livro/index'}">Livro</a>
 				</div>
 			</div>
 			<nav class="navbar navbar-dark bg-primary">

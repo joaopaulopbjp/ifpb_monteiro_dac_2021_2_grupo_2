@@ -2,6 +2,9 @@ package com.dac.ecommerce.livros.services;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -129,7 +132,8 @@ public class EstoqueService {
 		return itemEstoque.getQuantidade();
 	}
 	
-	public String listarLivrosPorPaginacao(Integer numeroPagina) throws PaginaInvalidaException {
+	public Page<Livro> listarLivrosPorPaginacao(Integer numeroPagina) throws PaginaInvalidaException {
+		
 		Pageable pageable = PageRequest.of((numeroPagina - 1), 5, Sort.by("titulo").ascending());
 		
 		Page<Livro> pagina = itemEstoqueRepository.consultarTodosLivrosPaginado(pageable);
@@ -138,12 +142,7 @@ public class EstoqueService {
 			throw new PaginaInvalidaException();
 		}
 		
-		String livros = "";
-		for(Livro livro : pagina) {
-			livros += livro.toString() + "\n";
-		}
-				
-		return livros;
+		return pagina;
 	}
 	
 	public void reduzirEstoque(Livro livro, int quantidade) throws EstoqueException {
@@ -161,6 +160,10 @@ public class EstoqueService {
 		ItemEstoque itemEstoque = pesquisarItemEstoquePorLivro(livro);
 		itemEstoque.setQuantidade(itemEstoque.getQuantidade() + quantidade);
 		alterarItemEstoque(itemEstoque);
+	}
+	
+	public List<ItemEstoque> itensDisponiveis() {
+		return itemEstoqueRepository.consultarTodosLivrosDisponiveis();
 	}
 
 	public List<Estoque> listarEstoques() {
