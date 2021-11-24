@@ -142,7 +142,7 @@
 				</thead>
 				<tbody>
 					<tr th:if="${livros.empty}">
-						<td colspan="2">Não há livros cadastrados</td>
+						<td colspan="2">Não existe livros cadastrados</td>
 					</tr>
 					<tr th:each="livro : ${livros}">
 						<td><span th:text="${livro.titulo}">Título</span></td>
@@ -169,7 +169,7 @@
 		</button>
 		<ul>
 			<li>
-				<a href="http://localhost:8080/livro/cadastrar">
+				<a href="http://localhost:8080/livro/cadastrar-livro">
 					<button id="opcao1" href="#">
 						&#x2b;
 					</button>
@@ -180,25 +180,8 @@
 	<script th:replace="~{fragmentos :: script1}"></script>
 	<script th:replace="~{fragmentos :: script2}"></script>
 	<script th:replace="~{fragmentos :: script3}"></script>
-	<script>
-		function toggleFAB(fab) {
-			if (document.querySelector(fab).classList.contains('show')) {
-				document.querySelector(fab).classList.remove('show');
-			} else {
-				document.querySelector(fab).classList.add('show');
-			}
-		}
-
-		document.querySelector('.fab .main').addEventListener('click', function () {
-			toggleFAB('.fab');
-		});
-
-		document.querySelectorAll('.fab ul li button').forEach((item) => {
-			item.addEventListener('click', function () {
-				toggleFAB('.fab');
-			});
-		});
-	</script>
+	<script type="text/javascript" th:src="@{/js/botao-flutuante.js}"></script>
+	
 </body>
 
 </html>

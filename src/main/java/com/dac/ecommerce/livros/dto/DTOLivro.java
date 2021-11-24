@@ -1,7 +1,10 @@
 package com.dac.ecommerce.livros.dto;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 import com.dac.ecommerce.livros.model.livro.Autor;
 import com.dac.ecommerce.livros.model.livro.Categoria;
 import com.dac.ecommerce.livros.model.livro.Editora;
@@ -12,42 +15,50 @@ import lombok.Data;
 @Data // (Data Transfer Object)
 public class DTOLivro {
 
+	@NotEmpty
 	private String isbn;
+	@NotEmpty
 	private String titulo;
+	@NotEmpty
 	private String descricao;
-	private BigDecimal preco;
+	@NotEmpty
+	private String preco;
+	@NotEmpty
 	private String imagemCapa;
-	private Editora editora = new Editora();
+	@NotEmpty
 	private String nomeEditora;
+	@NotEmpty
 	private String cidadeEditora;
+	@NotEmpty
 	private String nomeCategoria;
+	@Positive
 	private Integer edicao;
+	@Positive
 	private Integer ano;
+	@NotEmpty
 	private List<Autor> autoresCadastrados = new ArrayList<Autor>();
-	private Categoria categoria = new Categoria();
 
 	public Livro toLivro() {
 		Livro livro = new Livro();
+		Editora editora = new Editora();
+		Categoria categoria = new Categoria();
+
 		livro.setIsbn(this.isbn);
 		livro.setTitulo(this.titulo);
 		livro.setDescricao(this.descricao);
-		livro.setPreco(this.preco);
-		//livro.setImagemCapa(this.imagemCapa);
+		livro.setPreco(new BigDecimal(this.preco.replace(",", ".")));
+		// livro.setImagemCapa(this.imagemCapa);
+
 		editora.setCidade(this.cidadeEditora);
 		editora.setNome(this.nomeEditora);
 		categoria.setNome(this.nomeCategoria);
-		livro.setEditora(this.editora);
+		livro.setEditora(editora);
+
 		livro.setEdicao(this.edicao);
 		livro.setAno(this.ano);
 		livro.setAutores(this.autoresCadastrados);
-		livro.setCategoria(this.categoria);
-		return livro;
-	}
+		livro.setCategoria(categoria);
 
-	@Override
-	public String toString() {
-		return "DTOLivro [isbn=" + isbn + ", titulo=" + titulo + ", descricao=" + descricao + ", preco=" + preco
-				+ ", imagemCapa=" + imagemCapa+ ", editora=" + editora + ", edicao=" + edicao
-				+ ", ano=" + ano + ", autores=" + autoresCadastrados + ", categoria=" + categoria + "]";
+		return livro;
 	}
 }
