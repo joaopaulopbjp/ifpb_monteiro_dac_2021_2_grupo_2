@@ -2,11 +2,9 @@ package com.dac.ecommerce.livros.controller;
 
 import java.util.Base64;
 import java.util.List;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +28,7 @@ public class LivroController {
 	private LivroService livroService;
 
 	@RequestMapping("/menu-livro")
-	public String indexLivro(Model modelLivros) throws Exception {
+	public String menu(Model modelLivros) throws Exception {
 		List<Livro> livros = livroService.recuperarTodosOsLivros();
 		modelLivros.addAttribute("livros", livros);
 		return "/livro/menu-livro";
@@ -46,25 +44,19 @@ public class LivroController {
 	}
 
 	@PostMapping("/salvar")
-	public String salvar(@Valid DTOLivro dtoLivro, BindingResult result,
-			@RequestParam("fileLivro") MultipartFile file) {
-
-		if (result.hasErrors()) {
-			return "redirect:/livro/cadastrar-livro";
-		} else {
-			Livro livro = dtoLivro.toLivro();
-			try {
-				if (!file.isEmpty()) {
-					String inicio = "data:image/jpeg;base64,";
-					String codigo = Base64.getEncoder().encodeToString(file.getBytes());
-					livro.setImagemCapa(inicio + codigo);
-				}
-				livroService.salvar(livro);
-			} catch (Exception e) {
-				e.printStackTrace();
+	public String salvar(DTOLivro dtoLivro, @RequestParam("fileLivro") MultipartFile file) {
+		Livro livro = dtoLivro.toLivro();
+		try {
+			if (!file.isEmpty()) {
+				String inicio = "data:image/jpeg;base64,";
+				String codigo = Base64.getEncoder().encodeToString(file.getBytes());
+				livro.setImagemCapa(inicio + codigo);
 			}
-			return "redirect:/livro/menu-livro";
+			livroService.salvar(livro);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return "redirect:/livro/menu-livro";
 	}
 
 	@GetMapping("/deletar/{id}")

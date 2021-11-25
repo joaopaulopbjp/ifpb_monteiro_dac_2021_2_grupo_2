@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos :: head('Autor')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos :: header}"></header>
+
+	<style th:replace="~{fragmentos :: style}"></style>
+
+	<div>
+		<ul class="nav nav-tabs">
+			<li class="nav-item">
+				<a class="nav-link active" href="http://localhost:8080/autor/menu-autor">Lista de Autores</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="http://localhost:8080/autor/cadastrar-autor">Cadastrar Autor</a>
+			</li>
+		</ul>
+	</div>
+	<div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">id</th>
+					<th scope="col">Nome</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${autores.empty}">
+					<td colspan="2">Não existe autores cadastrados</td>
+				</tr>
+				<tr th:each="autor : ${autores}">
+					<td><span th:text="${autor.id}">id</span></td>
+					<td><span th:text="${autor.nome}">Nome</span></td>
+					<td>
+						<button type="button" class="btn btn-primary" data-toggle="modal"
+							data-target="#modalAutor">&#x270e;</button>
+						<!-- Modal -->
+						<div class="modal fade" id="modalAutor" tabindex="-1" role="dialog"
+							aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">Alterar autor</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<form method="post" th:action="@{'/autor/alterar-autor'}">
+											<div class="form-group">
+												<input type="text" class="form-control" th:value="${autor.id}"
+													name="idAutor" readonly="readonly">
+												<label for="InputNome">Novo nome para o autor</label>
+												<input id="inputNome" type="text" class="form-control" name="nome"
+													placeholder="Digite um novo nome">
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary"
+													data-dismiss="modal">Fechar</button>
+												<button type="submit" class="btn btn-primary">Salvar mudanças</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<a th:href="@{/autor/deletar/{id}(id = ${autor.id})}">
+							<button type="button" class="btn btn-danger">&#x2718;</button>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+	<footer th:replace="~{fragmentos :: footer}"></footer>
+
+	<script th:replace="~{fragmentos :: script1}"></script>
+	<script th:replace="~{fragmentos :: script2}"></script>
+	<script th:replace="~{fragmentos :: script3}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script>
+		$('#modalAutor').on('shown.bs.modal', function () {
+			$('#inputNome').trigger('focus')
+
+		})
+	</script>
+
+</body>
+
+</html>
