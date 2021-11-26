@@ -9,6 +9,45 @@
 	<style th:replace="~{fragmentos :: style}"></style>
 
 	<style>
+		.col {
+			margin-bottom: 15px;
+		}
+
+		#titulo {
+			text-align: center;
+		}
+
+		.checkbox-inline {
+			margin-right: 15px;
+		}
+
+		#img-livro,
+		#img-escritor,
+		#img-estoque,
+		#img-editora,
+		#img-categoria {
+			margin-bottom: 5px;
+			width: 30px;
+		}
+
+		#btn_editar,
+		#btn_excluir,
+		#btn_adicionar {
+			width: 40px;
+		}
+
+		.img-editar,
+		.img-excluir,
+		.img-adicionar {
+			width: 20px;
+			margin-left: -3px;
+		}
+
+		#lista-autores-modal,
+		#cadastrar-autor-modal {
+			margin-right: 10px;
+		}
+
 		.sub_menu {
 			margin-top: 15px;
 			text-align: center;
@@ -135,7 +174,6 @@
 				<thead>
 					<tr>
 						<th scope="col">Título</th>
-						<th scope="col">Preço</th>
 						<th scope="col">Imagem</th>
 						<th scope="col"></th>
 					</tr>
@@ -146,39 +184,342 @@
 					</tr>
 					<tr th:each="livro : ${livros}">
 						<td><span th:text="${livro.titulo}">Título</span></td>
-						<td><span th:text="${livro.preco}">Preço</span></td>
 						<td> <img class="imagem" th:src="${livro.imagemCapa}" alt="Sem visualização"
 								style="width: 50px"></td>
 						<td>
-							<button id="btn_editar" type="button" class="btn btn-primary">&#x270e;</button>
+							<button id="btn_editar" type="button" class="btn btn-primary" title="Editar livro"
+								data-toggle="modal" data-target="#modalEditarLivro">
+								<img class="img-editar"
+									src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
+							</button>
+							
+							<!-- Modal editar livro-->
+							<div class="modal fade" id="modalEditarLivro" tabindex="-1" role="dialog"
+								aria-labelledby="adicionarModalLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="adicionarLivroModalLabel">Adicionar livro no
+												estoque
+											</h5>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Fechar">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<form>
+												<div class="form-group">
+													<label for="input-qtd">Quatidade de itens</label>
+													<input type="number" class="form-control" id="input-qtd">
+												</div>
+											</form>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Fechar</button>
+											<button type="button" class="btn btn-primary">Adicionar</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<!-- fim Modal editar livro-->
+							
 							<a th:href="@{/livro/deletar/{id}(id = ${livro.id})}">
-								<button id="btn_excluir" type="button" class="btn btn-danger">
-									&#x2718;
+								<button id="btn_excluir" type="button" class="btn btn-danger" title="Excluir livro">
+									<img class="img-excluir"
+										src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
 								</button>
 							</a>
+							<button id="btn_adicionar" type="button" class="btn btn-success"
+								title="Adicionar livro para o estoque" data-toggle="modal"
+								data-target="#modalAdicionar">
+								<img class="img-adicionar" img
+									src="https://img.icons8.com/glyph-neue/64/000000/add.png" />
+							</button>
+							
+							<!-- Modal adicionar livro no estoque-->
+							<div class="modal fade" id="modalAdicionar" tabindex="-1" role="dialog"
+								aria-labelledby="adicionarModalLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="adicionarModalLabel">Adicionar livro no estoque
+											</h5>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Fechar">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<form>
+												<div class="form-group">
+													<label for="exampleInputEmail1">Quatidade de itens</label>
+													<input type="number" class="form-control" id="input-qtd">
+												</div>
+											</form>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Fechar</button>
+											<button type="button" class="btn btn-primary">Adicionar</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<!-- Fim Modal adicionar livro no estoque-->
+						
 						</td>
 					</tr>
 				</tbody>
 			</table>
+			
+			<!-- Modal cadastrar livro-->
+			<div class="modal fade" id="modalCadastrarLivro" tabindex="-1" role="dialog"
+				aria-labelledby="cadastrarLivroModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="cadastrartModalLabel">Cadastrar Livro</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+
+							<form method="post" id="formulario" th:object="${dTOLivro}" th:action="@{'/livro/salvar'}"
+								enctype="multipart/form-data">
+								<div class="form-group" id="grupo">
+									<h4 id="titulo">Autores do Livro</h4>
+									<div class="container">
+										<div class="row justify-content-md-center">
+											<div class="col-md-auto" th:if="${autores.empty}">
+												<div>
+													<h5 style="text-align: center;">Não existe autores cadastrados</h5>
+												</div>
+											</div>
+											<div class="col-md-auto" th:else="${!autores.empty}">
+												<label class="checkbox-inline" th:each="autor : ${autores}">
+													<input type="checkbox" th:value="${autor.id}"
+														th:text="${autor.nome}" />
+												</label>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col">
+										<input type="text" class="form-control" placeholder="ISBN" name="isbn" />
+									</div>
+									<div class="col">
+										<input type="text" class="form-control" id="titulo_livro" placeholder="TÍTULO"
+											name="titulo" />
+									</div>
+								</div>
+								<div class="form-group">
+									<textarea class="form-control" placeholder="DESCRIÇÃO" rows="2" id="descricao"
+										name="descricao"></textarea>
+								</div>
+								<div class="row">
+									<div class="col-md-auto">
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">R$</span>
+											</div>
+											<input type="text" class="form-control" id="preco" placeholder="PREÇO"
+												name="preco" />
+										</div>
+									</div>
+									<div class="col" id="file">
+										<label for="imagem" class="form-label">Escolha uma imagem para capa do
+											Livro</label>
+										<input type="file" name="fileLivro" id="imagem">
+									</div>
+								</div>
+								<div class="mb-3">
+									<input type="text" class="form-control" placeholder="NOME EDITORA"
+										name="nomeEditora" />
+								</div>
+								<div class="mb-3">
+									<input type="text" class="form-control" placeholder="CIDADE EDITORA"
+										name="cidadeEditora" />
+								</div>
+								<div class="mb-3">
+									<input type="text" class="form-control" placeholder="CATEGORIA"
+										name="nomeCategoria" />
+								</div>
+								<div class="row">
+									<div class="col">
+										<input type="" class="form-control" placeholder="EDIÇÃO" id="edicao"
+											name="edicao" />
+									</div>
+									<div class="col">
+										<input type="" class="form-control" placeholder="ANO" id="ano" name="ano" />
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+									<div th:if=${!autores.empty}>
+										<button type="submit" class="btn btn-primary">Salvar</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- fim modal cadastrar livro-->
+
+			<!-- Modal cadastrar autor -->
+			<div class="modal fade" id="ModalLongoExemplo" tabindex="-1" role="dialog"
+				aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="TituloModalLongoExemplo">Autor</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+
+							<!-- Nav tabs -->
+							<div>
+								<ul class="nav nav-tabs" role="tablist">
+									<li role="presentation" class="active" id="lista-autores-modal">
+										<a href="#listaAutores" aria-controls="listaAutores" role="tab" data-toggle="tab">Lista de
+											autores</a>
+									</li>
+									<li role="presentation" class="item-modal" id="cadastrar-autor-modal">
+										<a href="#cadastrarAutores" aria-controls="cadastrarAutores" role="tab"
+											data-toggle="tab">Cadastrar autor</a>
+									</li>
+									<li role="presentation" class="item-modal">
+										<a href="#editarTab" aria-controls="editarTab" role="tab"
+											data-toggle="tab">Editar
+											autor</a>
+									</li>
+								</ul>
+							</div>
+
+							<!-- Tab panes -->
+							<div class="tab-content">
+								<div role="tabpanel" class="tab-pane active" id="listaAutores">
+									<div>
+										<table class="table">
+											<thead>
+												<tr>
+													<th scope="col">id</th>
+													<th scope="col">Nome</th>
+													<th scope="col"></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:if="${autores.empty}">
+													<td colspan="2">Não existe autores cadastrados</td>
+												</tr>
+												<tr th:each="autor : ${autores}">
+													<td><span th:text="${autor.id}">id</span></td>
+													<td><span th:text="${autor.nome}">Nome</span></td>
+													<td>
+														<a th:href="@{/autor/deletar/{id}(id = ${autor.id})}">
+															<button type="button"
+																class="btn btn-danger">&#x2718;</button>
+														</a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div role="tabpanel" class="tab-pane" id="cadastrarAutores">
+									<div class="container-autor">
+										<form method="POST" th:action="@{'/autor/salvar'}">
+											<div class="form-group">
+												<label for="inputNome">NOME DO AUTOR</label>
+												<input type="text" class="form-control"
+													placeholder="Digite o nome do autor" name="nomeAutor" />
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary"
+													data-dismiss="modal">Fechar</button>
+												<button type="submit" class="btn btn-primary">Cadastrar Autor</button>
+											</div>
+										</form>
+									</div>
+								</div>
+
+								<div role="tabpanel" class="tab-pane" id="editarTab" th:if="${!autores.empty}">
+									<form th:object="${autor}" method="POST" th:action="@{'/autor/alterar-autor'}">
+										<div class="form-group">
+											<label for="selectAutor">Selecione o autor a ser editado</label>
+											<div class="col-md-auto" th:else="${!autores.empty}">
+												<label class="checkbox-inline" th:each="autor : ${autores}">
+													<input type="checkbox" th:value="${autor.id}"
+														th:text="${autor.nome}" name="idAutor"/>
+												</label>
+											</div>
+										</div>
+										<div>
+											<label for="inputNovoNomeAutor">Edite o nome do autor</label>
+											<input type="text" class="form-control"
+												placeholder="Digite o novo nome do autor" name="nomeAutor" />
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Fechar</button>
+											<button type="submit" class="btn btn-primary">Salvar alterações</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Fim Modal cadastrar autor -->
+			
 		</div>
 	</div>
 	<footer th:replace="~{fragmentos :: footer}"></footer>
-
 	<div class="fab">
 		<button class="main">
 		</button>
 		<ul>
 			<li>
-				<a href="http://localhost:8080/livro/cadastrar-livro">
-					<button id="opcao1" href="#">
-						&#128366;
+				<button id="opcao1" href="#" data-toggle="modal" data-target="#modalCadastrarLivro"
+					title="Cadastrar livro">
+					<img id="img-livro" src="https://img.icons8.com/ios-glyphs/30/000000/add-book.png" />
+				</button>
+			</li>
+			<li>
+				<button id="opcao2" href="#" data-toggle="modal" data-target="#ModalLongoExemplo">
+					<img id="img-escritor"
+						src="https://img.icons8.com/ios-filled/50/000000/user-typing-using-typewriter.png" />
+				</button>
+			</li>
+			<li>
+				<a href="http://localhost:8080/autor/menu-autor">
+					<button id="opcao3">
+						<img id="img-editora" src="https://img.icons8.com/ios-filled/50/000000/bookshop.png" />
+					</button>
+			</li>
+			<li>
+				<a href="http://localhost:8080/estoque/menu-estoque">
+					<button id="opcao4">
+						<img id="img-estoque" src="https://img.icons8.com/ios-filled/50/000000/move-stock--v2.png" />
 					</button>
 				</a>
 			</li>
 			<li>
-				<a href="http://localhost:8080/autor/menu-autor">
-					<button id="opcao2" href="#">
-							&#128398;
+				<a href="#">
+					<button id="opcao5">
+						<img id="img-categoria" src="https://img.icons8.com/glyph-neue/64/000000/book-stack.png" />
 					</button>
 				</a>
 			</li>
@@ -187,6 +528,9 @@
 	<script th:replace="~{fragmentos :: script1}"></script>
 	<script th:replace="~{fragmentos :: script2}"></script>
 	<script th:replace="~{fragmentos :: script3}"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript" th:src="@{/js/botao-flutuante.js}"></script>
 
 </body>

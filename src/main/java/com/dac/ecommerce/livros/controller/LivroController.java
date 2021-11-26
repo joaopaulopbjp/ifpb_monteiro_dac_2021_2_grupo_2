@@ -28,23 +28,24 @@ public class LivroController {
 	private LivroService livroService;
 
 	@RequestMapping("/menu-livro")
-	public String menu(Model modelLivros) throws Exception {
+	public String menu(Model modelAutor, Model modelLivros, Model modelAutores, Model editora, Model categoria) throws Exception {
 		List<Livro> livros = livroService.recuperarTodosOsLivros();
 		modelLivros.addAttribute("livros", livros);
-		return "/livro/menu-livro";
-	}
-
-	@RequestMapping("/cadastrar-livro")
-	public String cadastrar(Model modelAutor, Model editora, Model categoria) throws Exception {
+		
 		List<Autor> autores = autorService.todosAutores();
-		modelAutor.addAttribute("autores", autores);
+		modelAutores.addAttribute("autores", autores);
+		
+		Autor autor = new Autor(); 
+		modelAutor.addAttribute("autor", autor);
+		
 		editora.addAttribute("editora", editora);
 		categoria.addAttribute("categoria", categoria);
-		return "/livro/cadastrar-livro";
+		return "/livro/menu-livro";
 	}
 
 	@PostMapping("/salvar")
 	public String salvar(DTOLivro dtoLivro, @RequestParam("fileLivro") MultipartFile file) {
+
 		Livro livro = dtoLivro.toLivro();
 		try {
 			if (!file.isEmpty()) {

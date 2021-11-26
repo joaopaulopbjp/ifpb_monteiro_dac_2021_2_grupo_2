@@ -1,6 +1,7 @@
 package com.dac.ecommerce.livros.dto;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import com.dac.ecommerce.livros.model.livro.Autor;
 import com.dac.ecommerce.livros.model.livro.Categoria;
@@ -21,7 +22,7 @@ public class DTOLivro {
 	private String nomeCategoria;
 	private Integer edicao;
 	private Integer ano;
-	private List<Autor> autoresCadastrados;
+	private List<Autor> autoresCadastrados = new ArrayList<>();
 
 	public Livro toLivro() {
 		Livro livro = new Livro();
@@ -32,7 +33,6 @@ public class DTOLivro {
 		livro.setTitulo(this.titulo);
 		livro.setDescricao(this.descricao);
 		livro.setPreco(new BigDecimal(this.preco.replace(",", ".")));
-		// livro.setImagemCapa(this.imagemCapa);
 
 		editora.setCidade(this.cidadeEditora);
 		editora.setNome(this.nomeEditora);

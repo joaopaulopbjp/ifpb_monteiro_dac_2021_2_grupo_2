@@ -7,12 +7,12 @@ import lombok.Data;
 @Data
 public class DTOAutor {
 	
-	private String nome;
+	private String nomeAutor;
 	private Long idAutor;
 	
 	public Autor toAutor() {
 		Autor autor = new Autor();
-		autor.setNome(this.nome);
+		autor.setNome(this.nomeAutor);
 		autor.setId(this.idAutor);
 		return autor;
 	}
