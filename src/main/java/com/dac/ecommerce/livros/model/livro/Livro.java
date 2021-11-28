@@ -1,6 +1,5 @@
 package com.dac.ecommerce.livros.model.livro;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,11 +14,6 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import lombok.Data;
 
 @Data
@@ -48,9 +42,9 @@ public class Livro {
 	
 	private Integer edicao;
 	
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date ano;
+	private boolean adicionadoEmEstoque;
+	
+	private Integer ano;
 	
 	@ManyToMany
 	@JoinTable(name = "TB_LIVRO_AUTOR", 

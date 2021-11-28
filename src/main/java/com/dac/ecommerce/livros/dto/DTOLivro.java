@@ -2,9 +2,7 @@ package com.dac.ecommerce.livros.dto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import org.springframework.format.annotation.DateTimeFormat;
 import com.dac.ecommerce.livros.model.livro.Autor;
 import com.dac.ecommerce.livros.model.livro.Categoria;
 import com.dac.ecommerce.livros.model.livro.Editora;
@@ -22,9 +20,7 @@ public class DTOLivro {
 	private String cidadeEditora;
 	private String nomeCategoria;
 	private Integer edicao;
-	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date date;
+	private String date;
 	
 	private List<Autor> autoresCadastrados = new ArrayList<>();
 
@@ -44,10 +40,11 @@ public class DTOLivro {
 		livro.setEditora(editora);
 
 		livro.setEdicao(this.edicao);
-		livro.setAno(this.date);
+		livro.setAno(Integer.parseInt(this.date.substring(0, 4)));
 		
 		livro.setAutores(this.autoresCadastrados);
 		livro.setCategoria(categoria);
+		livro.setAdicionadoEmEstoque(false);
 
 		return livro;
 	}

@@ -32,10 +32,11 @@ public class ItemEstoqueController {
 		ItemEstoque itemEstoque = dtoItemEstoque.toItemEstoque();
 		Estoque estoque = estoqueService.bucarEstoque(dtoItemEstoque.getIdEstoqueItem());
 		Livro livro = livroService.buscarLivro(dtoItemEstoque.getIdLivroItem());
+		livro.setAdicionadoEmEstoque(true);
+		livroService.alterarLivro(livro, livro.getId());
 		
 		itemEstoque.setEstoque(estoque);
 		itemEstoque.setProduto(livro);
-		
 		itemEstoqueService.salvarItem(itemEstoque);
 		return "redirect:/estoque/menu-estoque"; 
 	}

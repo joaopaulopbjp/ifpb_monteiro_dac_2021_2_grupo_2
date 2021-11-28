@@ -5,8 +5,8 @@ import org.springframework.stereotype.Repository;
 import com.dac.ecommerce.livros.model.estoque.Estoque;
 
 @Repository
-public interface EstoqueRepository extends JpaRepository<Estoque, Integer>{
+public interface EstoqueRepository extends JpaRepository<Estoque, Long>{
 
-	Estoque findByEstoqueID(Long estoqueID);
+	
 	
 }

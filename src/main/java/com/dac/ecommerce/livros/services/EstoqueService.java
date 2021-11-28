@@ -44,7 +44,7 @@ public class EstoqueService {
 			adicionarQtdEstoque(itemEstoque);
 			return "- ITEM DO ESTOQUE ALTERADO COM SUCESSO! -";
 		}else {
-			Estoque estoque = estoqueRepository.findByEstoqueID(idEstoque);
+			Estoque estoque = estoqueRepository.findById(idEstoque).get();
 			
 			if(estoque == null) {
 				estoque = new Estoque();
@@ -176,7 +176,7 @@ public class EstoqueService {
 	}
 	
 	public Estoque bucarEstoque(Long id) {
-		Estoque estoque = estoqueRepository.findByEstoqueID(id);
+		Estoque estoque = estoqueRepository.findById(id).get();
 		return estoque;
 	}
 	

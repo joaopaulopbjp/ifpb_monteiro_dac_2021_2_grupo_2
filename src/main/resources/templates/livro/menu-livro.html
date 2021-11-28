@@ -194,73 +194,75 @@
 									src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
 							</button>
 
-							<a th:href="@{/livro/deletar/{id}(id = ${livro.id})}">
+							<a th:if="${livro.adicionadoEmEstoque == false}"
+								th:href="@{/livro/deletar/{id}(id = ${livro.id})}">
 								<button id="btn_excluir" type="button" class="btn btn-danger" title="Excluir livro">
 									<img class="img-excluir"
 										src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
 								</button>
+							</a>
 
-								<a th:if="${!estoques.empty}">
-									<button id="btn_adicionar" type="submit" class="btn btn-success"
-										title="Adicionar livro para o estoque" data-toggle="modal"
-										th:attr="data-target='#modalAdicionar'+*{livro.id}" th:value="${livro.id}">
-										<img class="img-adicionar" img
-											src="https://img.icons8.com/glyph-neue/64/000000/add.png" />
-									</button>
-								</a>
+							<a th:if="${!estoques.empty && livro.adicionadoEmEstoque == false}">
+								<button id="btn_adicionar" type="submit" class="btn btn-success"
+									title="Adicionar livro para o estoque" data-toggle="modal"
+									th:attr="data-target='#modalAdicionar'+*{livro.id}" th:value="${livro.id}">
+									<img class="img-adicionar" img
+										src="https://img.icons8.com/glyph-neue/64/000000/add.png" />
+								</button>
+							</a>
 
-								<!-- Modal adicionar livro ao estoque-->
+							<!-- Modal adicionar livro ao estoque-->
 
-								<div class="modal fade" th:id="*{'modalAdicionar'+{livro.id}}" tabindex="-1"
-									role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="TituloModalLongoExemplo">Título do modal
-												</h5>
-												<button type="button" class="close" data-dismiss="modal"
-													aria-label="Fechar">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<div class="modal-body">
+							<div class="modal fade" th:id="*{'modalAdicionar'+{livro.id}}" tabindex="-1" role="dialog"
+								aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="TituloModalLongoExemplo">Título do modal
+											</h5>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Fechar">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
 
-												<form method="POST" th:action="@{'/item-estoque/salvar'}">
-													<div class="form-group">
-														<label for="inputIdLivro">Id</label>
-														<input type="" class="form-control" th:value="*{livro.id}"
-															name="idLivroItem" readonly>
-														<label for="inputPreco">PREÇO</label>
-														<input type="" class="form-control" th:value="*{livro.preco}"
-															name="precoItem" readonly>
-													</div>
-													<div>
-														<label for="inputQuantidade">QUANTIDADE DE ITENS</label>
-														<input type="number" class="form-control"
-															placeholder="Digite a quantidade de itens para ser adicionado"
-															name="qtd">
-													</div><br>
-													<div>
-														<h4>ESCOLHA UM ESTOQUE</h4>
-														<div class="form-check">
-															<div th:each="e : ${estoques}">
-																<input class="form-check-input" type="radio"
-																	th:value="${e.estoqueID}" name="idEstoqueItem">
-																<label class="form-check-label" th:for="${e.estoqueID}"
-																	th:text="${e.nome}"></label>
-															</div>
+											<form method="POST" th:action="@{'/item-estoque/salvar'}">
+												<div class="form-group">
+													<label for="inputIdLivro">Id</label>
+													<input type="" class="form-control" th:value="*{livro.id}"
+														name="idLivroItem" readonly>
+													<label for="inputPreco">PREÇO</label>
+													<input type="" class="form-control" th:value="*{livro.preco}"
+														name="precoItem" readonly>
+												</div>
+												<div>
+													<label for="inputQuantidade">QUANTIDADE DE ITENS</label>
+													<input type="number" class="form-control"
+														placeholder="Digite a quantidade de itens para ser adicionado"
+														name="qtd">
+												</div><br>
+												<div>
+													<h4>ESCOLHA UM ESTOQUE</h4>
+													<div class="form-check">
+														<div th:each="e : ${estoques}">
+															<input class="form-check-input" type="radio"
+																th:value="${e.estoqueID}" name="idEstoqueItem">
+															<label class="form-check-label" th:for="${e.estoqueID}"
+																th:text="${e.nome}"></label>
 														</div>
 													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-secondary"
-															data-dismiss="modal">Fechar</button>
-														<button type="submit" class="btn btn-primary">adicionar</button>
-													</div>
-												</form>
-											</div>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary"
+														data-dismiss="modal">Fechar</button>
+													<button type="submit" class="btn btn-primary">adicionar</button>
+												</div>
+											</form>
 										</div>
 									</div>
 								</div>
+							</div>
 							</a>
 						</td>
 					</tr>
