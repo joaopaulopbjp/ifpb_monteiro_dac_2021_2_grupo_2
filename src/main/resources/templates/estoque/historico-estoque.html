@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos :: head('Estoque')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos :: header}"></header>
+
+	<style th:replace="~{fragmentos :: style}"></style>
+
+	<ul class="nav nav-tabs">
+		<li class="nav-item">
+			<a class="nav-link" href="http://localhost:8080/estoque/menu-estoque">Lista de itens do estoque</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="http://localhost:8080/estoque/cadastrar-estoque">Cadastrar novo estoque</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link active" href="http://localhost:8080/estoque/historico-estoque">Histórico de itens</a>
+		</li>
+	</ul>
+	<div class="jumbotron">
+	</div>
+
+
+	<footer th:replace="~{fragmentos :: footer}"></footer>
+
+	<script th:replace="~{fragmentos :: script1}"></script>
+	<script th:replace="~{fragmentos :: script2}"></script>
+	<script th:replace="~{fragmentos :: script3}"></script>
+
+</body>
+
+</html>

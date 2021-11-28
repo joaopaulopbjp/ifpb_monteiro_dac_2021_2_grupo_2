@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragmentos :: head('Autor')}"></head>
+<head th:replace="~{fragmentos :: head('Estoque')}"></head>
 
 <body>
 	<header th:replace="~{fragmentos :: header}"></header>
 
 	<style th:replace="~{fragmentos :: style}"></style>
 
-	
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
-			<a class="nav-link" href="http://localhost:8080/autor/menu-autor">Autores Cadastrados</a>
+			<a class="nav-link" href="http://localhost:8080/estoque/menu-estoque">Lista de itens do estoque</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link active" href="http://localhost:8080/autor/cadastrar-autor">Cadastrar novo Autor</a>
+			<a class="nav-link active" href="http://localhost:8080/estoque/cadastrar-estoque">Cadastrar novo estoque</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="http://localhost:8080/estoque/historico-estoque">Histórico de itens</a>
 		</li>
 	</ul>
 	<div class="jumbotron">
-		<form method="POST" th:action="@{'/autor/salvar'}">
+
+		<form method="POST" th:action="@{'/estoque/salvar'}">
 			<div class="form-group">
-				<label for="inputNome">Nome do Autor</label>
-				<input type="text" class="form-control" placeholder="Digite o nome do autor" name="nomeAutor">
-				
+				<label for="inputNome">Nome do estoque</label>
+				<input type="text" class="form-control" placeholder="Digite um nome para o estoque" name="nomeEstoque">
+
 			</div>
 			<button type="submit" class="btn btn-primary">Salvar</button>
 		</form>
+
 	</div>
 
 	<footer th:replace="~{fragmentos :: footer}"></footer>

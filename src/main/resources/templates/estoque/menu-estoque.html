@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos :: head('Estoque')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos :: header}"></header>
+
+	<style th:replace="~{fragmentos :: style}"></style>
+	
+	<style>
+	#btn-aumentar, #btn-diminuir{
+		height: 25px;
+		width: 25px;
+	}
+	
+	</style>
+
+	<ul class="nav nav-tabs">
+		<li class="nav-item">
+			<a class="nav-link active" href="http://localhost:8080/estoque/menu-estoque">Lista de itens do estoque</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="http://localhost:8080/estoque/cadastrar-estoque">Cadastrar novo estoque</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="http://localhost:8080/estoque/historico-estoque">Histórico de itens</a>
+		</li>
+	</ul>
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">id</th>
+					<th scope="col">Quantidade</th>
+					<th scope="col">Livro</th>
+					<th scope="col">Estoque</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${itens.empty}">
+					<td colspan="2">Não existe itens cadastrados!</td>
+				</tr>
+				<tr th:each="item : ${itens}">
+					<th scope="row">
+						<span th:text="${item.id}"></span>
+					</th>
+					<td>
+						<span th:text="${item.quantidade}"></span>
+					</td>
+					<td><span th:text="${item.produto.titulo}"></span></td>
+					<td><span th:text="${item.estoque.nome}"></span></td>
+					<td>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	<footer th:replace="~{fragmentos :: footer}"></footer>
+
+	<script th:replace="~{fragmentos :: script1}"></script>
+	<script th:replace="~{fragmentos :: script2}"></script>
+	<script th:replace="~{fragmentos :: script3}"></script>
+
+</body>
+
+</html>

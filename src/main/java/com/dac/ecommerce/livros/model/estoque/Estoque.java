@@ -23,6 +23,9 @@ public class Estoque {
 	@Column(name = "estoque_id")
 	private Long estoqueID;
 	
+	@Column(name = "estoque_nome")
+	private String nome;
+	
 	// Itens atuais do estoque
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "estoque", fetch = FetchType.EAGER)
 	private List<ItemEstoque> itensDoEstoque = new ArrayList<>();

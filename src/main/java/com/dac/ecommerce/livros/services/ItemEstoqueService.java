@@ -14,11 +14,16 @@ public class ItemEstoqueService {
 	
 	public List<ItemEstoque> bucarTodosOsItensDoEstoque(){
 		List<ItemEstoque> itens = itemEstoqueRepository.findAll();
-		
-		if(itens.size() == 0) {
-			return null;
-		}
-		
 		return itens;
 	}
+	
+	public void salvarItem(ItemEstoque itemEstoque) {
+		itemEstoqueRepository.save(itemEstoque);
+	}
+	
+	public ItemEstoque bucarItem(Long id) {
+		ItemEstoque itemEstoque = itemEstoqueRepository.findById(id).get();
+		return itemEstoque;
+	}
+	
 }

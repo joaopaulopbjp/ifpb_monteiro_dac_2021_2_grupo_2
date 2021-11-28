@@ -8,73 +8,108 @@
 
 	<style th:replace="~{fragmentos :: style}"></style>
 
-	<div>
-		<ul class="nav nav-tabs">
-			<li class="nav-item">
-				<a class="nav-link active" href="http://localhost:8080/autor/menu-autor">Lista de Autores</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="http://localhost:8080/autor/cadastrar-autor">Cadastrar Autor</a>
-			</li>
-		</ul>
-	</div>
-	<div>
-		<table class="table">
-			<thead>
-				<tr>
-					<th scope="col">id</th>
-					<th scope="col">Nome</th>
-					<th scope="col"></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:if="${autores.empty}">
-					<td colspan="2">Não existe autores cadastrados</td>
-				</tr>
-				<tr th:each="autor : ${autores}">
-					<td><span th:text="${autor.id}">id</span></td>
-					<td><span th:text="${autor.nome}">Nome</span></td>
-					<td>
-						<button type="button" class="btn btn-primary" data-toggle="modal"
-							data-target="#modalAutor">&#x270e;</button>
-						<!-- Modal -->
-						<div class="modal fade" id="modalAutor" tabindex="-1" role="dialog"
-							aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h5 class="modal-title" id="exampleModalLabel">Alterar autor</h5>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-											<span aria-hidden="true">&times;</span>
-										</button>
-									</div>
-									<div class="modal-body">
-										<form method="post" th:action="@{'/autor/alterar-autor'}">
-											<div class="form-group">
-												<input type="text" class="form-control" th:value="${autor.id}"
-													name="idAutor" readonly="readonly">
-												<label for="InputNome">Novo nome para o autor</label>
-												<input id="inputNome" type="text" class="form-control" name="nome"
-													placeholder="Digite um novo nome">
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary"
-													data-dismiss="modal">Fechar</button>
-												<button type="submit" class="btn btn-primary">Salvar mudanças</button>
-											</div>
-										</form>
-									</div>
+	<style>
+		#btn-excluir,
+		#btn-editar {
+
+			max-width: 35px;
+			max-height: 35px;
+		}
+
+		.img-editar {
+			margin-left: -9px;
+			margin-top: -5px;
+		}
+
+		.img-excluir {
+			margin-left: -7px;
+			margin-bottom: 5px;
+		}
+	</style>
+
+
+	<ul class="nav nav-tabs">
+		<li class="nav-item">
+			<a class="nav-link active" href="http://localhost:8080/autor/menu-autor">Autores Cadastrados</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="http://localhost:8080/autor/cadastrar-autor">Cadastrar novo Autor</a>
+		</li>
+	</ul>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Nome</th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if="${autores.empty}">
+				<td colspan="2">Não existe autores cadastrados</td>
+			</tr>
+			<tr th:each="autor : ${autores}">
+				<th scope="row">
+					<span th:text="${autor.id}"></span>
+				</th>
+				<td><span th:text="${autor.nome}"></span>
+				<td>
+					<button id="btn-editar" type="button" class="btn btn-primary" title="Editar Autor"
+						data-toggle="modal" th:attr="data-target='#modalEditarAutor'+*{autor.id}"
+						th:value="${autor.id}">
+						<img class="img-editar" src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
+					</button>
+
+					<!-- Modal editar autor-->
+					<div class="modal fade" th:id="*{'modalEditarAutor'+{autor.id}}" tabindex="-1" role="dialog"
+						aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="TituloModalLongoExemplo">Título do modal
+									</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+
+									<form method="POST" th:action="@{'/autor/alterar-autor'}">
+										<div class="form-group">
+											<label for="inputIdAutor">Id</label>
+											<input type="" class="form-control" th:value="*{autor.id}" name="idAutor"
+												readonly>
+											<label for="inputNome">Novo nome</label>
+											<input type="text" class="form-control" name="nomeAutor"
+												placeholder="Digite o novo nome para o autor">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Fechar</button>
+											<button type="submit" class="btn btn-primary">Salvar alteração</button>
+										</div>
+									</form>
 								</div>
 							</div>
 						</div>
-						<a th:href="@{/autor/deletar/{id}(id = ${autor.id})}">
-							<button type="button" class="btn btn-danger">&#x2718;</button>
-						</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+					</div>
+
+
+
+					<a th:href="@{/autor/deletar/{id}(id = ${autor.id})}">
+						<button id="btn-excluir" type="button" class="btn btn-danger" title="Excluir Autor">
+							<img class="img-excluir" src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
+						</button>
+					</a>
+
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+
 
 
 	<footer th:replace="~{fragmentos :: footer}"></footer>
@@ -82,13 +117,6 @@
 	<script th:replace="~{fragmentos :: script1}"></script>
 	<script th:replace="~{fragmentos :: script2}"></script>
 	<script th:replace="~{fragmentos :: script3}"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-	<script>
-		$('#modalAutor').on('shown.bs.modal', function () {
-			$('#inputNome').trigger('focus')
-
-		})
-	</script>
 
 </body>
 

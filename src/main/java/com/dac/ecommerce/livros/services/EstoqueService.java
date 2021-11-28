@@ -170,4 +170,14 @@ public class EstoqueService {
 	private ItemEstoque pesquisarItemEstoquePorLivro(Livro livro) {
 		return itemEstoqueRepository.findByProduto(livro);
 	}
+	
+	public void salvarEstoque(Estoque estoque) {
+		estoqueRepository.save(estoque);
+	}
+	
+	public Estoque bucarEstoque(Long id) {
+		Estoque estoque = estoqueRepository.findByEstoqueID(id);
+		return estoque;
+	}
+	
 }

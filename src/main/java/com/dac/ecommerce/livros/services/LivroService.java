@@ -1,6 +1,7 @@
 package com.dac.ecommerce.livros.services;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class LivroService {
 	public void salvar(Integer autores, List<Long> idsAutores,
 		String isbn, String categoria,String titulo,String descricao,
 		BigDecimal preco, byte[] imagemCapa, String nomeDaEditora, 
-		String cidadeEditora,Integer edicao,Integer ano) throws 
+		String cidadeEditora,Integer edicao,Date ano) throws 
 		Exception {
 		
 			if(autores <= 0) {
@@ -105,11 +106,8 @@ public class LivroService {
 		repositorioLivro.deleteById(id);
 	}
 	
-	public Livro buscarLivro(Long id) throws LivroException {
+	public Livro buscarLivro(Long id){
 		Livro livro = repositorioLivro.findById(id).get();
-		if(livro == null) {
-			throw new LivroException("[ERROR] - O LIVRO NÃO FOI ENCONTRADO!");
-		}
 		return livro;
 	}
 	
