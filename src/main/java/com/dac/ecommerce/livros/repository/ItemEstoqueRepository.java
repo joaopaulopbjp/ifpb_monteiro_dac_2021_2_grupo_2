@@ -28,4 +28,11 @@ public interface ItemEstoqueRepository extends JpaRepository<ItemEstoque, Long>{
 	// Selecionar todos os livros com quantidade maior ou igual a 1
 	@Query("SELECT i FROM ItemEstoque i WHERE i.quantidade > 0")
 	List<ItemEstoque> consultarTodosLivrosDisponiveis();
+	
+	@Query("SELECT i FROM ItemEstoque i JOIN Livro l ON i.id = l.id WHERE l.titulo = ?1")
+	ItemEstoque findLivroDisponivel(String titulo);
+	
+	@Query("SELECT i FROM ItemEstoque i JOIN Livro l ON i.produto = l.id JOIN Categoria c ON c.id = l.categoria WHERE c.nome = ?1")
+	List<ItemEstoque> findByCategoria(String nome);
+	
 }

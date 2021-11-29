@@ -17,14 +17,9 @@ import com.dac.ecommerce.livros.repository.*;
 @Service
 public class EstoqueService {
 	
-	@Autowired
-	private EstoqueRepository estoqueRepository;
-	
-	@Autowired
-	private ItemEstoqueRepository itemEstoqueRepository;
-	
-	@Autowired
-	private LivroRepository livroRepository;
+	@Autowired private EstoqueRepository estoqueRepository;
+	@Autowired private ItemEstoqueRepository itemEstoqueRepository;
+	@Autowired private LivroRepository livroRepository;
 		
 	//adicionar no estoque atual e altera a quantidade de itens de um item já salvo.
 	public String adicionarNoEstoque(String isbn, Integer quantidade, Long idEstoque) throws Exception {
@@ -159,6 +154,14 @@ public class EstoqueService {
 		return itemEstoqueRepository.consultarTodosLivrosDisponiveis();
 	}
 	
+	public List<ItemEstoque> itensPorCategoria(String nome) {
+		return itemEstoqueRepository.findByCategoria(nome);
+	}
+	
+	public ItemEstoque pesquisarItemEstoquePorLivro(String titulo) {
+		return itemEstoqueRepository.findLivroDisponivel(titulo);
+	}
+	
 	public ItemEstoque pesquisarItemEstoque(Long id) {
 		return itemEstoqueRepository.findById(id).get();
 	}
@@ -170,6 +173,7 @@ public class EstoqueService {
 	private ItemEstoque pesquisarItemEstoquePorLivro(Livro livro) {
 		return itemEstoqueRepository.findByProduto(livro);
 	}
+	
 	
 	public void salvarEstoque(Estoque estoque) {
 		estoqueRepository.save(estoque);

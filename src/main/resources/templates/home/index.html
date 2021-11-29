@@ -8,22 +8,30 @@
 		<style th:replace="~{fragmentos :: style}"></style>
 	
 		<style>
-			.container-pesquisar {
+			.container-header {
 				display: flex;
 				flex-direction: row;
-				margin: 20px 400px;
+				justify-content: space-between;
+				align-items: baseline;
+				margin-bottom: 20px;
 			}
 			
-			.container-pesquisar input {
+			.container-header select {
+				width: 150px;
+			}
+			
+			.container-pesquisa {
+				display: flex;
+				justify-content: center;
+				margin-bottom: 20px;
+			}
+			
+			.container-pesquisa input {
 				border-top-right-radius: 0;
 				border-bottom-right-radius: 0;
+				width: 200px;
 			}
-			
-			.container-pesquisar button {
-				border-top-left-radius: 0;
-				border-bottom-left-radius: 0;
-			}
-			
+
 			.alert {
 				text-align: center;
 				margin: 40px 300px;
@@ -61,38 +69,71 @@
 				margin-bottom: 0;
 			}
 			
-		
+			#btn-retornar {
+				margin-left: 10px;
+			}
 			
+			#btn-pesquisar {
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+			
+			#mensagem-pesquisa-invalida {
+				margin-top: 0;
+				margin-bottom: 20px;
+			}
+			
+			#titulo-select {
+				text-align: center;
+			}
 		</style>
 	
 		<header th:replace="~{fragmentos :: header}"></header>
 			
 		<div class="container">
 		
-			
-			
 			<div class="alert alert-primary" th:if="${livrosDisponiveis.empty}">
-				Não há livros disponíveis no estoque! <i class="bi bi-emoji-frown"></i>
+				<span>Não há livros disponíveis no estoque. <i class="bi bi-emoji-frown"></i></span> 
 			</div>
 			
 			<div class="container-conteudo" th:if="${!livrosDisponiveis.empty}">
 			
-				<h4>Confira Nossas Ofertas</h4>
-			
-				<div class="container-pesquisar">
-					<input class="form-control" placeholder="Pesquisar por um livro..."/>
-					<button class="btn btn-primary"type="button"><i class="bi bi-search"></i></button>
+				<div class="container-header">
+				
+					<h4>Confira Nossas Ofertas</h4>
+				
+					<select id="seletor-categorias" class="form-control" onchange="selecionarPorCategoria()">
+						<option id="titulo-select" disabled>Categorias</option>
+						<option selected>All</option>
+						<option th:each="option : ${categorias}" th:value="${option.nome}" th:text="${option.nome}"></option>
+					</select>
 				</div>
 				
+				<div class="container-pesquisa">
+					<input id="input-pesquisar-livro" class="form-control" value="" placeholder="Pesquisar por um livro..." onfocus="removerMensagem()"/>
+					
+					<button id="btn-pesquisar" class="btn btn-primary" type="button" th:onclick="'pesquisar()'">
+						<i class="bi bi-search"></i>
+					</button>
 				
+					<button id="btn-retornar" class="btn btn-danger" type="button" th:onclick="'retornar()'" hidden="true">
+						<i class="bi bi-arrow-counterclockwise"></i>
+					</button>
+				</div>
 				
+				<!-- Mensagem de erro -->
+				<div id="mensagem-pesquisa-invalida" class="alert alert-primary" hidden="true">
+						<span>Nenhum livro foi encontrado. <i class="bi bi-emoji-frown"></i></span> 
+				</div>
+				
+				<!-- Conteúdo -->
 				<div class="row justify-content-center">
 					<div class="col" th:each="item : ${livrosDisponiveis}">
 						<div class="card" style="width: 18em;">
 							<img th:src="${item.produto.imagemCapa}" class="img-capa" alt="Capa do Livro"/>
 							
 							<div class="card-body">
-								<h5 class="card-title" th:text="${item.produto.titulo}"></h5>
+								<h5 id="card-title" class="card-title" th:text="${item.produto.titulo}"></h5>
 								<p class="card-text" th:text="'R$ ' + ${item.produto.preco}"></p>
 							</div>
 							
@@ -110,12 +151,76 @@
 		<script th:replace="~{fragmentos :: script1}"></script>
 		<script th:replace="~{fragmentos :: script2}"></script>
 		<script th:replace="~{fragmentos :: script3}"></script>
+		
+		<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 		<script>
 		
+			// Configurar elementos
+			if(window.location.pathname.search('/pesquisar') === 0) {
+				const titulo = document.getElementById('card-title').innerHTML;
+				const inputPequisar = document.getElementById('input-pesquisar-livro');
+				inputPequisar.value = titulo;
+				
+				const btnRetornar = document.getElementById('btn-retornar');
+				btnRetornar.hidden = false;
+			} else if(window.location.pathname.search('/categoria') === 0) {
+				
+				const path = decodeURIComponent(window.location.pathname);
+				const categoria = path.split('/')[2];
+				
+				console.log(categoria);
+				
+				const seletor = document.getElementById('seletor-categorias');
+				seletor.value = categoria;
+			}
+
 			function detalhar(id) {
 				window.location.href=`/detalhar-livro/${id}`;
 			}
-		
+			
+			function pesquisar() {
+				
+				const input = document.getElementById('input-pesquisar-livro');
+				
+				if(input.value !== 0) {
+					$.ajax({
+						type: 'GET',
+						url: `http://localhost:8080/pesquisar/${input.value}`,
+						success: () => {
+							window.location.href=`/pesquisar/${input.value}`;
+						},
+						error: () => {
+							const mensagem = document.getElementById('mensagem-pesquisa-invalida');
+							mensagem.hidden = false;
+						}
+					});	
+				}
+			
+			}
+			
+			function retornar() {
+				window.location.href='/';
+			}
+			
+			function removerMensagem() {
+				const mensagem = document.getElementById('mensagem-pesquisa-invalida');
+				
+				if(mensagem.hidden === false) {
+					mensagem.hidden = true;
+				}			
+			}
+			
+			function selecionarPorCategoria() {
+				
+				const seletor = document.getElementById('seletor-categorias');
+				const nome = seletor.value;
+				
+				if(nome === "All") {
+					window.location.href="/";
+				} else {
+					window.location.href=`/categoria/${nome}`;
+				}
+			}		
 		</script>
 	
 	</body>
