@@ -20,11 +20,11 @@ public class UsuarioController {
 	@Autowired
 	UsuarioService usuarioService;
 	
-	@GetMapping("/cadastrar-usuario") 
+	@RequestMapping("/cadastrar-usuario") 
 	public String cadastrarUsuario(Model model) {
 		
-		model.addAttribute("usuario", new Usuario());
-		return "usuario/login_user";
+		//model.addAttribute("usuario", new Usuario());
+		return "/user/cadastrar-user";
 		
 	}
 	

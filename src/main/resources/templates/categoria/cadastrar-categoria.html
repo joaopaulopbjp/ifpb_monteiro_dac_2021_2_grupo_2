@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos :: head('Categoria')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos :: header}"></header>
+
+	<style th:replace="~{fragmentos :: style}"></style>
+	
+	<style>
+	.salvar{
+		margin-top: 10px;		
+		
+	}
+	</style>
+
+	<ul class="nav nav-tabs">
+		<li class="nav-item">
+			<a class="nav-link" href="http://localhost:8080/categoria/menu-categoria">Categorias Cadastradas</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link active" href="http://localhost:8080/categoria/cadastrar-categoria">Cadastrar nova
+				categoria</a>
+		</li>
+	</ul>
+
+	<form method="POST">
+		<div class="col-10">
+			<label for="input-nome" class="form-label">Nome da categoria:</label>
+			<input id="input-nome" class="form-control" type="text" placeholder="Digite o nome da categoria" required />
+		<button class="btn btn-primary salvar" type="submit">Salvar</button>
+		</div>
+	</form>
+
+	<footer th:replace="~{fragmentos :: footer}"></footer>
+
+	<script th:replace="~{fragmentos :: script1}"></script>
+	<script th:replace="~{fragmentos :: script2}"></script>
+	<script th:replace="~{fragmentos :: script3}"></script>
+
+</body>
+
+</html>

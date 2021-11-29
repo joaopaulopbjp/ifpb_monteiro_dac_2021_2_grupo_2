@@ -11,5 +11,10 @@ public class CategoriaController {
 	public String menu() {
 		return "/categoria/menu-categoria";
 	}
+	
+	@RequestMapping("/cadastrar-categoria")
+	public String form() {
+		return "/categoria/cadastrar-categoria";
+	}
 
 }
