@@ -95,7 +95,7 @@
 										<input type="number" th:value="${item.quantidade}" name="quantidade" th:id="input-quantidade- + ${item.id}" class="form-control">
 										<button type="submit" class="btn-incremento btn btn-success" th:onclick="'incrementar(\'' + ${item.id} + '\')'"><i class="bi bi-plus-square"></i></button>
 									
-										<button type="button" id="btn-excluir" class="btn-incremento btn btn-danger" th:onclick="'deletarItem(\'' + ${item.id} + '\')'"><i class="bi bi-eraser"></i></button>
+										<button type="button" id="btn-excluir" class="btn btn-danger" th:onclick="'deletarItem(\'' + ${item.id} + '\')'"><i class="bi bi-eraser"></i></button>
 									</div>
 								</form>
 							</td>
@@ -104,7 +104,7 @@
 				</table>
 				
 				<div class="container-actions">
-					<button class="btn btn-success">Finalizar Pedido</button>
+					<button class="btn btn-success" th:onclick="'finalizarPedido(\'' + ${itens.get(0).pedido_fk.id} + '\')'">Finalizar Pedido</button>
 				</div>
 				
 			</div>
@@ -120,6 +120,10 @@
 		
 		
 		<script>
+		
+			function finalizarPedido(id) {
+				window.location.href=`/pedido/finalizar-pedido/${id}`;
+			}
 		
 			function deletarItem(idItem) {
 				window.location.href=`/pedido/deletar-item/${idItem}`;

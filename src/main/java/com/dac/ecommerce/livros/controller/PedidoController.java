@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.dac.ecommerce.livros.dto.DTOItemPedidoUpdate;
 import com.dac.ecommerce.livros.dto.DTOPedido;
+import com.dac.ecommerce.livros.exceptions.EstoqueException;
 import com.dac.ecommerce.livros.exceptions.PedidoException;
 import com.dac.ecommerce.livros.exceptions.UsuarioException;
 import com.dac.ecommerce.livros.model.pedido.Pedido;
@@ -42,12 +43,10 @@ public class PedidoController {
 		return "/pedido/carrinho-compra";
 	}
 	
-	@GetMapping("/fechar-pedido")
-	public String fecharPedido(Model model) {
-		
-		
-		
-		return "/pedido/finalizar-pedido";
+	@GetMapping("/finalizar-pedido/{id}")
+	public String finalizarPedido(@PathVariable("id") Long id) throws PedidoException, EstoqueException {
+		pedidoService.finalizarPedido(id);	
+		return "redirect:/pedido/pedidos-finalizados";
 	}
 	
 	@PostMapping("/cancelar-pedido")
@@ -77,7 +76,6 @@ public class PedidoController {
 
 	@PostMapping("/atualizar-item")
 	public String atualizarItemPedido(@ModelAttribute("dtoItemPedidoUpdate") DTOItemPedidoUpdate dtoItemPedidoUpdate) {
-		
 		pedidoService.atualizarItemPedido(dtoItemPedidoUpdate.getIdItemPedido(), dtoItemPedidoUpdate.getQuantidade());
 		return "redirect:/pedido/carrinho-compra";
 	}
