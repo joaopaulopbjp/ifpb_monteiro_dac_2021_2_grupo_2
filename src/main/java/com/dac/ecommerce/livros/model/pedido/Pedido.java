@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.dac.ecommerce.livros.model.user.Endereco;
 import com.dac.ecommerce.livros.model.user.Usuario;
@@ -35,11 +38,13 @@ public class Pedido {
 	@Enumerated(EnumType.STRING)
 	private PedidoStatus status;
 	
+	@Length(max=200)
 	private String motivoCancelamento;
 	
 	@OneToOne(fetch = FetchType.EAGER)
 	private FormaPagamento formaPagamento;
 	
+	@NotNull(message = "{enderecoNaoAtributo}")
 	@Embedded
 	private Endereco enderecoEntrega;
 	
@@ -55,6 +60,10 @@ public class Pedido {
 	
 	public void adicionarItem(ItemPedido item) {
 		this.itens.add(item);
+	}
+	
+	public void removerItem(ItemPedido item) {
+		this.itens.remove(item);
 	}
 	
 	public String toString() {

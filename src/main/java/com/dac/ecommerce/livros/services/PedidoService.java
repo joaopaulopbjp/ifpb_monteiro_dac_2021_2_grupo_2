@@ -11,15 +11,44 @@ import org.springframework.stereotype.Service;
 import com.dac.ecommerce.livros.exceptions.*;
 import com.dac.ecommerce.livros.model.livro.Livro;
 import com.dac.ecommerce.livros.model.pedido.*;
-import com.dac.ecommerce.livros.model.user.Endereco;
+import com.dac.ecommerce.livros.model.user.Usuario;
+import com.dac.ecommerce.livros.repository.ItemPedidoRepository;
 import com.dac.ecommerce.livros.repository.PedidoRepository;
 
 @Service
 public class PedidoService {
 	
 	@Autowired private PedidoRepository pedidoRepository;
+	@Autowired private ItemPedidoRepository itemPedidoRepository;
 	@Autowired private EstoqueService estoqueService;
 	@Autowired private LivroService livroService;
+	 
+	public Pedido gerarPedido(Usuario cliente) throws PedidoException {
+		
+		 // Gera um novo pedido caso o cliente ainda não possue um pedido criado
+		 // E retorna o pedido caso o cliente já tenha criado
+		
+		Pedido pedido = buscarPedidoNaoFinalizado(cliente.getId());
+				
+		if(pedido != null) {
+			return pedido;
+		}
+		
+		pedido = new Pedido();
+		pedido.setCliente(cliente);
+		
+		if(cliente.getEndereco() == null) {
+			throw new PedidoException("[ERROR PEDIDO] - NÃO EXISTE ENDEREÇO DE ENTREGA CADASTRADO.");
+		}
+		
+		pedido.setEnderecoEntrega(cliente.getEndereco());
+		
+		return pedidoRepository.save(pedido);
+	}
+	
+	public Pedido buscarPedidoNaoFinalizado(Long idCliente) {
+		return pedidoRepository.findPedidoNaoFinalizado(idCliente);
+	}
 	
 	public void finalizarPedido(Long id) throws PedidoException, EstoqueException {
 		
@@ -79,7 +108,9 @@ public class PedidoService {
 	}
 	
 	public void adicionarItemAoPedido(Long idPedido, Long idLivro, int quantidade) throws LivroException, PedidoException {
+		
 		Pedido pedido = pedidoRepository.findById(idPedido).get();
+		
 		if(pedido != null) {
 			if(consultarEstoque(idLivro, quantidade)) {								// Verificar se existe estoque do livro
 				Livro livro = livroService.buscarLivro(idLivro);
@@ -95,10 +126,20 @@ public class PedidoService {
 		}
 	}
 	
-	public void salvarPedido(Pedido pedido) {
+	public void atualizarItemPedido(Long idItemPedido, int quantidade) {
+		ItemPedido itemPedido = itemPedidoRepository.findById(idItemPedido).get();
+		itemPedido.setQuantidade(quantidade);
+		itemPedidoRepository.save(itemPedido);
+	}
+	
+	public void deletarItemPedido(Long idItemPedido) {
+		ItemPedido itemPedido = itemPedidoRepository.findById(idItemPedido).get();
+		Pedido pedido = itemPedido.getPedido_fk();
+		pedido.removerItem(itemPedido);
+		itemPedidoRepository.deleteById(idItemPedido);
 		pedidoRepository.save(pedido);
 	}
-
+	
 	public String detalharPedido(Long id) {
 		Pedido pedido = pedidoRepository.findById(id).get();
 		return pedido.toString();
@@ -108,15 +149,12 @@ public class PedidoService {
 		return pedidoRepository.findCarrinhoDeCompras(id);
 	}
 	
-	public List<Pedido> pedidosFinalizados(Long idCliente) throws PedidoException {
-		
-		List<Pedido> pedidos = pedidoRepository.findPedidosConcluidos(idCliente);
-		
-		if(pedidos.size() == 0) {
-			throw new PedidoException("[ERROR PEDIDO] - NÃO EXISTE PEDIDOS FINALIZADOS!");
-		}
-		
-		return pedidos;
+	public List<Pedido> pedidosFinalizados(Long idCliente) {
+		return pedidoRepository.findPedidosConcluidos(idCliente);
+	}
+	
+	public void salvarPedido(Pedido pedido) {
+		pedidoRepository.save(pedido);
 	}
 	
 	private boolean consultarEstoque(Long idLivro, int quantidade) {
@@ -126,4 +164,6 @@ public class PedidoService {
 		}
 		return false;
 	}
+
+	
 }

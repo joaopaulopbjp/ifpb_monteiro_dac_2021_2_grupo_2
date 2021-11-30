@@ -1,21 +1,148 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 
-	<head th:replace="~{fragmentos :: head('Cadastrar Endereço')}"></head>
+	<head th:replace="~{fragmentos :: head('Carrinho de Compra')}"></head>
 	
 	<body>
 	
 		<style th:replace="~{fragmentos :: style}"></style>
 	
-		<style></style>
+		<style>
+			/* Chrome, Safari, Edge, Opera */
+			input::-webkit-outer-spin-button,
+			input::-webkit-inner-spin-button {
+			  -webkit-appearance: none;
+			  margin: 0;
+			}
+			
+			input[type=number] {
+			  -moz-appearance: textfield;
+			  text-align: center;
+			  border-radius: 0;
+			}
+		
+			h4 {
+				margin-top: 40px;
+				margin-bottom: 40px;
+			}
+			
+			.container-options {
+				display: flex;
+				flex-direction: row;	
+			}
+			
+			.container-actions {
+				display: flex;
+				flex-direction: row;
+				margin-bottom: 100px;
+			}
+			
+			.space {
+				margin: 10px;
+			}
+			
+			.form-control {
+				width: 50px;
+				text-align: center;
+			}
+			
+			
+			.btn-incremento {
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+			
+			.btn-decremento {
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+			}
+			
+			#btn-excluir {
+				margin-left: 10px;
+			}
+		</style>
 	
 		<header th:replace="~{fragmentos :: header}"></header>
 	
 		<div class="container">
 		
+			<h4>Seu carrinho de compra</h4>
+			
+			<div th:if="${itens.empty}">
+				<div class="alert alert-primary" role="alert">
+				 	<span>Seu carrinho está vazio. <i class="bi bi-emoji-frown"></i></span> 
+				</div>
+			</div>
+		
+			<div th:if="${!itens.empty}">
+				<table class="table">
+					<thead>
+						<th scope="col">Título</th>
+						<th scope="col">Valor Unítario</th>
+						<th scope="col">Valor Total</th>
+						<th scope="col">Quantidade</th>
+					</thead>
+					<tbody>
+						<tr th:each="item : ${itens}">
+							<td th:text="${item.livro.titulo}"></td>
+							<td th:text="${item.subtotal}"></td>
+							<td th:text="${item.total}"></td>
+							<td>
+								<form th:action="@{/pedido/atualizar-item}" th:object="${dtoItemPedidoUpdate}" method="POST">
+									<div class="container-options">
+										<input type="hidden" th:value="${item.id}" name="idItemPedido"/>
+										<button type="submit" th:id="btn-decremento- + ${item.id}" class="btn-decremento btn btn-success" th:onclick="'decrementar(\'' + ${item.id} + '\')'"><i class="bi bi-dash-square"></i></button>
+										<input type="number" th:value="${item.quantidade}" name="quantidade" th:id="input-quantidade- + ${item.id}" class="form-control">
+										<button type="submit" class="btn-incremento btn btn-success" th:onclick="'incrementar(\'' + ${item.id} + '\')'"><i class="bi bi-plus-square"></i></button>
+									
+										<button type="button" id="btn-excluir" class="btn-incremento btn btn-danger" th:onclick="'deletarItem(\'' + ${item.id} + '\')'"><i class="bi bi-eraser"></i></button>
+									</div>
+								</form>
+							</td>
+						</tr>					
+					</tbody>
+				</table>
+				
+				<div class="container-actions">
+					<button class="btn btn-success">Finalizar Pedido</button>
+				</div>
+				
+			</div>
+			
+			
 		</div>
 	
 		<footer th:replace="~{fragmentos :: footer}"></footer>
+		
+		<script th:replace="~{fragmentos :: script1}"></script>
+		<script th:replace="~{fragmentos :: script2}"></script>
+		<script th:replace="~{fragmentos :: script3}"></script>
+		
+		
+		<script>
+		
+			function deletarItem(idItem) {
+				window.location.href=`/pedido/deletar-item/${idItem}`;
+			}
+		
+			function getInput(id) {
+				return input = document.getElementById(`input-quantidade-${id}`);
+			}
+			
+			function incrementar(id) {
+				input = this.getInput(id);
+				input.value++;
+			}
+			
+			function decrementar(id) {
+				input = this.getInput(id);
+				
+				if(input.value > 0) {
+					input.value--;
+				}
+			}
+			
+		</script>
 	
 	</body>
 </html>

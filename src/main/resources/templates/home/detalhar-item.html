@@ -117,22 +117,39 @@
 						<p><strong>Editora: </strong><span th:text="${item.produto.editora.nome}"></span></p>
 						
 						<div>
-							<div class="container-quantidade">
-								<button id="btn-decremento" class="btn btn-success" onclick="decrementar()"><i class="bi bi-dash-square"></i></button>
-								<input type="number" class="form-control" id="input-quantidade" value="1">
-								<button id="btn-incremento" class="btn btn-success" th:onclick="'incrementar(\'' + ${item.quantidade} + '\')'"><i class="bi bi-plus-square"></i></button>
-							</div>
+							<form th:action="@{/pedido/adicionar-item}" th:object="${dtoPedido}" method="POST">
+								<div class="container-quantidade">
+								
+										<input type="hidden" th:value="${item.produto.id}" name="idLivro" />
+										<input type="hidden" id="input-url" name="urlOrigem" />
+								
+										<button type="button" id="btn-decremento" class="btn btn-success" onclick="decrementar()"><i class="bi bi-dash-square"></i></button>
+										<input type="number" th:field="*{quantidade}" class="form-control" id="input-quantidade" value="1">
+										<button type="button" id="btn-incremento" class="btn btn-success" th:onclick="'incrementar(\'' + ${item.quantidade} + '\')'"><i class="bi bi-plus-square"></i></button>
+								</div>
 			
-							<button class="btn btn-success"><i class="bi bi-cart-plus"></i> Adicionar ao carrinho</button>
-							<span id="label-estoque" th:text="'Disponíveis: ' + ${item.quantidade}"></span>
+								<button type="submit" id="btn-adicionar" class="btn btn-success"><i class="bi bi-cart-plus"></i> Adicionar ao carrinho</button>
+								<span id="label-estoque" th:text="'Disponíveis: ' + ${item.quantidade}"></span>
+							</form>
 						</div>
+						
 					</div>
 					
 				</div>
 				
 			</div>
-		
 			
+			<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+			  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+			    <div class="toast-header">
+			      <strong class="me-auto">Sucesso!</strong>
+			      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			    </div>
+			    <div class="toast-body">
+			     	O livro foi adicionado com sucesso!
+			    </div>
+			  </div>
+			</div>
 		</div>
 	
 		<footer th:replace="~{fragmentos :: footer}"></footer>
@@ -141,7 +158,19 @@
 		<script th:replace="~{fragmentos :: script2}"></script>
 		<script th:replace="~{fragmentos :: script3}"></script>
 		
+		
 		<script>
+		
+			// Adicionar url ao DTOPedido
+			const inputUrl = document.getElementById('input-url');
+			inputUrl.value = decodeURIComponent(window.location.pathname);
+			
+			// Toast
+			const btnAdicionar = document.getElementById('btn-adicionar');
+			btnAdicionar.addEventListener('click', () => {
+				$('.toast').toast('show');
+			})
+			
 		
 			function getInput() {
 				return input = document.getElementById('input-quantidade');

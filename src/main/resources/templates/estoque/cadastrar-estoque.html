@@ -8,6 +8,13 @@
 
 	<style th:replace="~{fragmentos :: style}"></style>
 
+	<style>
+		.salvar {
+			margin-top: 10px;
+
+		}
+	</style>
+
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
 			<a class="nav-link" href="http://localhost:8080/estoque/menu-estoque">Lista de itens do estoque</a>
@@ -19,18 +26,16 @@
 			<a class="nav-link" href="http://localhost:8080/estoque/historico-estoque">Histórico de itens</a>
 		</li>
 	</ul>
-	<div class="jumbotron">
 
-		<form method="POST" th:action="@{'/estoque/salvar'}">
-			<div class="form-group">
-				<label for="inputNome">Nome do estoque</label>
-				<input type="text" class="form-control" placeholder="Digite um nome para o estoque" name="nomeEstoque">
+	<form method="POST" th:action="@{'/estoque/salvar'}">
+		<div class="col-10">
+			<label for="inputNome">Nome do estoque</label>
+			<input type="text" class="form-control" placeholder="Digite um nome para o estoque" name="nomeEstoque">
 
-			</div>
-			<button type="submit" class="btn btn-primary">Salvar</button>
-		</form>
+			<button type="submit" class="btn btn-primary salvar">Salvar</button>
+		</div>
+	</form>
 
-	</div>
 
 	<footer th:replace="~{fragmentos :: footer}"></footer>
 

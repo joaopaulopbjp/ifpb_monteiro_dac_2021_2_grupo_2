@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dac.ecommerce.livros.exceptions.UsuarioException;
 import com.dac.ecommerce.livros.model.user.Endereco;
+
 import com.dac.ecommerce.livros.model.user.Usuario;
 import com.dac.ecommerce.livros.services.UsuarioService;
 
@@ -20,7 +21,32 @@ import com.dac.ecommerce.livros.services.UsuarioService;
 @RequestMapping("/user")
 public class UsuarioController {
 	
+
 	@Autowired private UsuarioService usuarioService;
+	
+	@RequestMapping("/cadastrar-usuario") 
+	public String cadastrarUsuario(Model model) {
+		
+		//model.addAttribute("usuario", new Usuario());
+		return "/user/cadastrar-user";
+		
+	}
+	
+	@PostMapping("/adicionar-usuario") 
+	public String cadastrarUsuario(@ModelAttribute("usuario") Usuario usuario, BindingResult result, Model modelo) throws Exception {
+		
+		if(!result.hasErrors()) {
+			
+			usuarioService.save(usuario);
+			
+			System.out.println("Post: cadastrado com sucesso");
+
+			return "redirect:/home";
+		}
+		
+		return "/usuario/login_user";
+		
+	}
 
 	@GetMapping("/menu-conta")
 	public String menuConta() {

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.dac.ecommerce.livros.dto.DTOPedido;
 import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
 import com.dac.ecommerce.livros.services.CategoriaService;
 import com.dac.ecommerce.livros.services.EstoqueService;
@@ -30,6 +31,7 @@ public class IndexController {
 	public String detalharLivro(@PathVariable("id") Long id, Model model) {
 		ItemEstoque itemEstoque = estoqueService.pesquisarItemEstoque(id);
 		model.addAttribute("item", itemEstoque);
+		model.addAttribute("dtoPedido", new DTOPedido());
 		return "/home/detalhar-item";
 	}
 	

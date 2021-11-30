@@ -8,7 +8,15 @@
 
 	<style th:replace="~{fragmentos :: style}"></style>
 
-	
+	<style>
+		.salvar {
+			margin-top: 10px;
+
+		}
+	</style>
+
+
+
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
 			<a class="nav-link" href="http://localhost:8080/autor/menu-autor">Autores Cadastrados</a>
@@ -17,16 +25,14 @@
 			<a class="nav-link active" href="http://localhost:8080/autor/cadastrar-autor">Cadastrar novo Autor</a>
 		</li>
 	</ul>
-	<div class="jumbotron">
-		<form method="POST" th:action="@{'/autor/salvar'}">
-			<div class="form-group">
-				<label for="inputNome">Nome do Autor</label>
-				<input type="text" class="form-control" placeholder="Digite o nome do autor" name="nomeAutor">
-				
-			</div>
-			<button type="submit" class="btn btn-primary">Salvar</button>
-		</form>
-	</div>
+	<form method="POST" th:action="@{'/autor/salvar'}">
+		<div class="col-10">
+			<label for="inputNome">Nome do Autor</label>
+			<input type="text" class="form-control" placeholder="Digite o nome do autor" name="nomeAutor">
+
+			<button type="submit" class="btn btn-primary salvar">Salvar</button>
+		</div>
+	</form>
 
 	<footer th:replace="~{fragmentos :: footer}"></footer>
 
