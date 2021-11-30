@@ -1,44 +1,45 @@
 package com.dac.ecommerce.livros.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.*;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.dac.ecommerce.livros.exceptions.PedidoException;
+import com.dac.ecommerce.livros.exceptions.UsuarioException;
+import com.dac.ecommerce.livros.model.user.Endereco;
+import com.dac.ecommerce.livros.model.user.Usuario;
 import com.dac.ecommerce.livros.services.PedidoService;
+import com.dac.ecommerce.livros.services.UsuarioService;
 
 @Controller
 @RequestMapping("/pedido")
 public class PedidoController {
 	
-	@Autowired
-	private PedidoService pedidoService;
+	@Autowired private PedidoService pedidoService;
+	@Autowired private UsuarioService usuarioService;
 	
 	@GetMapping("/carrinho-compras")
-	public String carrinhoCompras(Model model) {
+	public String carrinhoCompras(@AuthenticationPrincipal Usuario usuario, Model model) {
 		return "";
 	}
 	
 	@PostMapping("/fechar-pedido")
-	public String fecharPedido() {
+	public String fecharPedido(@AuthenticationPrincipal Usuario usuario) {
 		return "";
 	}
 	
 	@PostMapping("/cancelar-pedido")
-	public String cancelarPedido() {
-		return "";
-	}
-	
-	@PostMapping("/endereco-entrega")
-	public String cadastrarEnderecoEntrega() {
+	public String cancelarPedido(@AuthenticationPrincipal Usuario usuario) {
 		return "";
 	}
 	
 	@GetMapping("/pedidos-finalizados")
-	public String pedidosFinalizados(Authentication authentication, Model model) throws PedidoException {
-		System.out.println(authentication.getUsername());
+	public String pedidosFinalizados(@AuthenticationPrincipal Usuario usuario, Model model) throws PedidoException {
 		//model.addAttribute("pedidos", pedidoService.pedidosFinalizados(usuario.getId()));
 		return "/pedido/pedidos-user";
 	}

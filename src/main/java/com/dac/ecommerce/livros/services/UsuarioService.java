@@ -18,7 +18,7 @@ public class UsuarioService {
 	
 	
 	//Salva o usuário no Banco de Dados
-	public Usuario save(Usuario usuario) throws Exception {
+	public Usuario save(Usuario usuario) {
 		return repository.save(usuario);
 	}
 
@@ -33,7 +33,7 @@ public class UsuarioService {
 	}
 	
 	//Método deleta um usuário do Banco
-	public void delete(long id) throws IllegalArgumentException {
+	public void delete(long id) {
 		repository.deleteById(id);
 	}
 	

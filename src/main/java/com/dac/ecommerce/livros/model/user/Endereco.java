@@ -16,23 +16,23 @@ public class Endereco {
 	@NotEmpty
 	private String cep;
 	
-	@NotNull
+	@Column(nullable = false)
 	private Integer numero;
 	
 	@NotEmpty
-	@Length(min=4)
+	@Length(min=4, max=200)
 	private String cidade;
 	
 	@NotEmpty
-	@Length(max=2, min=2)
+	@Length(max=2, min=2, message = "{estado}")
 	private String estado;
 	
 	@NotEmpty
-	@Length(min=4)
+	@Length(min=4, max=200)
 	private String bairro;
 	
 	@NotEmpty
-	@Length(min=4)
+	@Length(min=4, max=200)
 	private String rua;
 	
 	@Column(nullable = true)

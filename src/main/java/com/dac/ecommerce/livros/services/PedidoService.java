@@ -21,8 +21,6 @@ public class PedidoService {
 	@Autowired private EstoqueService estoqueService;
 	@Autowired private LivroService livroService;
 	
-
-	
 	public void finalizarPedido(Long id) throws PedidoException, EstoqueException {
 		
 		Pedido pedido = pedidoRepository.findById(id).get();
@@ -106,19 +104,8 @@ public class PedidoService {
 		return pedido.toString();
 	}
 	
-	public String listarItemsPedido(Long id) throws PedidoException {
-		List<ItemPedido> itens = pedidoRepository.findCarrinhoDeCompras(id);
-		
-		if(itens.size() == 0) {
-			throw new PedidoException("[ERROR PEDIDO] - NÃO EXISTE ITENS ADICIONADO AO PEDIDO OU PEDIDO NÃO ENCONTRADO!");
-		}
-		
-		String carrinhoDeCompra = "";
-		for(ItemPedido item : itens) {
-			carrinhoDeCompra += item.toString();
-		}
-		
-		return carrinhoDeCompra;
+	public List<ItemPedido> listarItemsPedido(Long id) throws PedidoException {	
+		return pedidoRepository.findCarrinhoDeCompras(id);
 	}
 	
 	public List<Pedido> pedidosFinalizados(Long idCliente) throws PedidoException {
