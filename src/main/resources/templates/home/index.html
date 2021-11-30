@@ -102,8 +102,7 @@
 				
 					<h4>Confira Nossas Ofertas</h4>
 				
-					<select id="seletor-categorias" class="form-control" onchange="selecionarPorCategoria()">
-						<option id="titulo-select" disabled>Categorias</option>
+					<select id="seletor-categorias" class="form-select" onchange="selecionarPorCategoria()">
 						<option selected>All</option>
 						<option th:each="option : ${categorias}" th:value="${option.nome}" th:text="${option.nome}"></option>
 					</select>
