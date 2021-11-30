@@ -25,16 +25,20 @@ public class EstoqueController {
 	private ItemEstoqueService itemEstoqueService;
 	
 	@RequestMapping("/menu-estoque")
-	public String menu(Model modelItemEstoque, Model modelEstoque) {
-		
-		List<ItemEstoque> itens = itemEstoqueService.bucarTodosOsItensDoEstoque();
-		modelItemEstoque.addAttribute("itens",itens);
-		
+	public String menu(Model modelEstoque) {
 		List<Estoque> estoques = estoqueService.listarEstoques();
 		modelEstoque.addAttribute("estoques",estoques);
-		
 		return "/estoque/menu-estoque";
 	}
+	
+	@RequestMapping("/itens-estoque")
+	public String itensEstoque(Model modelItemEstoque) {
+		List<ItemEstoque> itens = itemEstoqueService.bucarTodosOsItensDoEstoque();
+		modelItemEstoque.addAttribute("itens",itens);
+		return "/estoque/itens-estoques";
+	}
+	
+	
 	
 	@RequestMapping("/cadastrar-estoque")
 	public String form() {

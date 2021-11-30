@@ -25,10 +25,10 @@
 		</li>
 	</ul>
 
-	<form method="POST">
+	<form method="POST" th:action="@{/categoria/salvar}">
 		<div class="col-10">
 			<label for="input-nome" class="form-label">Nome da categoria:</label>
-			<input id="input-nome" class="form-control" type="text" placeholder="Digite o nome da categoria" required />
+			<input id="input-nome" class="form-control" type="text" placeholder="Digite o nome da categoria"  name="nomeCategoria" required />
 		<button class="btn btn-primary salvar" type="submit">Salvar</button>
 		</div>
 	</form>

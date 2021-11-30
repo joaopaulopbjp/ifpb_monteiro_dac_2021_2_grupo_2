@@ -1,5 +1,7 @@
 package com.dac.ecommerce.livros.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,19 @@ public class EditoraService {
 		}
 		
 		return editora;
-		
 	}
 	
+	public List<Editora> todasEditoras(){
+		List<Editora> editoras = editoraRepository.findAll();
+		return editoras;
+	}
+	
+	public void salvar(Editora editora) {
+		editoraRepository.save(editora);
+	}
+	
+	public Editora buscarEditora(Long id) {
+		Editora editora = editoraRepository.findById(id).get();
+		return editora;
+	}
 }

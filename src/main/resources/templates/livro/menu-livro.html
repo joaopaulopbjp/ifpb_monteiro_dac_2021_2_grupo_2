@@ -285,7 +285,7 @@
 							<form method="post" id="formulario" th:object="${dTOLivro}" th:action="@{'/livro/salvar'}"
 								enctype="multipart/form-data">
 								<div class="form-group" id="grupo">
-									<h4 id="titulo">Autores do Livro</h4>
+									<h4 id="titulo">Escolha os autores do livro</h4>
 									<div class="container">
 										<div class="row justify-content-md-center">
 											<div class="col-md-auto" th:if="${autores.empty}">
@@ -321,7 +321,7 @@
 											<div class="input-group-prepend">
 												<span class="input-group-text">R$</span>
 											</div>
-											<input type="number" class="form-control" id="preco" placeholder="PREÇO"
+											<input type="" class="form-control" id="preco" placeholder="PREÇO"
 												name="preco" />
 										</div>
 									</div>
@@ -331,18 +331,23 @@
 										<input type="file" name="fileLivro" id="imagem">
 									</div>
 								</div>
-								<div class="mb-3">
-									<input type="text" class="form-control" placeholder="NOME EDITORA"
-										name="nomeEditora" />
+
+								<div class="form-group">
+									<label for="selectEditora">Escolha uma editora</label>
+									<select class="form-control" id="selectEditora" name="editora">
+										<option th:each="editora : ${editoras}" th:text="${editora.nome}"
+											th:value="${editora.id}"></option>
+									</select>
 								</div>
-								<div class="mb-3">
-									<input type="text" class="form-control" placeholder="CIDADE EDITORA"
-										name="cidadeEditora" />
+
+								<div class="form-group">
+									<label for="selectCategoria">Escolha uma categoria</label>
+									<select class="form-control" id="selectCategoria" name="categoria">
+										<option th:each="categoria : ${categorias}" th:text="${categoria.nome}"
+											th:value="${categoria.id}"></option>
+									</select>
 								</div>
-								<div class="mb-3">
-									<input type="text" class="form-control" placeholder="CATEGORIA"
-										name="nomeCategoria" />
-								</div>
+
 								<div class="row">
 									<div class="col">
 										<input type="number" class="form-control" placeholder="EDIÇÃO" id="edicao"
@@ -355,7 +360,7 @@
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-									<div th:if=${!autores.empty}>
+									<div th:if="${!autores.empty && !editoras.empty && !categorias.empty}">
 										<button type="submit" class="btn btn-primary">Salvar</button>
 									</div>
 								</div>
@@ -414,11 +419,14 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
 	<script type="text/javascript" th:src="@{/js/botao-flutuante.js}"></script>
 
 
 	<script>
 		calendario.max = new Date().toISOString().split("T")[0];
+
+		$('#preco').mask('#.##0,00', {reverse: true});
 	</script>
 
 

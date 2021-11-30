@@ -8,15 +8,43 @@
 
 	<style th:replace="~{fragmentos :: style}"></style>
 
-	
-	
-	
-	
-	
-	
-	
+	<ul class="nav nav-tabs">
+		<li class="nav-item">
+			<a class="nav-link active" href="http://localhost:8080/editora/menu-editora">Editoras cadastradas</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="http://localhost:8080/editora/cadastrar-editora">Cadastrar nova editora</a>
+		</li>
+	</ul>
+
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Nome</th>
+				<th scope="col">Cidade</th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if="${editoras.empty}">
+				<td colspan="2">Não existe editoras cadastradas</td>
+			</tr>
+			<tr th:each="editora : ${editoras}">
+				<th scope="row">
+					<span th:text="${editora.id}"></span>
+				</th>
+				<td><span th:text="${editora.nome}"></span>
+				<td><span th:text="${editora.cidade}"></span>
+				<td>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
 	<footer th:replace="~{fragmentos :: footer}"></footer>
-	
+
 	<script th:replace="~{fragmentos :: script1}"></script>
 	<script th:replace="~{fragmentos :: script2}"></script>
 	<script th:replace="~{fragmentos :: script3}"></script>
