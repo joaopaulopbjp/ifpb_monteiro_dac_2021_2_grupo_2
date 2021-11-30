@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+	<head th:replace="~{fragmentos :: head('Alterar Dados')}"></head>
+	
+	<body>
+	
+		<style th:replace="~{fragmentos :: style}"></style>
+	
+		<style>
+			/* Chrome, Safari, Edge, Opera */
+			input::-webkit-outer-spin-button,
+			input::-webkit-inner-spin-button {
+			  -webkit-appearance: none;
+			  margin: 0;
+			}
+			
+			/* Firefox */
+			input[type=number] {
+			  -moz-appearance: textfield;
+			}
+		
+			.container h4 {
+				text-align: center;
+			}
+			
+			label {
+				margin: 20px 0 5px 0;
+			}
+			
+			.container-options {
+				margin: 20px 0 20px 0;
+			}
+			
+			.container {
+				margin-top: 50px;
+			}
+		</style>
+	
+		<header th:replace="~{fragmentos :: header}"></header>
+	
+		<div class="container">
+		
+			<h4>Atualizar Dados</h4>
+			
+			<form  method="POST" th:action="@{/user/alterar-dados}" th:object="${user}">
+				<div class="row">
+				
+					<input type="hidden" th:value="${user.id}" name="id"/>
+					<input type="hidden" th:value="${user.tipoUsuario}" name="tipoUsuario"/>
+					
+					<input type="hidden" th:value="${user.endereco.bairro}" name="endereco.bairro"/>
+					<input type="hidden" th:value="${user.endereco.cep}" name="endereco.cep"/>
+					<input type="hidden" th:value="${user.endereco.cidade}" name="endereco.cidade"/>
+					<input type="hidden" th:value="${user.endereco.complemento}" name="endereco.complemento"/>
+					<input type="hidden" th:value="${user.endereco.estado}" name="endereco.estado"/>
+					<input type="hidden" th:value="${user.endereco.numero}" name="endereco.numero"/>
+					<input type="hidden" th:value="${user.endereco.rua}" name="endereco.rua"/>
+					
+					<div class="col-12">
+						<div class="form-group">
+							<label for="input-nome"  class="form-label">Nome:</label>
+							<input id="input-nome" th:field="*{nome}" class="form-control" required/>
+						</div>
+					</div>
+					
+					<div class="col-6">
+						<div class="form-group">
+							<label for="input-cpf" class="form-label">CPF:</label>
+							<input id="input-cpf" th:field="*{cpf}" class="form-control" type="text" required/>
+						</div>
+					</div>
+					
+					<div class="col-6">
+						<div class="form-group">
+							<label for="input-telefone" class="form-label">Telefone:</label>
+							<input id="input-telefone" th:field="*{telefone}" class="form-control" type="text" required/>
+						</div>
+					</div>
+					
+					<div class="col-12">
+						<div class="form-group">
+							<label for="input-email" class="form-label">E-mail:</label>
+							<input id="input-email" th:field="*{email}" readonly="readonly" class="form-control" type="text" required/>
+						</div>
+					</div>
+					
+					<div class="col-12">
+						<div class="form-group">
+							<label for="input-senha" class="form-label">Senha:</label>
+							<input id="input-senha" th:value="${user.senha}" name="senha" class="form-control" type="password"/>
+						</div>
+					</div>
+					
+				</div>
+				
+				<div class="container-options">
+					<button id="btn-atualizar" class="btn btn-success" type="submit">Atualizar</button> 
+					<button class="btn btn-primary" value="cancelar" type="button"
+						th:onclick="cancelar()">Cancelar</button>
+				</div>
+				
+				<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+				 	<div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+					    <div class="toast-header">
+					      <strong class="me-auto">Sucesso!</strong>
+					      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+					    </div>
+					    <div class="toast-body">
+					     	Dados foram atualizados!
+					    </div>
+			  		</div>
+				</div>
+				
+			</form>
+		</div>
+	
+		<footer th:replace="~{fragmentos :: footer}"></footer>
+	
+		<!-- Scripts -->
+		<script th:replace="~{fragmentos :: script1}"></script>
+		<script th:replace="~{fragmentos :: script2}"></script>
+		<script th:replace="~{fragmentos :: script3}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+		<script>	
+		
+			// Toast
+			const btnAtualizar = document.getElementById('btn-atualizar');
+			btnAtualizar.addEventListener('click', () => {
+				$('.toast').toast('show');
+			})
+		
+			// Aplicar Máscara
+			$(document).ready(() => {
+				$('#input-cpf').mask('000.000.000-00');
+			});
+			
+	
+			function cancelar() {
+				const link = "http://localhost:8080/user/menu-conta";
+				window.location.href = link;
+				
+			}
+		</script>
+
+
+	</body>
+</html>

@@ -119,12 +119,24 @@
 				</ul>
 				
 				<div class="container-options">
-					<button class="btn btn-primary" type="submit">Prosseguir</button> 
+					<button id="btn-prosseguir" class="btn btn-success" type="submit">Prosseguir</button> 
 					<button class="btn btn-primary" value="cancelar" type="button"
 						th:onclick="cancelar()">Cancelar</button>
 				</div>
 				
 			</form>
+			
+			<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+			 	<div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+				    <div class="toast-header">
+				      <strong class="me-auto">Sucesso!</strong>
+				      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+				    </div>
+				    <div class="toast-body">
+				     	Endereço Cadastrado.
+				    </div>
+		  		</div>
+			</div>
 		</div>
 	
 		<footer th:replace="~{fragmentos :: footer}"></footer>
@@ -136,6 +148,13 @@
 		<script th:replace="~{fragmentos :: script3}"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
 		<script>	
+		
+			// Toast
+			const btnProsseguir = document.getElementById('btn-prosseguir');
+			btnProsseguir.addEventListener('click', () => {
+				$('.toast').toast('show');
+			})
+		
 			// Aplicar Máscara no input cep
 			$(document).ready(() => {
 				$('#input-cep').mask('00000-000');

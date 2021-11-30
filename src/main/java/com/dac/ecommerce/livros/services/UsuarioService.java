@@ -24,8 +24,8 @@ public class UsuarioService {
 
 	//Atualiza o usuário. É feita a busca pelo id do cliente informado fazendo uma
 	//cópia das suas informações pelo BeanUtils
-	public Usuario update(Long id ,Usuario usuario) {
-		Usuario usuarioSalvo = repository.findById(id).get();
+	public Usuario update(Usuario usuario) {
+		Usuario usuarioSalvo = repository.findById(usuario.getId()).get();
 		BeanUtils.copyProperties(usuario, usuarioSalvo,"id");
 		repository.save(usuarioSalvo);
 		return usuarioSalvo;	

@@ -1,19 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 
-	<head th:replace="~{fragmentos :: head('Cadastrar Endereço')}"></head>
+	<head th:replace="~{fragmentos :: head('Pedidos Finalizados')}"></head>
 	
 	<body>
 	
 		<style th:replace="~{fragmentos :: style}"></style>
 	
-		<style></style>
+		<style>
+			h4 {
+				margin: 40px 0 20px 0;
+			}
+			
+			td, th {
+				text-align: center;
+				text-justify: center;
+			}
+		</style>
 	
 		<header th:replace="~{fragmentos :: header}"></header>
 	
 		<div class="container">
 		
-			<table class="table">
+			<h4>Seus Pedidos</h4>
+			
+			<div th:if="${pedidos.empty}">
+				<div class="alert alert-primary" role="alert">
+				 	<span>Não há pedidos finalizados <i class="bi bi-emoji-frown"></i></span> 
+				</div>
+			</div>
+		
+			<table class="table" th:if="${!pedidos.empty}">
 			
 				<thead>
 					<tr>
@@ -23,15 +40,38 @@
 						<th scope="col">Forma de Pagamento</th>
 					</tr>
 				</thead>
-				
 				<tbody>
+					<tr th:each="pedido : ${pedidos}">
+						<td th:text="${pedido.status}"></td>
+						<td th:text="${pedido.dataCriacao}"></td>
+						<td th:text="${pedido.dataFechamento}"></td>
+						<td></td>
+						<td>
+							<button th:if="${flagAtivarCancelamento}" class="btn btn-danger"><i class="bi bi-x-square"></i></button>
+						</td>
+					</tr>
 				</tbody>
 			
 			</table>
+			
+			<button class="btn btn-primary" onclick="retornar()">Voltar</button>
+			
+			
 		
 		</div>
 	
 		<footer th:replace="~{fragmentos :: footer}"></footer>
-	
+		
+		<footer th:replace="~{fragmentos :: footer}"></footer>
+		
+		<script th:replace="~{fragmentos :: script1}"></script>
+		<script th:replace="~{fragmentos :: script2}"></script>
+		<script th:replace="~{fragmentos :: script3}"></script>
+		
+		<script>
+			function retornar() {
+				window.location.href="/user/menu-conta"
+			}
+		</script>
 	</body>
 </html>

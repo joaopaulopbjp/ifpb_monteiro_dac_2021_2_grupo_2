@@ -60,7 +60,7 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/endereco-entrega")
-	public String cadastrarEnderecoEntregaSubmit(@Valid @ModelAttribute("endereco") Endereco endereco, Model model, BindingResult bindingResult) throws UsuarioException {
+	public String cadastrarEnderecoEntregaSubmit(@Valid @ModelAttribute("endereco") Endereco endereco, Model model, BindingResult bindingResult) throws UsuarioException, InterruptedException {
 		
 		Usuario usuario = usuarioService.findById(1L);
 		
@@ -68,11 +68,30 @@ public class UsuarioController {
 			usuario.setEndereco(endereco);
 			usuarioService.save(usuario);
 			
+			Thread.sleep(3000);
 			return "/pedido/cadastrar-endereco";
 		}
 
 		return "/pedido/cadastrar-endereco";
-			
+	}
+	
+	@GetMapping("/alterar-dados")
+	public String atualizarDadosForm(Model model) throws UsuarioException {
+		
+		Usuario usuario = usuarioService.findById(1L);
+		System.out.println(usuario.getId());
+		
+		model.addAttribute("user", usuario);
+		return "/user/alterar-dados";
+	}
+	
+	@PostMapping("/alterar-dados")
+	public String atualizarDadosForm(@Valid @ModelAttribute("user") Usuario usuario, Model model) throws UsuarioException, InterruptedException {
+
+		usuarioService.update(usuario);
+		
+		Thread.sleep(3000);
+		return "redirect:/user/alterar-dados";
 	}
 	
 	

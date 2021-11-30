@@ -55,8 +55,11 @@ public class PedidoController {
 	}
 	
 	@GetMapping("/pedidos-finalizados")
-	public String pedidosFinalizados(@AuthenticationPrincipal Usuario usuario, Model model) throws PedidoException {
-		//model.addAttribute("pedidos", pedidoService.pedidosFinalizados(usuario.getId()));
+	public String pedidosFinalizados(Model model) throws PedidoException, UsuarioException {
+		
+		Usuario usuario = usuarioService.findById(1L);
+		
+		model.addAttribute("pedidos", pedidoService.pedidosFinalizados(usuario.getId()));
 		return "/pedido/pedidos-user";
 	}
 	
