@@ -38,7 +38,7 @@ public class ItemEstoqueController {
 		itemEstoque.setEstoque(estoque);
 		itemEstoque.setProduto(livro);
 		itemEstoqueService.salvarItem(itemEstoque);
-		return "redirect:/estoque/menu-estoque"; 
+		return "redirect:/estoque/itens-estoque"; 
 	}
 	
 }

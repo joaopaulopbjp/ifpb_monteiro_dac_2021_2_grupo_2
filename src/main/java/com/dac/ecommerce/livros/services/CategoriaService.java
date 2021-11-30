@@ -35,5 +35,12 @@ public class CategoriaService {
 		return categoriaRepository.findAll();
 	}
 	
+	public void salvar(Categoria categoria) {
+		categoriaRepository.save(categoria);
+	}
 	
+	public Categoria buscarCategoria(Long id) {
+		Categoria categoria = categoriaRepository.findById(id).get();
+		return categoria;
+	}
 }

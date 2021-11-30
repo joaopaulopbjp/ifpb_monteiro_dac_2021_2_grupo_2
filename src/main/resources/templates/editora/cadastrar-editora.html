@@ -10,12 +10,22 @@
 
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
-			<a class="nav-link active" href="http://localhost:8080/autor/menu-autor">Autores Cadastrados</a>
+			<a class="nav-link" href="http://localhost:8080/editora/menu-editora">Editoras cadastradas</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link" href="http://localhost:8080/autor/cadastrar-autor">Cadastrar novo Autor</a>
+			<a class="nav-link active" href="http://localhost:8080/editora/cadastrar-editora">Cadastrar nova editora</a>
 		</li>
 	</ul>
+
+	<form method="POST" th:action="@{'/editora/salvar-editora'}">
+		<div class="col-10">
+			<label for="inputNome">Nome da editora:</label>
+			<input type="text" class="form-control" placeholder="Digite o nome da editora" name="nomeEditora"><br>
+			<label for="inputCidade">Cidade da editora:</label>
+			<input type="text" class="form-control" placeholder="Digite o nome da cidade da editora" name="cidadeEditora"><br>
+			<button type="submit" class="btn btn-primary salvar">Salvar</button>
+		</div>
+	</form>
 
 	<footer th:replace="~{fragmentos :: footer}"></footer>
 

@@ -19,10 +19,11 @@
 	<ul class="nav nav-tabs">
 
 		<li class="nav-item">
-			<a class="nav-link active" href="http://localhost:8080/estoque/menu-estoque">Estoques cadastrados</a>
+			<a class="nav-link" href="http://localhost:8080/estoque/menu-estoque">Estoques cadastrados</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link" href="http://localhost:8080/estoque/itens-estoque">Lista de itens dos estoques</a>
+			<a class="nav-link active" href="http://localhost:8080/estoque/itens-estoque">Lista de itens dos
+				estoques</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" href="http://localhost:8080/estoque/cadastrar-estoque">Cadastrar novo estoque</a>
@@ -35,21 +36,25 @@
 		<thead>
 			<tr>
 				<th scope="col">id</th>
-				<th scope="col">nome</th>
+				<th scope="col">Quantidade</th>
+				<th scope="col">Livro</th>
+				<th scope="col">Estoque</th>
 				<th scope="col"></th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:if="${estoques.empty}">
+			<tr th:if="${itens.empty}">
 				<td colspan="2">Não existe estoques cadastrados!</td>
 			</tr>
-			<tr th:each="estoque : ${estoques}">
+			<tr th:each="item : ${itens}">
 				<th scope="row">
-					<span th:text="${estoque.estoqueID}"></span>
+					<span th:text="${item.id}"></span>
 				</th>
 				<td>
-					<span th:text="${estoque.nome}"></span>
+					<span th:text="${item.quantidade}"></span>
 				</td>
+				<td><span th:text="${item.produto.titulo}"></span></td>
+				<td><span th:text="${item.estoque.nome}"></span></td>
 				<td>
 				</td>
 			</tr>
