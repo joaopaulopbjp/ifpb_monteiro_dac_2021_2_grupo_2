@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.dac.ecommerce.livros.exceptions.UsuarioException;
 import com.dac.ecommerce.livros.model.user.Usuario;
+import com.dac.ecommerce.livros.model.user.UsuarioDTO;
 import com.dac.ecommerce.livros.repository.UsuarioRepository;
 
 @Service
@@ -68,4 +69,13 @@ public class UsuarioService {
 		
 		return usuario;
 	}
+	
+	// metodo para cadastrar usuario
+			public void cadastrarUsuario(UsuarioDTO usuarioDTO) {
+
+				Usuario usuario = usuarioDTO.parser();
+
+				repository.save(usuario);
+			}
+
 }

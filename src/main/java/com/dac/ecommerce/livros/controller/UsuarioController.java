@@ -14,6 +14,7 @@ import com.dac.ecommerce.livros.exceptions.UsuarioException;
 import com.dac.ecommerce.livros.model.user.Endereco;
 
 import com.dac.ecommerce.livros.model.user.Usuario;
+import com.dac.ecommerce.livros.model.user.UsuarioDTO;
 import com.dac.ecommerce.livros.services.UsuarioService;
 
 
@@ -24,39 +25,40 @@ public class UsuarioController {
 
 	@Autowired private UsuarioService usuarioService;
 	
+	@RequestMapping("/login-usuario")
+	public String mostrarLogin(UsuarioDTO usuarioDTO,  Model model) {
+		//model.addAttribute("usuarioDTO",new UsuarioDTO());
+		return "/user/login-user";
+	}
+	
 	@RequestMapping("/cadastrar-usuario") 
-	public String cadastrarUsuario(Model model) {
+	public String cadastrarUsuario(UsuarioDTO usuarioDTO,  Model model) {
 		
 		//model.addAttribute("usuario", new Usuario());
 		return "/user/cadastrar-user";
 		
 	}
 	
-	@PostMapping("/adicionar-usuario") 
-	public String cadastrarUsuario(@ModelAttribute("usuario") Usuario usuario, BindingResult result, Model modelo) throws Exception {
+	
+	@PostMapping("/login-usuario")
+	public String login(UsuarioDTO usuarioDTO, Model model) throws UsuarioException {
+		System.out.println(usuarioDTO.getEmail());
 		
-		if(!result.hasErrors()) {
-			
-			usuarioService.save(usuario);
-			
-			System.out.println("Post: cadastrado com sucesso");
-
-			return "redirect:/home";
+		if(usuarioService.findByEmail(usuarioDTO.getEmail()) == null) {
+			return "redirect:/login";
 		}
-		
-		return "/usuario/login_user";
-		
-	}
-
-	@GetMapping("/menu-conta")
-	public String menuConta() {
-		return "/user/menu-conta";
+		return "redirect:/home";
 	}
 	
-	@GetMapping("/endereco-entrega")
-	public String enderecoEntregaForm(Model model) {
-		model.addAttribute("endereco", new Endereco());
-		return "/pedido/cadastrar-endereco";
+	@PostMapping("/adicionar-usuario") 
+	public String adicionarUsuario(UsuarioDTO usuarioDTO, Model model) throws Exception {
+		
+		System.out.println(usuarioDTO.getEmail());
+		
+		usuarioService.cadastrarUsuario(usuarioDTO);
+		
+		return "redirect:/user/login-usuario";
+		
 	}
 	
 	@PostMapping("/endereco-entrega")
