@@ -8,6 +8,26 @@
 
 	<style th:replace="~{fragmentos :: style}"></style>
 
+	<style>
+		#btn-excluir,
+		#btn-editar {
+
+			max-width: 35px;
+			max-height: 35px;
+		}
+
+		.img-editar {
+			margin-left: -9px;
+			margin-top: -5px;
+		}
+
+		.img-excluir {
+			margin-left: -7px;
+			margin-bottom: 5px;
+		}
+	</style>
+
+
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
 			<a class="nav-link active" href="http://localhost:8080/categoria/menu-categoria">Categorias Cadastradas</a>
@@ -35,16 +55,54 @@
 				</th>
 				<td><span th:text="${categoria.nome}"></span>
 				<td>
+					<button id="btn-editar" type="button" class="btn btn-primary" title="Editar categoria"
+						data-toggle="modal" th:attr="data-target='#modalEditarCategoria'+*{categoria.id}"
+						th:value="${categoria.id}">
+						<img class="img-editar" src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
+					</button>
+
+					<!-- Modal editar categoria-->
+					<div class="modal fade" th:id="*{'modalEditarCategoria'+{categoria.id}}" tabindex="-1" role="dialog"
+						aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="TituloModalLongoExemplo">Editar categoria
+									</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+
+									<form method="POST" th:action="@{'/categoria/alterar-categoria'}">
+										<div class="form-group">
+											<label for="inputIdCategoria">Id</label>
+											<input type="" class="form-control" th:value="*{categoria.id}"
+												name="idCategoria" readonly>
+											<label for="inputNome">Nova categoria</label>
+											<input type="text" class="form-control" name="nomeCategoria"
+												placeholder="Digite uma nova categoria"><br>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Fechar</button>
+											<button type="submit" class="btn btn-primary">Salvar alteração</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a th:href="@{/categoria/deletar/{id}(id = ${categoria.id})}">
+						<button id="btn-excluir" type="button" class="btn btn-danger" title="Excluir categoria">
+							<img class="img-excluir" src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
+						</button>
+					</a>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-
-
-
-
-
-
 
 	<footer th:replace="~{fragmentos :: footer}"></footer>
 

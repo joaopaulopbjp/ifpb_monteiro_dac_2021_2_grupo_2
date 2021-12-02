@@ -41,4 +41,18 @@ public class ItemEstoqueController {
 		return "redirect:/estoque/itens-estoque"; 
 	}
 	
+	@PostMapping("/adicionar-itens")
+	public String adicionarItens(DTOItemEstoque dtoItemEstoque) {
+		itemEstoqueService.adicionarItem(dtoItemEstoque.getQtd(), dtoItemEstoque.getIdItem());
+		return "redirect:/estoque/itens-estoque"; 
+	}
+	
+	@PostMapping("/remover-itens")
+	public String removerItens(DTOItemEstoque dtoItemEstoque) {
+		itemEstoqueService.removerItem(dtoItemEstoque.getQtd(), dtoItemEstoque.getIdItem());
+		return "redirect:/estoque/itens-estoque"; 
+	}
+	
+	
+	
 }

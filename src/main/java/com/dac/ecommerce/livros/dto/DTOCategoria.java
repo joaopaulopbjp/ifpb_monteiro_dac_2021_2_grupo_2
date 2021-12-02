@@ -12,6 +12,7 @@ public class DTOCategoria {
 	
 	public Categoria toCategoria() {
 		Categoria categoria = new Categoria();
+		categoria.setId(this.idCategoria);
 		categoria.setNome(this.nomeCategoria);
 		return categoria;
 	}

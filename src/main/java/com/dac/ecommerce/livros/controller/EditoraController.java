@@ -5,9 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.dac.ecommerce.livros.dto.DTOEditora;
 import com.dac.ecommerce.livros.model.livro.Editora;
 import com.dac.ecommerce.livros.services.EditoraService;
@@ -35,6 +36,19 @@ public class EditoraController {
 	public String salvar(DTOEditora dtoEditora) {
 		Editora editora = dtoEditora.toEditora();
 		editoraService.salvar(editora);
+		return "redirect:/editora/menu-editora";
+	}
+	
+	@PostMapping("/alterar-editora")
+	public String alterar(DTOEditora dtoEditora) {
+		Editora editora = dtoEditora.toEditora();
+		editoraService.alterarEditora(editora, editora.getId());
+		return "redirect:/editora/menu-editora";
+	}
+	
+	@GetMapping("/deletar/{id}")
+	public String deletar(@PathVariable("id") Long id) {
+		editoraService.excluirEditora(id);
 		return "redirect:/editora/menu-editora";
 	}
 

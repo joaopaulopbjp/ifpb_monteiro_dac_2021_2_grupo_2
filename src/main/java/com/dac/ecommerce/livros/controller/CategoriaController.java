@@ -1,13 +1,13 @@
 package com.dac.ecommerce.livros.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.dac.ecommerce.livros.dto.DTOCategoria;
 import com.dac.ecommerce.livros.model.livro.Categoria;
 import com.dac.ecommerce.livros.services.CategoriaService;
@@ -35,6 +35,19 @@ public class CategoriaController {
 	public String salvar(DTOCategoria dtoCategoria) {
 		Categoria categoria = dtoCategoria.toCategoria();
 		categoriaService.salvar(categoria);
+		return "redirect:/categoria/menu-categoria";
+	}
+	
+	@PostMapping("/alterar-categoria")
+	public String alterar(DTOCategoria dtoCategoria) {
+		Categoria categoria = dtoCategoria.toCategoria();
+		categoriaService.alterarCategoria(categoria, categoria.getId());
+		return "redirect:/categoria/menu-categoria";
+	}
+	
+	@GetMapping("/deletar/{id}")
+	public String deletar(@PathVariable("id") Long id) {
+		categoriaService.excluir(id);
 		return "redirect:/categoria/menu-categoria";
 	}
 

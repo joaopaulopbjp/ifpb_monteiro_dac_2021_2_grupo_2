@@ -38,6 +38,7 @@ public class Livro {
 	private String imagemCapa;
 	
 	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn(name = "id")
 	private Editora editora;
 	
 	private Integer edicao;

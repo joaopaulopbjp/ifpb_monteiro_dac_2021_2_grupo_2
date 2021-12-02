@@ -8,6 +8,24 @@
 
 	<style th:replace="~{fragmentos :: style}"></style>
 
+	<style>
+		#btn-excluir,
+		#btn-editar {
+
+			max-width: 35px;
+			max-height: 35px;
+		}
+
+		.img-editar {
+			margin-left: -9px;
+			margin-top: -5px;
+		}
+
+		.img-excluir {
+			margin-left: -7px;
+			margin-bottom: 5px;
+		}
+	</style>
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
 			<a class="nav-link active" href="http://localhost:8080/editora/menu-editora">Editoras cadastradas</a>
@@ -38,6 +56,54 @@
 				<td><span th:text="${editora.nome}"></span>
 				<td><span th:text="${editora.cidade}"></span>
 				<td>
+
+					<button id="btn-editar" type="button" class="btn btn-primary" title="Editar editora"
+						data-toggle="modal" th:attr="data-target='#modalEditarEditora'+*{editora.id}"
+						th:value="${editora.id}">
+						<img class="img-editar" src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
+					</button>
+
+					<!-- Modal editar editora-->
+					<div class="modal fade" th:id="*{'modalEditarEditora'+{editora.id}}" tabindex="-1" role="dialog"
+						aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="TituloModalLongoExemplo">Editar editora
+									</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+
+									<form method="POST" th:action="@{'/editora/alterar-editora'}">
+										<div class="form-group">
+											<label for="inputIdEditora">Id</label>
+											<input type="" class="form-control" th:value="*{editora.id}"
+												name="idEditora" readonly>
+											<label for="inputNome">Novo nome</label>
+											<input type="text" class="form-control" name="nomeEditora"
+												placeholder="Digite o novo nome para editora"><br>
+											<label for="inputCidade">Nova cidade</label>
+											<input type="text" class="form-control" name="cidadeEditora"
+												placeholder="Digite uma nova cidade para editora">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Fechar</button>
+											<button type="submit" class="btn btn-primary">Salvar alteração</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a th:href="@{/editora/deletar/{id}(id = ${editora.id})}">
+						<button id="btn-excluir" type="button" class="btn btn-danger" title="Excluir Autor">
+							<img class="img-excluir" src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
+						</button>
+					</a>
 				</td>
 			</tr>
 		</tbody>

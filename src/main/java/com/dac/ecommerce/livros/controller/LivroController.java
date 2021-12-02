@@ -2,7 +2,6 @@ package com.dac.ecommerce.livros.controller;
 
 import java.util.Base64;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.dac.ecommerce.livros.dto.DTOLivro;
 import com.dac.ecommerce.livros.model.estoque.Estoque;
 import com.dac.ecommerce.livros.model.livro.Autor;
