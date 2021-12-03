@@ -14,6 +14,7 @@ public class DTOEditora {
 	
 	public Editora toEditora() {
 		Editora editora = new Editora();
+		editora.setId(this.idEditora);
 		editora.setCidade(this.cidadeEditora);
 		editora.setNome(this.nomeEditora);
 		return editora;

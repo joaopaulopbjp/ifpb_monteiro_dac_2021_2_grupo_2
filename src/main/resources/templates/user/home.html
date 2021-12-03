@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragmentos :: head('Cadastrar Usuário')}"></head>
+<head th:replace="~{fragmentos :: head('Login Usuário')}"></head>
 
 <body>
 
@@ -11,9 +11,9 @@
 
 	<div class="container">
 
-		<h4>CADASTRAR USUÁRIO</h4>
+		<h4>HOME</h4>
 
-		<form method="POST" th:action="@{/user/adicionar-usuario}" class="needs-validation" novalidate>
+		<form method="POST" th:action="@{/user/login-usuario-login}" class="needs-validation"  novalidate>
 
 			<div class="line">
 
@@ -25,30 +25,16 @@
 					</div>
 				</div>
 				
-					<div class="col-4">
-						<label for="input-cpf" class="form-label">CPF:</label>
-						<input id="input-cpf" class="form-control" type="text" required />
-						<div class="valid-feedback">
-							Informe o CPF.
-						</div>
-					</div>
-
-				<div class="col-4">
-					<label for="input-email" class="form-label">Email:</label>
-					<input id="input-email" class="form-control" type="text" required />
-					<div class="valid-feedback">
-						Informe o email.
-					</div>
-				</div>
-
 				<div class="col-4">
 					<label for="input-senha" class="form-label">Senha:</label>
 					<input id="input-senha" class="form-control" type="password" required />
 					<div class="valid-feedback">
-						Informe a Senha.
+						Informe a senha.
 					</div>
 				</div>
+				
 			</div>
+			
 
 			<div class="container-options">
 				<button class="btn btn-primary" value="salvar" type="submit">Salvar</button>

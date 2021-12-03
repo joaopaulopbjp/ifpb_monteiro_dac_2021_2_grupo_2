@@ -56,6 +56,84 @@
 				<td><span th:text="${item.produto.titulo}"></span></td>
 				<td><span th:text="${item.estoque.nome}"></span></td>
 				<td>
+					<button id="btn-adicionar" type="button" class="btn btn-success"
+						title="Adicionar qauntidade de itens" data-toggle="modal"
+						th:attr="data-target='#modalAdicionarQuantidade'+*{item.id}" th:value="${item.id}">
+						+
+					</button>
+
+					<!-- Modal adicionar itens-->
+					<div class="modal fade" th:id="*{'modalAdicionarQuantidade'+{item.id}}" tabindex="-1" role="dialog"
+						aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="TituloModalLongoExemplo">Adicionar item
+									</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+
+									<form method="POST" th:action="@{'/item-estoque/adicionar-itens'}">
+										<div class="form-group">
+											<label for="inputIdItem">Id</label>
+											<input type="" class="form-control" th:value="*{item.id}" name="idItem"
+												readonly>
+											<label for="inputNome">Informe a quantidade de itens a ser acionados</label>
+											<input type="number" class="form-control" name="qtd"><br>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Fechar</button>
+											<button type="submit" class="btn btn-primary">Salvar alteração</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<button id="btn-reduzir" type="button" class="btn btn-danger" title="Reduzir qauntidade de itens"
+						data-toggle="modal" th:attr="data-target='#modalReduzirQuantidade'+*{item.id}"
+						th:value="${item.id}">
+						-
+					</button>
+
+					<!-- Modal reduzir itens-->
+					<div class="modal fade" th:id="*{'modalReduzirQuantidade'+{item.id}}" tabindex="-1" role="dialog"
+						aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="TituloModalLongoExemplo">Adicionar item
+									</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+
+									<form method="POST" th:action="@{'/item-estoque/remover-itens'}">
+										<div class="form-group">
+											<label for="inputIdItem">Id</label>
+											<input type="" class="form-control" th:value="*{item.id}" name="idItem"
+												readonly>
+											<label for="inputNome">Informe a quantidade de itens a ser removidos</label>
+											<input type="number" class="form-control" name="qtd"><br>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Fechar</button>
+											<button type="submit" class="btn btn-primary">Salvar alteração</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
 				</td>
 			</tr>
 		</tbody>

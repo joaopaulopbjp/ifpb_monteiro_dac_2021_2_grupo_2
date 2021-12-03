@@ -15,10 +15,9 @@ public class DTOItemEstoque {
 	
 	public ItemEstoque toItemEstoque() {
 		ItemEstoque itemEstoque = new ItemEstoque();
-		
-		itemEstoque.setPreco(precoItem);
-		itemEstoque.setQuantidade(qtd);
-		
+		itemEstoque.setId(this.idEstoqueItem);
+		itemEstoque.setPreco(this.precoItem);
+		itemEstoque.setQuantidade(this.qtd);
 		return itemEstoque;
 	}
 }

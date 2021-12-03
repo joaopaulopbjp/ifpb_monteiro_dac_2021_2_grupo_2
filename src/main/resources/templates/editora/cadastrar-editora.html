@@ -8,6 +8,12 @@
 
 	<style th:replace="~{fragmentos :: style}"></style>
 
+	<style>
+		form {
+			margin-top: 15px;
+			margin-left: 30px;
+		}
+	</style>
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
 			<a class="nav-link" href="http://localhost:8080/editora/menu-editora">Editoras cadastradas</a>
@@ -22,7 +28,8 @@
 			<label for="inputNome">Nome da editora:</label>
 			<input type="text" class="form-control" placeholder="Digite o nome da editora" name="nomeEditora"><br>
 			<label for="inputCidade">Cidade da editora:</label>
-			<input type="text" class="form-control" placeholder="Digite o nome da cidade da editora" name="cidadeEditora"><br>
+			<input type="text" class="form-control" placeholder="Digite o nome da cidade da editora"
+				name="cidadeEditora"><br>
 			<button type="submit" class="btn btn-primary salvar">Salvar</button>
 		</div>
 	</form>

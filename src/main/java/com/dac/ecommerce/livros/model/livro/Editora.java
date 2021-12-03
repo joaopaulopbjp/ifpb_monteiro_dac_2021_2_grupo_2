@@ -1,5 +1,12 @@
 package com.dac.ecommerce.livros.model.livro;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import lombok.Data;
 
 @Data
@@ -17,7 +24,7 @@ public class Editora {
 	private String nome;
 	
 	public Editora () {}
-
+	
 	@Override
 	public String toString() {
 		return "Editora [id=" +

@@ -313,7 +313,7 @@
 								</div>
 								<div class="form-group">
 									<textarea class="form-control" placeholder="DESCRIÇÃO" rows="2" id="descricao"
-										name="descricao"></textarea>
+										name="descricao"></textarea><br>
 								</div>
 								<div class="row">
 									<div class="col-md-auto">
@@ -338,7 +338,7 @@
 										<option th:each="editora : ${editoras}" th:text="${editora.nome}"
 											th:value="${editora.id}"></option>
 									</select>
-								</div>
+								</div><br>
 
 								<div class="form-group">
 									<label for="selectCategoria">Escolha uma categoria</label>
@@ -346,7 +346,7 @@
 										<option th:each="categoria : ${categorias}" th:text="${categoria.nome}"
 											th:value="${categoria.id}"></option>
 									</select>
-								</div>
+								</div><br>
 
 								<div class="row">
 									<div class="col">

@@ -1,9 +1,9 @@
 package com.dac.ecommerce.livros.services;
-import java.util.List;
 
+import java.util.List;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.dac.ecommerce.livros.model.livro.Categoria;
 import com.dac.ecommerce.livros.repository.CategoriaRepository;
 
@@ -42,5 +42,15 @@ public class CategoriaService {
 	public Categoria buscarCategoria(Long id) {
 		Categoria categoria = categoriaRepository.findById(id).get();
 		return categoria;
+	}
+	
+	public void alterarCategoria(Categoria novaCategoria, Long id) {
+		Categoria categoria = categoriaRepository.findById(id).get();
+		BeanUtils.copyProperties(novaCategoria, categoria);
+		categoriaRepository.save(categoria);
+	}
+	
+	public void excluir(Long id) {
+		categoriaRepository.deleteById(id);
 	}
 }

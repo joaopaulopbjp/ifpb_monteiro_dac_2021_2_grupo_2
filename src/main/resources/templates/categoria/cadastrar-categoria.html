@@ -7,12 +7,17 @@
 	<header th:replace="~{fragmentos :: header}"></header>
 
 	<style th:replace="~{fragmentos :: style}"></style>
-	
+
 	<style>
-	.salvar{
-		margin-top: 10px;		
-		
-	}
+		.salvar {
+			margin-top: 10px;
+
+		}
+
+		form {
+			margin-top: 15px;
+			margin-left: 30px;
+		}
 	</style>
 
 	<ul class="nav nav-tabs">
@@ -28,8 +33,9 @@
 	<form method="POST" th:action="@{/categoria/salvar}">
 		<div class="col-10">
 			<label for="input-nome" class="form-label">Nome da categoria:</label>
-			<input id="input-nome" class="form-control" type="text" placeholder="Digite o nome da categoria"  name="nomeCategoria" required />
-		<button class="btn btn-primary salvar" type="submit">Salvar</button>
+			<input id="input-nome" class="form-control" type="text" placeholder="Digite o nome da categoria"
+				name="nomeCategoria" required />
+			<button class="btn btn-primary salvar" type="submit">Salvar</button>
 		</div>
 	</form>
 

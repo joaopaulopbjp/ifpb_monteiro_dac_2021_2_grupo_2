@@ -1,8 +1,8 @@
 package com.dac.ecommerce.livros.services;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
 import com.dac.ecommerce.livros.repository.ItemEstoqueRepository;
 
@@ -24,6 +24,20 @@ public class ItemEstoqueService {
 	public ItemEstoque bucarItem(Long id) {
 		ItemEstoque itemEstoque = itemEstoqueRepository.findById(id).get();
 		return itemEstoque;
+	}
+	
+	public void adicionarItem(Integer qtd, Long id) {
+		ItemEstoque itemEstoque = itemEstoqueRepository.findById(id).get();
+		Integer qtdAtual = itemEstoque.getQuantidade() + qtd;
+		itemEstoque.setQuantidade(qtdAtual);
+		itemEstoqueRepository.save(itemEstoque);
+	}
+	
+	public void removerItem(Integer qtd, Long id) {
+		ItemEstoque itemEstoque = itemEstoqueRepository.findById(id).get();
+		Integer qtdAtual = itemEstoque.getQuantidade() - qtd;
+		itemEstoque.setQuantidade(qtdAtual);
+		itemEstoqueRepository.save(itemEstoque);
 	}
 	
 }
