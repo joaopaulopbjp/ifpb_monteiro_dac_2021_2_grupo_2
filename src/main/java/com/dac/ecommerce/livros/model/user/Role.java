@@ -16,12 +16,15 @@ public class Role implements GrantedAuthority {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
+	
+	private String role;
+	
+	public Role() {}
 	
 	@Override
 	public String getAuthority() {
-		// TODO Auto-generated method stub
-		return null;
+		return role;
 	}
 	
 

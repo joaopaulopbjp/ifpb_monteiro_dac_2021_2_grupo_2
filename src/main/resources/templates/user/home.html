@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos :: head('Login Usuário')}"></head>
+
+<body>
+
+	<style th:replace="~{fragmentos :: style}"></style>
+
+	<header th:replace="~{fragmentos :: header}"></header>
+
+	<div class="container">
+
+		<h4>HOME</h4>
+
+		<form method="POST" th:action="@{/user/login-usuario-login}" class="needs-validation"  novalidate>
+
+			<div class="line">
+
+				<div class="col-4">
+					<label for="input-nome" class="form-label">Nome:</label>
+					<input id="input-nome" class="form-control" type="text" required />
+					<div class="valid-feedback">
+						Informe o nome.
+					</div>
+				</div>
+				
+				<div class="col-4">
+					<label for="input-senha" class="form-label">Senha:</label>
+					<input id="input-senha" class="form-control" type="password" required />
+					<div class="valid-feedback">
+						Informe a senha.
+					</div>
+				</div>
+				
+			</div>
+			
+
+			<div class="container-options">
+				<button class="btn btn-primary" value="salvar" type="submit">Salvar</button>
+				<button class="btn btn-primary" value="cancelar" type="button" th:onclick="cancelar()">Cancelar</button>
+			</div>
+
+		</form>
+	</div>
+
+
+	<footer th:replace="~{fragmentos :: footer}"></footer>
+
+	<script th:replace="~{fragmentos :: script1}"></script>
+	<script th:replace="~{fragmentos :: script2}"></script>
+	<script th:replace="~{fragmentos :: script3}"></script>
+
+</body>
+
+</html>
