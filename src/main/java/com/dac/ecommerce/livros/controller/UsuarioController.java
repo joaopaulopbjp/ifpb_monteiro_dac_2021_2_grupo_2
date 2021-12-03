@@ -2,6 +2,7 @@ package com.dac.ecommerce.livros.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +28,11 @@ import com.dac.ecommerce.livros.services.UsuarioService;
 public class UsuarioController {
 	
 	@Autowired private UsuarioService usuarioService;
-	
+
+	@RequestMapping("/login")
+	public String login() {
+		return "/user/login-user";
+	}
 
 	@GetMapping("/cadastrar") 
 	public String cadastrarUsuario(DTOUsuario usuarioDTO,  Model model) {

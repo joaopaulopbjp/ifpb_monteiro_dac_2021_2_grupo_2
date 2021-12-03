@@ -59,12 +59,12 @@
 		<div class="card">
 			<h4>Sign In</h4>
 	
-			<form th:action="@{/login}" method="POST">
+			<form th:action="@{/user/login}" method="POST">
 			
 				<div class="row">
 					<div class="col-12">
 						<label for="input-nome" class="form-label">E-mail:</label>
-						<input id="input-nome" class="form-control" type="email" required />
+						<input id="input-nome" name="username" class="form-control" type="email" required />
 						<div th:if="${param.error}" class="invalid-feedback">
 							E-mail Inválido.
 						</div>
@@ -73,7 +73,7 @@
 					
 					<div class="col-12">
 						<label for="input-senha" class="form-label">Senha:</label>
-						<input id="input-senha" class="form-control" type="password" required />
+						<input id="input-senha" name="password" class="form-control" type="password" required />
 						<div th:if="${param.error}" class="invalid-feedback">
 							Senha Inválida.
 						</div>

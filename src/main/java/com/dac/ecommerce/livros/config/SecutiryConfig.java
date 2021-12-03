@@ -22,11 +22,11 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/").permitAll()
 		.antMatchers(HttpMethod.GET, "/user/cadastrar").permitAll()
 		.antMatchers(HttpMethod.POST, "/user/cadastrar").permitAll()
-		.antMatchers(HttpMethod.GET, "/login").permitAll()
-		.antMatchers(HttpMethod.POST, "/login").permitAll()
+		.antMatchers(HttpMethod.GET, "/user/login").permitAll()
+		.antMatchers(HttpMethod.POST, "/user/login").permitAll()
 		.anyRequest().authenticated()
 		.and()
-		.formLogin().defaultSuccessUrl("/", true);
+		.formLogin().loginPage("/user/login").defaultSuccessUrl("/", true);
 	}
 	
 	@Override

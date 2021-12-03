@@ -28,11 +28,6 @@ public class IndexController {
 		return "/home/index";
 	}
 	
-	@RequestMapping("/login")
-	public String login() {		
-		return "/user/login-user";
-	}
-	
 	@GetMapping("/detalhar-livro/{id}")
 	public String detalharLivro(@PathVariable("id") Long id, Model model) {
 		ItemEstoque itemEstoque = estoqueService.pesquisarItemEstoque(id);
