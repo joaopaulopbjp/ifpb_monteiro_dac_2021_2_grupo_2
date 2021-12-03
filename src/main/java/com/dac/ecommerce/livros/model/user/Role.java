@@ -8,8 +8,11 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import lombok.Data;
+
 @Entity
 @Table(name = "TB_ROLE")
+@Data
 public class Role implements GrantedAuthority {
 
 	private static final long serialVersionUID = 1L;

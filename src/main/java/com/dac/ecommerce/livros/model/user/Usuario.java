@@ -2,16 +2,19 @@ package com.dac.ecommerce.livros.model.user;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Data;
-
-
-//Classe que representa o usuário no Banco de Dados
 
 @Entity
 @Data
@@ -22,15 +25,19 @@ public class Usuario implements UserDetails{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotEmpty
+	@Email
 	@Column(unique = true)
 	private String email;
 	
-	@Column(nullable = false)
+	@Length(min=8, message = "{senhaCurta}")
 	private String senha;
 	
-	@Column(nullable = false)
+	@NotEmpty
+	@Length(min=3)
 	private String nome;
 	
+	@CPF(message = "{cpfInvalido}")
 	@Column(unique=true, nullable = false)
 	private String cpf;
 	
@@ -39,24 +46,11 @@ public class Usuario implements UserDetails{
 	@Embedded
 	private Endereco endereco;
 	
-	//@Enumerated(EnumType.STRING)
-	//private TipoUsuario tipoUsuario;
+	@Enumerated(EnumType.STRING)
+	private TipoUsuario tipoUsuario;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
-	private List<Role> roles;
-
-	// Construtores
-		public Usuario() { }
-		
-	public String toString() {
-		return "\nID: " + this.id +
-				"\nE-mail: " + this.email +
-				"\nNome: " + this.nome +
-				"\nCPF: " + this.cpf + 
-				"\nTelefone: " + this.telefone + 
-				"\nTipo de Usuário: " + this.roles;
-	}
-
+	private Set<Role> roles;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -92,5 +86,15 @@ public class Usuario implements UserDetails{
 	public boolean isEnabled() {
 		return true;
 	}
+	
+	public String toString() {
+		return "\nID: " + this.id +
+				"\nE-mail: " + this.email +
+				"\nNome: " + this.nome +
+				"\nCPF: " + this.cpf + 
+				"\nTelefone: " + this.telefone + 
+				"\nTipo de Usuário: " + this.roles;
+	}
+
 	
 }

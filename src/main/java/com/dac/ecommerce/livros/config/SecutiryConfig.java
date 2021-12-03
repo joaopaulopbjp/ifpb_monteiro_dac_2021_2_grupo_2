@@ -1,6 +1,5 @@
 package com.dac.ecommerce.livros.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,25 +9,30 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-	private ImplementsUserDetailsService userDatDetailsService;
+	private ImplementsUserDetailsService usuarioDetailsService;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.httpBasic().and().csrf().disable().authorizeRequests()
+		http.authorizeRequests()
+		.antMatchers(HttpMethod.GET, "/").permitAll()
+		.antMatchers(HttpMethod.GET, "/user/cadastrar").permitAll()
 		.antMatchers(HttpMethod.POST, "/user/cadastrar").permitAll()
-		.anyRequest().authenticated();
+		.antMatchers(HttpMethod.GET, "/login").permitAll()
+		.antMatchers(HttpMethod.POST, "/login").permitAll()
+		.anyRequest().authenticated()
+		.and()
+		.formLogin().defaultSuccessUrl("/", true);
 	}
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDatDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+		auth.userDetailsService(usuarioDetailsService).passwordEncoder(new BCryptPasswordEncoder());
 	}
-	
+
 	
 }

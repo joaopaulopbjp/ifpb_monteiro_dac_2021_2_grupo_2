@@ -1,14 +1,20 @@
 package com.dac.ecommerce.livros.services;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.dac.ecommerce.livros.dto.DTOUsuario;
 import com.dac.ecommerce.livros.exceptions.UsuarioException;
+import com.dac.ecommerce.livros.model.user.Role;
 import com.dac.ecommerce.livros.model.user.Usuario;
-import com.dac.ecommerce.livros.model.user.UsuarioDTO;
+import com.dac.ecommerce.livros.repository.RoleRepository;
 import com.dac.ecommerce.livros.repository.UsuarioRepository;
 
 @Service
@@ -17,11 +23,9 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository repository;
 	
+	@Autowired
+	private RoleRepository roleRepository;
 	
-	//Salva o usuário no Banco de Dados
-	public Usuario save(Usuario usuario) {
-		return repository.save(usuario);
-	}
 
 	//Atualiza o usuário. É feita a busca pelo id do cliente informado fazendo uma
 	//cópia das suas informações pelo BeanUtils
@@ -71,11 +75,33 @@ public class UsuarioService {
 	}
 	
 	// metodo para cadastrar usuario
-			public void cadastrarUsuario(UsuarioDTO usuarioDTO) {
-
-				Usuario usuario = usuarioDTO.parser();
-
-				repository.save(usuario);
+	public void cadastrarUsuario(DTOUsuario usuarioDTO) {
+		
+		Usuario usuario = usuarioDTO.parser();
+		
+		if(repository.findByEmail(usuario.getEmail()) == null) {
+			Role role = new Role();
+			
+			switch(usuario.getTipoUsuario()) {
+			case ADMINISTRADOR:
+				role.setRole("ADMIN");
+				break;
+			case CLIENTE:
+				role.setRole("CLIENTE");
+				break;
 			}
+			
+			roleRepository.save(role);
+			
+			Set<Role> roles = new HashSet<Role>();
+			roles.add(role);
+		
+			usuario.setRoles(roles);
+			
+			repository.save(usuario);
+		}
+		
+	
+	}
 
 }

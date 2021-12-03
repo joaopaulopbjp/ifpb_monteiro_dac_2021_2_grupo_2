@@ -1,61 +1,101 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" style="height: 100%;">
 
 <head th:replace="~{fragmentos :: head('Cadastrar Usuário')}"></head>
 
-<body>
+<body style="height: 100%;">
 
 	<style th:replace="~{fragmentos :: style}"></style>
-
-	<header th:replace="~{fragmentos :: header}"></header>
+	
+	<style>
+				
+		label {
+			margin-top: 10px;
+		}
+		
+		.card {
+			padding: 20px;
+			margin-bottom: 50px;
+		}
+		
+		.container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+		}
+			
+		.container-options {
+			margin-top: 20px;
+		}
+	</style>
 
 	<div class="container">
+		<div class="card">
+		
+			<h4>Sign Up</h4>
 
-		<h4>CADASTRAR USUÁRIO</h4>
-
-		<form method="POST" th:action="@{/user/adicionar-usuario}" class="needs-validation" novalidate>
-
-			<div class="line">
-
-				<div class="col-4">
-					<label for="input-nome" class="form-label">Nome:</label>
-					<input id="input-nome" class="form-control" type="text" required />
-					<div class="valid-feedback">
-						Informe o nome.
+			<form method="POST" th:action="@{/user/cadastrar}" th:object=${usuarioDTO}>
+	
+				<div class="row">
+					<div>
+						<div class="btn-group" role="group" th:each="tipoUser : ${T(com.dac.ecommerce.livros.model.user.TipoUsuario).values()}">
+						  <input type="radio" th:field="*{tipoUsuario}" th:value="${tipoUser}" class="btn-check" th:id="${tipoUser}" autocomplete="off" required>
+						  <label class="btn btn-outline-primary" th:for="${tipoUser}" th:text="${tipoUser}"></label>
+						</div>
 					</div>
-				</div>
-				
-					<div class="col-4">
+					
+					<div class="col-12">
+						<label for="input-nome" class="form-label">Nome:</label>
+						<input id="input-nome" th:errorclass="is-invalid" class="form-control" th:field="*{nome}" type="text" required />
+						<div class="invalid-feedback" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">
+							Informe o nome.
+						</div>
+					</div>
+					
+					<div class="col-6">
 						<label for="input-cpf" class="form-label">CPF:</label>
-						<input id="input-cpf" class="form-control" type="text" required />
-						<div class="valid-feedback">
+						<input id="input-cpf"  th:errorclass="is-invalid" class="form-control" th:field="*{cpf}" type="text" required />
+						<div class="valid-feedback" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}">
 							Informe o CPF.
 						</div>
 					</div>
-
-				<div class="col-4">
-					<label for="input-email" class="form-label">Email:</label>
-					<input id="input-email" class="form-control" type="text" required />
-					<div class="valid-feedback">
-						Informe o email.
+					
+					<div class="col-6">
+						<label for="input-telefone" class="form-label">Telefone:</label>
+						<input id="input-telefone" th:errorclass="is-invalid" class="form-control" th:field="*{telefone}" type="text" required />
+						<div class="valid-feedback" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}">
+							Informe o Telefone.
+						</div>
+					</div>
+	
+					<div class="col-12">
+						<label for="input-email" class="form-label">Email:</label>
+						<input id="input-email" th:errorclass="is-invalid" class="form-control" th:field="*{email}" type="text" required />
+						<div class="valid-feedback" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}">
+							Informe o email.
+						</div>
+					</div>
+	
+					<div class="col-12">
+						<label for="input-senha" class="form-label">Senha:</label>
+						<input id="input-senha" th:errorclass="is-invalid" class="form-control" th:field="*{senha}" type="password" required />
+						<div class="valid-feedback" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}">
+							Informe a Senha.
+						</div>
 					</div>
 				</div>
-
-				<div class="col-4">
-					<label for="input-senha" class="form-label">Senha:</label>
-					<input id="input-senha" class="form-control" type="password" required />
-					<div class="valid-feedback">
-						Informe a Senha.
-					</div>
+	
+				<div class="container-options">
+					<button class="btn btn-primary" value="salvar" type="submit">Cadastrar</button>
+					<button class="btn btn-primary" value="cancelar" type="button" th:onclick="cancelar()">Cancelar</button>
 				</div>
-			</div>
-
-			<div class="container-options">
-				<button class="btn btn-primary" value="salvar" type="submit">Salvar</button>
-				<button class="btn btn-primary" value="cancelar" type="button" th:onclick="cancelar()">Cancelar</button>
-			</div>
-
-		</form>
+	
+			</form>
+		
+		</div>
+		
 	</div>
 
 
@@ -64,6 +104,20 @@
 	<script th:replace="~{fragmentos :: script1}"></script>
 	<script th:replace="~{fragmentos :: script2}"></script>
 	<script th:replace="~{fragmentos :: script3}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+	<script>	
+		
+		// Aplicar Máscara
+		$(document).ready(() => {
+			$('#input-cpf').mask('000.000.000-00');
+			$('#input-telefone').mask("(00) 00000-0000");
+		});
+		
+		function cancelar() {
+			window.location.href="/";
+		}
+			
+	</script>
 
 </body>
 

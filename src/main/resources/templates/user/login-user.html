@@ -1,47 +1,100 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" style="height: 100%;">
 
 <head th:replace="~{fragmentos :: head('Login Usuário')}"></head>
 
-<body>
+<body style="height: 100%;">
 
 	<style th:replace="~{fragmentos :: style}"></style>
 
-	<header th:replace="~{fragmentos :: header}"></header>
+	<style>	
+		label {
+			margin-top: 10px;
+		}
+		
+		.card {
+			padding: 40px;
+			width: 500px;
+			margin-bottom: 50px;
+		}
+		
+		.container-options {
+			margin-top: 15px;
+			display: flex;
+			flex-direction: row;
+		}
+		
+		.container-options button {
+			width: 50%;
+		}
+		
+		.container {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+			
+		}
+		
+		.container-link {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			margin-top: 20px;
+		}
+		
+		.container-link button {
+			margin: 0 0 0 5px;;
+			padding: 0;
+		}
+		
+		.space {
+			margin: 10px;
+		}
+	</style>
 
 	<div class="container">
 
-		<h4>LOGIN DE USUÁRIO</h4>
-
-		<form method="POST" th:action="@{/user/login-usuario}" class="needs-validation"  novalidate>
-
-			<div class="line">
-
-				<div class="col-4">
-					<label for="input-nome" class="form-label">Nome:</label>
-					<input id="input-nome" class="form-control" type="text" required />
-					<div class="valid-feedback">
-						Informe o nome.
-					</div>
-				</div>
-				
-				<div class="col-4">
-					<label for="input-senha" class="form-label">Senha:</label>
-					<input id="input-senha" class="form-control" type="password" required />
-					<div class="valid-feedback">
-						Informe a senha.
-					</div>
-				</div>
-				
-			</div>
+		<div class="card">
+			<h4>Sign In</h4>
+	
+			<form th:action="@{/login}" method="POST">
 			
+				<div class="row">
+					<div class="col-12">
+						<label for="input-nome" class="form-label">E-mail:</label>
+						<input id="input-nome" class="form-control" type="email" required />
+						<div th:if="${param.error}" class="invalid-feedback">
+							E-mail Inválido.
+						</div>
 
-			<div class="container-options">
-				<button class="btn btn-primary" value="salvar" type="submit">Salvar</button>
-				<button class="btn btn-primary" value="cancelar" type="button" th:onclick="cancelar()">Cancelar</button>
+					</div>
+					
+					<div class="col-12">
+						<label for="input-senha" class="form-label">Senha:</label>
+						<input id="input-senha" class="form-control" type="password" required />
+						<div th:if="${param.error}" class="invalid-feedback">
+							Senha Inválida.
+						</div>
+
+					</div>
+				</div>
+				
+				<div class="container-options">
+					<button class="btn btn-primary" value="entrar" type="submit">Entrar</button>
+					<span class="space"></span>
+					<button class="btn btn-primary" value="cancelar" type="button" th:onclick="cancelar()">Cancelar</button>
+				</div>
+			</form>
+			
+			<div class="container-link">
+				<span>Ainda não tem conta? </span>
+				<button type="button" class="btn btn-link" onclick="cadastrarPage()">Cadastra-se</button>
 			</div>
-
-		</form>
+	
+		</div>
+		
 	</div>
 
 
@@ -50,6 +103,17 @@
 	<script th:replace="~{fragmentos :: script1}"></script>
 	<script th:replace="~{fragmentos :: script2}"></script>
 	<script th:replace="~{fragmentos :: script3}"></script>
+	<script>
+		
+		function cancelar() {
+			window.location.href="/";
+		}
+		
+		function cadastrarPage() {
+			window.location.href="/user/cadastrar";
+		}
+		
+	</script>
 
 </body>
 

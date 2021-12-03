@@ -2,19 +2,23 @@ package com.dac.ecommerce.livros.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.dac.ecommerce.livros.dto.DTOUsuario;
 import com.dac.ecommerce.livros.exceptions.UsuarioException;
 import com.dac.ecommerce.livros.model.user.Endereco;
 
 import com.dac.ecommerce.livros.model.user.Usuario;
-import com.dac.ecommerce.livros.model.user.UsuarioDTO;
 import com.dac.ecommerce.livros.services.UsuarioService;
 
 
@@ -22,46 +26,28 @@ import com.dac.ecommerce.livros.services.UsuarioService;
 @RequestMapping("/user")
 public class UsuarioController {
 	
-
 	@Autowired private UsuarioService usuarioService;
 	
-	@RequestMapping("/login-usuario")
-	public String mostrarLogin(UsuarioDTO usuarioDTO,  Model model) {
-		//model.addAttribute("usuarioDTO",new UsuarioDTO());
-		return "/user/login-user";
+
+	@GetMapping("/cadastrar") 
+	public String cadastrarUsuario(DTOUsuario usuarioDTO,  Model model) {
+		model.addAttribute("usuarioDTO", new Usuario());
+		return "/user/cadastrar-user";
 	}
 	
-	@RequestMapping("/cadastrar-usuario") 
-	public String cadastrarUsuario(UsuarioDTO usuarioDTO,  Model model) {
+	@PostMapping("/cadastrar") 
+	public String adicionarUsuario(@Valid @ModelAttribute("usuarioDTO") DTOUsuario usuarioDTO, BindingResult bindingResult, Model model) {
 		
-		//model.addAttribute("usuario", new Usuario());
+		if(!bindingResult.hasErrors()) {
+			usuarioService.cadastrarUsuario(usuarioDTO);
+			return "redirect:/user/login-user";
+		}
+		
 		return "/user/cadastrar-user";
 		
 	}
 	
-	
-	@PostMapping("/login-usuario")
-	public String login(UsuarioDTO usuarioDTO, Model model) throws UsuarioException {
-		System.out.println(usuarioDTO.getEmail());
-		
-		if(usuarioService.findByEmail(usuarioDTO.getEmail()) == null) {
-			return "redirect:/login";
-		}
-		return "redirect:/home";
-	}
-	
-	@PostMapping("/adicionar-usuario") 
-	public String adicionarUsuario(UsuarioDTO usuarioDTO, Model model) throws Exception {
-		
-		System.out.println(usuarioDTO.getEmail());
-		
-		usuarioService.cadastrarUsuario(usuarioDTO);
-		
-		return "redirect:/user/login-usuario";
-		
-	}
-	
-	@PostMapping("/endereco-entrega")
+	@PutMapping("/endereco-entrega")
 	public String cadastrarEnderecoEntregaSubmit(@Valid @ModelAttribute("endereco") Endereco endereco, BindingResult bindingResult, Model model) {
 		
 		try {
@@ -69,7 +55,7 @@ public class UsuarioController {
 			
 			if(!bindingResult.hasErrors()) {
 				usuario.setEndereco(endereco);
-				usuarioService.save(usuario);
+				usuarioService.update(usuario);
 				
 				Thread.sleep(3000);
 				return "redirect:/user/menu-conta";

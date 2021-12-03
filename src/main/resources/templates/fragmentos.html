@@ -60,10 +60,10 @@
 			<div class="collapse" id="navbarToggleExternalContent">
 				<div class="bg-primary p-4 container-nav">
 					<h4>Menu</h4>
-					<a href="#">Sign In<br></a>
-					<a href="#">Sign Up<br></a>
+					<a sec:authorize="!isAuthenticated()" th:href="@{'http://localhost:8080/user/login'}">Sign In<br></a>
+					<a sec:authorize="!isAuthenticated()" th:href="@{'http://localhost:8080/user/cadastrar'}">Sign Up<br></a>
 					<a th:href="@{'http://localhost:8080/'}">Home<br></a>
-					<a th:href="@{'http://localhost:8080/user/menu-conta'}">Minha Conta<br></a>
+					<a sec:authorize="isAuthenticated()" th:href="@{'http://localhost:8080/user/menu-conta'}">Minha Conta<br></a>
 					<a th:href="@{'http://localhost:8080/livro/menu-livro'}">Meus Livros</a>
 				</div>
 			</div>
