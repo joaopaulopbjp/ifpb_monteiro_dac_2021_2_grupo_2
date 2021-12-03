@@ -114,10 +114,6 @@
 					</div>
 				</div>
 				
-				<ul th:if="${#fields.hasErrors('*')}">
-				  <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
-				</ul>
-				
 				<div class="container-options">
 					<button id="btn-prosseguir" class="btn btn-success" type="submit">Prosseguir</button> 
 					<button class="btn btn-primary" value="cancelar" type="button"
