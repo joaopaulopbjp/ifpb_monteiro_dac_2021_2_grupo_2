@@ -48,7 +48,7 @@
 				<h4>Sua conta</h4>
 			</div>
 			
-			<div class="col-6">
+			<div  sec:authorize="hasAuthority('CLIENTE')" class="col-6">
 				<a href="http://localhost:8080/pedido/pedidos-finalizados">
 					<div class="card">
 						Meus Pedidos
@@ -56,10 +56,26 @@
 				</a>
 			</div>
 			
-			<div class="col-6">
+			<div  sec:authorize="hasAuthority('CLIENTE')" class="col-6">
 				<a href="http://localhost:8080/pedido/carrinho-compra">
 					<div class="card">
 						Carrinho de Compra
+					</div>
+				</a>
+			</div>
+	
+			<div sec:authorize="hasAuthority('ADMIN')" class="col-6">
+				<a href="http://localhost:8080/livro/menu-livro">
+					<div class="card">
+						Meus Livros
+					</div>
+				</a>
+			</div>
+			
+			<div sec:authorize="hasAuthority('ADMIN')" class="col-6">
+				<a href="http://localhost:8080/pedido/forma-pagamento">
+					<div class="card">
+						Formas de Pagamento
 					</div>
 				</a>
 			</div>
@@ -72,7 +88,7 @@
 				</a>
 			</div>
 			
-			<div class="col-6">
+			<div sec:authorize="hasAuthority('CLIENTE')" class="col-6">
 				<a href="http://localhost:8080/user/endereco-entrega">
 					<div class="card">
 						Endereço de Entrega

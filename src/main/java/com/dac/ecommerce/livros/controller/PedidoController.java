@@ -2,6 +2,7 @@ package com.dac.ecommerce.livros.controller;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,42 +12,53 @@ import org.springframework.web.bind.annotation.*;
 
 import com.dac.ecommerce.livros.dto.DTOItemPedidoUpdate;
 import com.dac.ecommerce.livros.dto.DTOPedido;
-import com.dac.ecommerce.livros.exceptions.EstoqueException;
-import com.dac.ecommerce.livros.exceptions.PedidoException;
-import com.dac.ecommerce.livros.exceptions.UsuarioException;
+import com.dac.ecommerce.livros.model.pedido.FormaPagamento;
 import com.dac.ecommerce.livros.model.pedido.Pedido;
 import com.dac.ecommerce.livros.model.user.Usuario;
+import com.dac.ecommerce.livros.services.FormaPagamentoService;
 import com.dac.ecommerce.livros.services.PedidoService;
-import com.dac.ecommerce.livros.services.UsuarioService;
 
 @Controller
 @RequestMapping("/pedido")
 public class PedidoController {
 	
 	@Autowired private PedidoService pedidoService;
-	@Autowired private UsuarioService usuarioService;
+	@Autowired private FormaPagamentoService formaPagamentoService;
 	
 	@GetMapping("/carrinho-compra")
-	public String carrinhoCompras(Model model) throws UsuarioException, PedidoException {
+	public String carrinhoCompras(@AuthenticationPrincipal Usuario usuario, Model model) {
 		
-		Usuario usuario = usuarioService.findById(1L);
-		Pedido pedido = pedidoService.buscarPedidoNaoFinalizado(usuario.getId());
-		
-		model.addAttribute("dtoItemPedidoUpdate", new DTOItemPedidoUpdate());
-		
-		if(pedido != null) {
-			model.addAttribute("itens", pedidoService.listarItemsPedido(pedido.getId()));
-		} else {
-			model.addAttribute("itens", new ArrayList<>());
+		try {
+			List<FormaPagamento> formasPagamento = formaPagamentoService.buscarFormasAtivas();
+			Pedido pedido = pedidoService.buscarPedidoNaoFinalizado(usuario.getId());
+			
+			model.addAttribute("dtoItemPedidoUpdate", new DTOItemPedidoUpdate());
+			model.addAttribute("formasPagamento", formasPagamento);
+			
+			if(pedido != null) {
+				model.addAttribute("itens", pedidoService.listarItemsPedido(pedido.getId()));
+			} else {
+				model.addAttribute("itens", new ArrayList<>());
+			}
+			
+			return "/pedido/carrinho-compra";
+		} catch(Exception error) {
+			return "redirec:/user/menu-conta";
 		}
-		
-		return "/pedido/carrinho-compra";
+	
 	}
 	
-	@GetMapping("/finalizar-pedido/{id}")
-	public String finalizarPedido(@PathVariable("id") Long id) throws PedidoException, EstoqueException {
-		pedidoService.finalizarPedido(id);	
-		return "redirect:/pedido/pedidos-finalizados";
+	@GetMapping("/finalizar-pedido/{id}/{formaPagamento}")
+	public String finalizarPedido(@PathVariable("id") Long id, @PathVariable("formaPagamento") String formaPagamento) {
+		
+		try {
+			pedidoService.finalizarPedido(id, formaPagamento);
+			return "redirect:/pedido/pedidos-finalizados";
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} 
+		
+		return "/pedido/carrinho-compra"; 
 	}
 	
 	@PostMapping("/cancelar-pedido")
@@ -55,22 +67,16 @@ public class PedidoController {
 	}
 	
 	@GetMapping("/pedidos-finalizados")
-	public String pedidosFinalizados(Model model) throws PedidoException, UsuarioException {
-		
-		Usuario usuario = usuarioService.findById(1L);
-		
+	public String pedidosFinalizados(@AuthenticationPrincipal Usuario usuario, Model model) {
 		model.addAttribute("pedidos", pedidoService.pedidosFinalizados(usuario.getId()));
 		return "/pedido/pedidos-user";
 	}
 	
 	@PostMapping("/adicionar-item")
-	public String adicionarItemAoCarrinho(@ModelAttribute("dtoPedido") DTOPedido dtoPedido) throws Exception {
-		
-		Usuario usuario = usuarioService.findById(1L);
-		
+	public String adicionarItemAoCarrinho(@ModelAttribute("dtoPedido") DTOPedido dtoPedido, @AuthenticationPrincipal Usuario usuario) throws Exception {
+			
 		Pedido pedido = pedidoService.gerarPedido(usuario);
 		pedidoService.adicionarItemAoPedido(pedido.getId(), dtoPedido.getIdLivro(), dtoPedido.getQuantidade());
-		
 		
 		Thread.sleep(5000);
 		return "redirect:" + dtoPedido.getUrlOrigem();
@@ -83,9 +89,30 @@ public class PedidoController {
 		return "redirect:/pedido/carrinho-compra";
 	}
 	
-	@GetMapping("deletar-item/{idItem}")
-	public String deletarItemPedido (@PathVariable("idItem") Long idItem) {
+	@GetMapping("/deletar-item/{idItem}")
+	public String deletarItemPedido(@PathVariable("idItem") Long idItem) {
 		pedidoService.deletarItemPedido(idItem);
 		return "redirect:/pedido/carrinho-compra";
 	}
+	
+	@GetMapping("/forma-pagamento")
+	public String formaPagamento(Model model) {
+		List<FormaPagamento> formasPagamentosCadastradas = formaPagamentoService.listar();
+		model.addAttribute("formasPagamentoCadastradas", formasPagamentosCadastradas);
+		model.addAttribute("formaPagamento", new FormaPagamento());
+		return "/pedido/forma-pagamento";
+	}
+	
+	@PostMapping("/forma-pagamento")
+	public String formaPagamentoSubmit(@ModelAttribute("formaPagamento") FormaPagamento formaPagamento) {
+		formaPagamentoService.salvar(formaPagamento);
+		return "redirect:/pedido/forma-pagamento";
+	}
+	
+	@RequestMapping("/atualizar-forma-pagamento/{id}")
+	public String formaPagamentoSubmit(@PathVariable Long id) {
+		formaPagamentoService.atualizar(id);
+		return "redirect:/pedido/forma-pagamento";
+	}
+
 }

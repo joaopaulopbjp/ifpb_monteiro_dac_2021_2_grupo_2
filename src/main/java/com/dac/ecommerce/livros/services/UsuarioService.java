@@ -7,7 +7,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dac.ecommerce.livros.dto.DTOUsuario;
@@ -80,6 +79,7 @@ public class UsuarioService {
 		Usuario usuario = usuarioDTO.parser();
 		
 		if(repository.findByEmail(usuario.getEmail()) == null) {
+			
 			Role role = new Role();
 			
 			switch(usuario.getTipoUsuario()) {
@@ -91,7 +91,11 @@ public class UsuarioService {
 				break;
 			}
 			
-			roleRepository.save(role);
+			if(roleRepository.findByRole(role.getRole()) != null) {
+				role = roleRepository.findByRole(role.getRole());
+			} else {
+				roleRepository.save(role);
+			}
 			
 			Set<Role> roles = new HashSet<Role>();
 			roles.add(role);
