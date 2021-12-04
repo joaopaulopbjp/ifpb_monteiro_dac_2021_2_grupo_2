@@ -282,8 +282,15 @@
 						</div>
 						<div class="modal-body">
 
-							<form method="post" id="formulario" th:object="${dTOLivro}" th:action="@{'/livro/salvar'}"
+							<form method="post" id="formulario" th:object="${dtoLivro}" th:action="@{'/livro/salvar'}"
 								enctype="multipart/form-data">
+
+								<script th:inline="javascript" th:if="${#fields.hasErrors('*')}">
+									console.log("Inline - Mostrar modal com erros.");
+									$("#modalCadastrarLivro").modal("show");
+								</script>
+
+
 								<div class="form-group" id="grupo">
 									<h4 id="titulo">Escolha os autores do livro</h4>
 									<div class="container">
@@ -304,7 +311,10 @@
 								</div>
 								<div class="row">
 									<div class="col">
-										<input type="text" class="form-control" placeholder="ISBN" name="isbn" />
+										<input type="text" class="form-control" placeholder="ISBN" th:field="*{isbn}"
+											th:errorclass="is-invalid"/>
+										<div class="invalid-feedback" th:if="${#fields.hasErrors('isbn')}"
+											th:errors="*{isbn}"></div>
 									</div>
 									<div class="col">
 										<input type="text" class="form-control" id="titulo_livro" placeholder="TÍTULO"
@@ -420,15 +430,30 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
-	<script type="text/javascript" th:src="@{/js/botao-flutuante.js}"></script>
-
-
 	<script>
+		function toggleFAB(fab) {
+			if (document.querySelector(fab).classList.contains('show')) {
+				document.querySelector(fab).classList.remove('show');
+			} else {
+				document.querySelector(fab).classList.add('show');
+			}
+		}
+
+		document.querySelector('.fab .main').addEventListener('click', function () {
+			toggleFAB('.fab');
+		});
+
+		document.querySelectorAll('.fab ul li button').forEach((item) => {
+			item.addEventListener('click', function () {
+				toggleFAB('.fab');
+			});
+		})
+
 		calendario.max = new Date().toISOString().split("T")[0];
 
 		$('#preco').mask('#.##0,00', {reverse: true});
-	</script>
 
+	</script>
 
 </body>
 

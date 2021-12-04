@@ -38,8 +38,6 @@ public class EstoqueController {
 		return "/estoque/itens-estoques";
 	}
 	
-	
-	
 	@RequestMapping("/cadastrar-estoque")
 	public String form() {
 		return "/estoque/cadastrar-estoque";

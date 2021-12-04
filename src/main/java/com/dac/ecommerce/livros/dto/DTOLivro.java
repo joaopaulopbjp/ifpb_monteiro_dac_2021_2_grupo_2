@@ -3,6 +3,10 @@ package com.dac.ecommerce.livros.dto;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import com.dac.ecommerce.livros.model.livro.Autor;
 import com.dac.ecommerce.livros.model.livro.Livro;
 
@@ -11,10 +15,17 @@ import lombok.Data;
 @Data // (Data Transfer Object)
 public class DTOLivro {
 
+	
+	@NotNull
+	@NotBlank
 	private String isbn;
+	
+	
 	private String titulo;
 	private String descricao;
+	
 	private String preco;
+	
 	private Long editora;
 	private Long categoria;
 	private Integer edicao;
