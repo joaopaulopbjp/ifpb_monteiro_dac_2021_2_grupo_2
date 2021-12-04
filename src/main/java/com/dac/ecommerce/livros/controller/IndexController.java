@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dac.ecommerce.livros.dto.DTOPedido;
 import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
@@ -30,7 +29,9 @@ public class IndexController {
 	
 	@GetMapping("/detalhar-livro/{id}")
 	public String detalharLivro(@PathVariable("id") Long id, Model model) {
+		
 		ItemEstoque itemEstoque = estoqueService.pesquisarItemEstoque(id);
+			
 		model.addAttribute("item", itemEstoque);
 		model.addAttribute("dtoPedido", new DTOPedido());
 		return "/home/detalhar-item";

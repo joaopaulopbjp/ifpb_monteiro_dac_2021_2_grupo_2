@@ -102,15 +102,37 @@
 						</tr>					
 					</tbody>
 				</table>
-				
+
 				<div class="container-actions">
-					<button class="btn btn-success" th:onclick="'finalizarPedido(\'' + ${itens.get(0).pedido_fk.id} + '\')'">Finalizar Pedido</button>
+					<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#forma-pagamento-modal">Finalizar Pedido</button>
 					<span class='space'></span>
 					<button class="btn btn-primary" onclick="retornar()">Voltar</button>
 				</div>
 				
+				<!-- Modal Forma de Pagamento -->
+				<div class="modal fade" id="forma-pagamento-modal" tabindex="-1" aria-hidden="true">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title">Forma de Pagamento</h5>
+				        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				      </div>
+				      <div class="modal-body">
+				        <select id="seletor-forma-pagamento" class="form-select" required>
+							<option selected disabled>Selecione a forma de pagamento</option>
+							<option th:each="forma : ${formasPagamento}" th:value="${forma.tipo}" th:text="${forma.tipo}"></option>
+						</select>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+				        <button type="button" class="btn btn-success" th:onclick="'finalizarPedido(\'' + ${itens.get(0).pedido_fk.id} + '\')'">Concluír</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				<!-- Modal Forma de Pagamento -->
+				
 			</div>
-			
 			
 		</div>
 	
@@ -124,7 +146,12 @@
 		<script>
 		
 			function finalizarPedido(id) {
-				window.location.href=`/pedido/finalizar-pedido/${id}`;
+				const seletorFormaPagamento = document.getElementById("seletor-forma-pagamento");
+				
+				if(seletorFormaPagamento.value !== 'Selecione a forma de pagamento') {
+					window.location.href=`/pedido/finalizar-pedido/${id}/${seletorFormaPagamento.value}`;
+				}
+				
 			}
 		
 			function deletarItem(idItem) {

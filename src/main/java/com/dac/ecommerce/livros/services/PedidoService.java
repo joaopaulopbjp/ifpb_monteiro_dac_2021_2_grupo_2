@@ -12,6 +12,7 @@ import com.dac.ecommerce.livros.exceptions.*;
 import com.dac.ecommerce.livros.model.livro.Livro;
 import com.dac.ecommerce.livros.model.pedido.*;
 import com.dac.ecommerce.livros.model.user.Usuario;
+import com.dac.ecommerce.livros.repository.FormaPagamentoRepository;
 import com.dac.ecommerce.livros.repository.ItemPedidoRepository;
 import com.dac.ecommerce.livros.repository.PedidoRepository;
 
@@ -20,6 +21,7 @@ public class PedidoService {
 	
 	@Autowired private PedidoRepository pedidoRepository;
 	@Autowired private ItemPedidoRepository itemPedidoRepository;
+	@Autowired private FormaPagamentoRepository formaPagamentoRepository;
 	@Autowired private EstoqueService estoqueService;
 	@Autowired private LivroService livroService;
 	 
@@ -50,28 +52,31 @@ public class PedidoService {
 		return pedidoRepository.findPedidoNaoFinalizado(idCliente);
 	}
 	
-	public void finalizarPedido(Long id) throws PedidoException, EstoqueException {
+	public void finalizarPedido(Long id, String formaPagamento) throws PedidoException, EstoqueException {
 		
 		Pedido pedido = pedidoRepository.findById(id).get();
 		
 		if(pedido.getStatus() == PedidoStatus.NAO_FINALIZADO && pedido.getItens().size() > 0) {
 			
-			// Verificar estoque
-			for(ItemPedido item : pedido.getItens()) {
-				if(!consultarEstoque(item.getLivro().getId(), item.getQuantidade())) {
-					throw new PedidoException("[ERRO FINALIZAR PEDIDO] - O ITEM ABAIXO ESTÁ SEM ESTOQUE! \n" + item.toString());
+			if(formaPagamento.length() > 0) {
+				// Verificar estoque
+				for(ItemPedido item : pedido.getItens()) {
+					if(!consultarEstoque(item.getLivro().getId(), item.getQuantidade())) {
+						throw new PedidoException("[ERRO FINALIZAR PEDIDO] - O ITEM ABAIXO ESTÁ SEM ESTOQUE! \n" + item.toString());
+					}
 				}
+				
+				// Reduzir Estoque
+				for(ItemPedido itemPedido : pedido.getItens()) {
+					estoqueService.reduzirEstoque(itemPedido.getLivro(), itemPedido.getQuantidade());
+				}
+				
+				pedido.setFormaPagamento(formaPagamentoRepository.findByTipo(formaPagamento));
+				pedido.setDataFechamento(new Date());
+				pedido.setStatus(PedidoStatus.FINALIZADO);
+				
+				salvarPedido(pedido);
 			}
-			
-			// Reduzir Estoque
-			for(ItemPedido itemPedido : pedido.getItens()) {
-				estoqueService.reduzirEstoque(itemPedido.getLivro(), itemPedido.getQuantidade());
-			}
-			
-			pedido.setDataFechamento(new Date());
-			pedido.setStatus(PedidoStatus.FINALIZADO);
-			
-			salvarPedido(pedido);
 		} else {
 			throw new PedidoException("[ERRO PEDIDO] - NÃO FOI POSSÍVEL FINALIZAR O PEDIDO!");
 		}

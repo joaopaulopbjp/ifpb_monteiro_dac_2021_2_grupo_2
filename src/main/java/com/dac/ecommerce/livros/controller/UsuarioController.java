@@ -2,18 +2,11 @@ package com.dac.ecommerce.livros.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.dac.ecommerce.livros.dto.DTOUsuario;
 import com.dac.ecommerce.livros.exceptions.UsuarioException;
@@ -49,15 +42,18 @@ public class UsuarioController {
 		}
 		
 		return "/user/cadastrar-user";
-		
 	}
 	
-	@PutMapping("/endereco-entrega")
-	public String cadastrarEnderecoEntregaSubmit(@Valid @ModelAttribute("endereco") Endereco endereco, BindingResult bindingResult, Model model) {
+	@GetMapping("/endereco-entrega")
+	public String cadastrarEnderecoEntregaForm(Model model) {
+		model.addAttribute("endereco", new Endereco());
+		return "/pedido/cadastrar-endereco";
+	}
+	
+	@PostMapping("/endereco-entrega")
+	public String cadastrarEnderecoEntregaSubmit(@Valid @ModelAttribute("endereco") Endereco endereco, BindingResult bindingResult, @AuthenticationPrincipal Usuario usuario) {
 		
 		try {
-			Usuario usuario = usuarioService.findById(1L);
-			
 			if(!bindingResult.hasErrors()) {
 				usuario.setEndereco(endereco);
 				usuarioService.update(usuario);
@@ -69,22 +65,17 @@ public class UsuarioController {
 			System.out.println(error.getMessage());
 		}
 		
-
 		return "/pedido/cadastrar-endereco";
 	}
 	
 	@GetMapping("/alterar-dados")
-	public String atualizarDadosForm(Model model) throws UsuarioException {
-		
-		Usuario usuario = usuarioService.findById(1L);
-		System.out.println(usuario.getId());
-		
+	public String atualizarDadosForm(@AuthenticationPrincipal Usuario usuario, Model model) throws UsuarioException {
 		model.addAttribute("user", usuario);
 		return "/user/alterar-dados";
 	}
 	
 	@PostMapping("/alterar-dados")
-	public String atualizarDadosForm(@Valid @ModelAttribute("user") Usuario usuario, Model model) throws UsuarioException, InterruptedException {
+	public String atualizarDadosSubmit(@Valid @ModelAttribute("user") Usuario usuario, Model model) throws UsuarioException, InterruptedException {
 
 		usuarioService.update(usuario);
 		
@@ -92,6 +83,9 @@ public class UsuarioController {
 		return "redirect:/user/alterar-dados";
 	}
 	
-	
+	@GetMapping("menu-conta")
+	public String menuConta() {
+		return "/user/menu-conta";
+	}
 	
 }

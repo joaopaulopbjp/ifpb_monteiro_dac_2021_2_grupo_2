@@ -63,8 +63,11 @@
 					<a sec:authorize="!isAuthenticated()" th:href="@{'http://localhost:8080/user/login'}">Sign In<br></a>
 					<a sec:authorize="!isAuthenticated()" th:href="@{'http://localhost:8080/user/cadastrar'}">Sign Up<br></a>
 					<a th:href="@{'http://localhost:8080/'}">Home<br></a>
+					<a sec:authorize="hasAuthority('CLIENTE')" th:href="@{'http://localhost:8080/pedido/carrinho-compra'}">Carrinho de Compra<br></a>
 					<a sec:authorize="isAuthenticated()" th:href="@{'http://localhost:8080/user/menu-conta'}">Minha Conta<br></a>
-					<a th:href="@{'http://localhost:8080/livro/menu-livro'}">Meus Livros</a>
+					<a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout<br></a>
+				
+			
 				</div>
 			</div>
 			<nav class="navbar navbar-dark bg-primary">

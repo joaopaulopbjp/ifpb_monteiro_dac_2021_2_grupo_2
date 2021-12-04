@@ -19,10 +19,6 @@
 			input[type=number] {
 			  -moz-appearance: textfield;
 			}
-		
-			.container h4 {
-				text-align: center;
-			}
 			
 			label {
 				margin: 20px 0 5px 0;
@@ -43,7 +39,7 @@
 		
 			<h4>Informe o Endereço de Entrega</h4>
 			
-			<form  method="PUT" th:action="@{/user/endereco-entrega}" th:object="${endereco}">
+			<form  method="POST" th:action="@{/user/endereco-entrega}" th:object="${endereco}">
 				<div class="row">
 				
 					<div class="col-4">

@@ -14,9 +14,12 @@ public class FormaPagamentoService {
 	@Autowired
 	private FormaPagamentoRepository formaPagamentoRepository;
 	
-	public void salvar(String formaPagamento) {
-		FormaPagamento fp = new FormaPagamento(formaPagamento);
-		formaPagamentoRepository.save(fp);
+	public void salvar(FormaPagamento formaPagamento) {
+		
+		if(formaPagamentoRepository.findByTipo(formaPagamento.getTipo()) == null) {
+			formaPagamentoRepository.save(formaPagamento);
+		}
+		
 	}
 	
 	public void remover(Long id) {
@@ -35,6 +38,16 @@ public class FormaPagamentoService {
 	
 	public List<FormaPagamento> listar() {
 		return formaPagamentoRepository.findAll();
+	}
+	
+	public List<FormaPagamento> buscarFormasAtivas() {
+		return formaPagamentoRepository.findByActive();
+	}
+
+	public void atualizar(Long id) {
+		FormaPagamento formaPagamento = pesquisar(id);
+		formaPagamento.setIsActive(formaPagamento.getIsActive() == true ? false : true);
+		formaPagamentoRepository.save(formaPagamento);
 	}
 	
 }

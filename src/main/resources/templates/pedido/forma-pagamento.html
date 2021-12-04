@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+	<head th:replace="~{fragmentos :: head('Cadastrar Forma Pagamento')}"></head>
+	
+	<body>
+	
+		<style th:replace="~{fragmentos :: style}"></style>
+	
+		<style>
+			
+			footer {
+				left: 0;
+			}
+			
+			label {
+				margin: 20px 0 5px 0;
+			}
+			
+			.form-check-label {
+				margin: 0;
+			}
+			
+			.container-options {
+				margin-top: 10px;
+			}
+			
+			.container {
+				margin-top: 50px;
+			}
+			
+			.card {
+				padding: 20px;
+			}
+			
+			.space {
+				margin: 20px;
+			}
+		</style>
+	
+		<header th:replace="~{fragmentos :: header}"></header>
+	
+		<div class="container">
+		
+			<div class="card">
+				<h4>Nova Forma de Pagamento</h4>
+			
+				<form th:action="@{/pedido/forma-pagamento}" th:object="${formaPagamento}" method="POST">
+					<div class="row">
+						<div class="col-12">
+							<label for="input-tipo" class="form-label">Tipo:</label>
+							<input id="input-tipo" th:field="*{tipo}" class="form-control" required/>
+						</div>
+						
+						<div class="col-12">
+							<label class="form-label">Status:</label>
+							<div class="form-check">
+								<input class="form-check-input" onclick="mudarLabel()" th:field=*{isActive} type="checkbox" id="check-status" checked>
+								<label class="form-check-label" for="check-status" id="label-checkbox">Desativado</label>
+							</div>
+						</div>
+						
+						<div class="container-options">
+							<button class="btn btn-success" type="submit">Salvar</button>
+								<button class="btn btn-primary" type="button" onclick="voltar()">Voltar</button>
+						</div>
+				</form>
+			</div>
+			
+			<span class="space"></span>
+			
+			<!-- Exibir formas de pagamentos existentes-->
+			<div th:if="${formasPagamentoCadastradas.empty}">
+				<div class="alert alert-primary" role="alert">
+				 	<span>Nenhuma forma de pagamento cadastrada.</span> 
+				</div>
+			</div>
+			
+			<table class="table" th:if="${!formasPagamentoCadastradas.empty}">
+				<thead>
+					<th scope="col">Tipo</th>
+					<th scope="col">Status</th>
+					<th></th>
+					</thead>
+				<tbody>
+					<tr th:each="forma : ${formasPagamentoCadastradas}">
+						<td th:text="${forma.tipo}"></td>
+						<td th:text="${forma.isActive} == True ? Ativado : Desativado"></td>
+						<td>
+							<input class="form-check-input" th:onclick="'submit(\'' + ${forma.id} + '\')'" th:checked="${forma.isActive}" type="checkbox" th:id="forma + ${forma.id}">
+						</td>
+					</tr>					
+				</tbody>
+			</table>
+	
+		</div>
+	
+		<footer th:replace="~{fragmentos :: footer}"></footer>
+	
+		<!-- Scripts -->
+		<script th:replace="~{fragmentos :: script1}"></script>
+		<script th:replace="~{fragmentos :: script2}"></script>
+		<script th:replace="~{fragmentos :: script3}"></script>
+	
+		<script>
+			
+			function mudarLabel() {
+				const checkboxStatus = document.getElementById("check-status");
+				const labelCheckboxStatus = document.getElementById("label-checkbox");
+			
+				labelCheckboxStatus.innerText = checkboxStatus.checked === true ? "Ativado" : "Desativado";
+			}
+			
+			function voltar() {
+				window.location.href="/user/menu-conta";
+			}
+			
+			function submit(id) {
+				window.location.href=`/pedido/atualizar-forma-pagamento/${id}`;
+			}
+			
+			
+		</script>
+		
+	</body>
+</html>
