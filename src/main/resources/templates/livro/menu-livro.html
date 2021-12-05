@@ -194,6 +194,56 @@
 									src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
 							</button>
 
+							<!-- Modal editar livro ao estoque-->
+
+							<div class="modal fade" id="modalEditarLivro" tabindex="-1" role="dialog"
+								aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">Editar Livro</h5>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Fechar">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+										
+											<form method="POST" th:action="@{'/livro/editar'}">
+											<div class="form-group">
+													<label for="input-id">ID</label>
+													<input type="text" class="form-control" id="input-id"
+														th:value="${livro.id}" name="idLivro" readonly >
+												</div>
+												<div class="form-group">
+													<label for="inputNovoTitulo">Digite Um novo título</label>
+													<input type="text" class="form-control" id="inputNovoTitulo"
+														placeholder="Digite um novo Titulo" name="titulo" required>
+												</div>
+												<div class="form-group">
+													<label for="inputNovaDescricao">Digite uma nova Decrição</label>
+													<textarea class="form-control"
+														placeholder="Digite uma nova descrição" rows="2" name="descricao" required></textarea><br>
+												</div>
+												<div class="row">
+													<div class="col-md-auto">
+														<div class="input-group mb-3">
+															<div class="input-group-prepend">
+																<span class="input-group-text">R$</span>
+															</div>
+															<input type="" class="form-control" id="novo-preco"
+																placeholder="PREÇO" name="preco" required/>
+														</div>
+													</div>
+												</div>
+												<button type="submit" class="btn btn-primary">Salvar</button>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
 							<a th:if="${livro.adicionadoEmEstoque == false}"
 								th:href="@{/livro/deletar/{id}(id = ${livro.id})}">
 								<button id="btn_excluir" type="button" class="btn btn-danger" title="Excluir livro">
@@ -201,6 +251,7 @@
 										src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
 								</button>
 							</a>
+
 
 							<a th:if="${!estoques.empty && livro.adicionadoEmEstoque == false}">
 								<button id="btn_adicionar" type="submit" class="btn btn-success"
@@ -263,13 +314,14 @@
 									</div>
 								</div>
 							</div>
-							</a>
+
 						</td>
 					</tr>
 				</tbody>
 			</table>
 
 			<!-- Modal cadastrar livro-->
+
 			<div class="modal fade" id="modalCadastrarLivro" tabindex="-1" role="dialog"
 				aria-labelledby="cadastrarLivroModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
@@ -284,12 +336,6 @@
 
 							<form method="post" id="formulario" th:object="${dtoLivro}" th:action="@{'/livro/salvar'}"
 								enctype="multipart/form-data">
-
-								<script th:inline="javascript" th:if="${#fields.hasErrors('*')}">
-									console.log("Inline - Mostrar modal com erros.");
-									$("#modalCadastrarLivro").modal("show");
-								</script>
-
 
 								<div class="form-group" id="grupo">
 									<h4 id="titulo">Escolha os autores do livro</h4>
@@ -311,14 +357,23 @@
 								</div>
 								<div class="row">
 									<div class="col">
+<<<<<<< HEAD
+										<input type="text" class="form-control" placeholder="ISBN" name="isbn"
+											required />
+=======
 										<input type="text" class="form-control" placeholder="ISBN" th:field="*{isbn}"
 											th:errorclass="is-invalid" required/>
+>>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 										<div class="invalid-feedback" th:if="${#fields.hasErrors('isbn')}"
 											th:errors="*{isbn}"></div>
 									</div>
 									<div class="col">
 										<input type="text" class="form-control" id="titulo_livro" placeholder="TÍTULO"
+<<<<<<< HEAD
+											name="titulo" required />
+=======
 											name="titulo" required/>
+>>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 									</div>
 								</div>
 								<div class="form-group">
@@ -332,7 +387,11 @@
 												<span class="input-group-text">R$</span>
 											</div>
 											<input type="" class="form-control" id="preco" placeholder="PREÇO"
+<<<<<<< HEAD
+												name="preco" required />
+=======
 												name="preco" required/>
+>>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 										</div>
 									</div>
 									<div class="col" id="file">
@@ -361,11 +420,19 @@
 								<div class="row">
 									<div class="col">
 										<input type="number" class="form-control" placeholder="EDIÇÃO" id="edicao"
+<<<<<<< HEAD
+											name="edicao" required />
+=======
 											name="edicao" required/>
+>>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 									</div>
 									<div class="col">
 										<input type="date" class="form-control" placeholder="ANO" name="date"
+<<<<<<< HEAD
+											id="calendario" required />
+=======
 											id="calendario" required/>
+>>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 									</div>
 								</div>
 								<div class="modal-footer">
@@ -452,7 +519,7 @@
 		calendario.max = new Date().toISOString().split("T")[0];
 
 		$('#preco').mask('#.##0,00', {reverse: true});
-
+		$('#novo-preco').mask('#.##0,00', {reverse: true});
 	</script>
 
 </body>

@@ -32,8 +32,8 @@
 	</ul>
 	<form method="POST" th:object="${dtoAutor}" th:action="@{/autor/salvar}">
 		<div class="col-10">
-			<input type="text" class="form-control" placeholder="Digite o nome do autor">
-			<div  class="invalid-feedback"></div>
+			<input type="text" class="form-control" placeholder="Digite o nome do autor" th:field="*{nomeAutor}" th:errorclass="is-invalid">
+			<div class="invalid-feedback" th:if="${#fields.hasErrors('nomeAutor')}" th:errors="*{nomeAutor}"></div>
 			<button type="submit" class="btn btn-primary salvar">Salvar</button>
 		</div>
 	</form>

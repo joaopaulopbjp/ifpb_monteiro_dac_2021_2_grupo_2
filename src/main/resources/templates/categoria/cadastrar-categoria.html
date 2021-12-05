@@ -30,11 +30,13 @@
 		</li>
 	</ul>
 
-	<form method="POST" th:action="@{/categoria/salvar}">
+	<form method="POST" th:object="${dtoCategoria}" th:action="@{/categoria/salvar}">
 		<div class="col-10">
 			<label for="input-nome" class="form-label">Nome da categoria:</label>
 			<input id="input-nome" class="form-control" type="text" placeholder="Digite o nome da categoria"
-				name="nomeCategoria" required />
+				th:field="*{nomeCategoria}" th:errorclass="is-invalid" />
+				<div class="invalid-feedback" th:if="${#fields.hasErrors('nomeCategoria')}" th:errors="*{nomeCategoria}">
+				</div>
 			<button class="btn btn-primary salvar" type="submit">Salvar</button>
 		</div>
 	</form>

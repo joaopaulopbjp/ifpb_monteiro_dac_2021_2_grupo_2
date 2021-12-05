@@ -1,13 +1,23 @@
-#<!DOCTYPE html>
+#
+<!DOCTYPE html>
 <html>
 
 <head th:fragment="head(titulo)">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<<<<<<< HEAD
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"
+		integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG"
+		crossorigin="anonymous"></script>
+
+=======
 	
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
 		
+>>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
 	<title th:text="${titulo}">fragment</title>
 </head>
@@ -21,11 +31,11 @@
 			width: 100%;
 			text-align: center;
 		}
-		
+
 		footer a {
 			text-decoration: none;
 		}
-		
+
 		body {
 			background-color: #e9ecef;
 		}
@@ -36,39 +46,46 @@
 	</style>
 
 	<header th:fragment="header">
-	
+
 		<style>
-			
 			.container-nav h4 {
 				color: #FFF;
 				margin: 5px 0 5px 0;
 			}
-			
+
 			.container-nav a {
 				color: #FFF;
 				text-decoration: none;
 			}
-			
+
 			.container-nav a:hover {
 				color: #a6a6a6;
 			}
-			
+
 			.navbar-toggler {
 				margin-left: 10px;
 			}
-				
 		</style>
-	
+
 		<div class="pos-f-t">
 			<div class="collapse" id="navbarToggleExternalContent">
 				<div class="bg-primary p-4 container-nav">
 					<h4>Menu</h4>
-					<a sec:authorize="!isAuthenticated()" th:href="@{'http://localhost:8080/user/login'}">Sign In<br></a>
-					<a sec:authorize="!isAuthenticated()" th:href="@{'http://localhost:8080/user/cadastrar'}">Sign Up<br></a>
+					<a sec:authorize="!isAuthenticated()" th:href="@{'http://localhost:8080/user/login'}">Sign
+						In<br></a>
+					<a sec:authorize="!isAuthenticated()" th:href="@{'http://localhost:8080/user/cadastrar'}">Sign
+						Up<br></a>
 					<a th:href="@{'http://localhost:8080/'}">Home<br></a>
-					<a sec:authorize="hasAuthority('CLIENTE')" th:href="@{'http://localhost:8080/pedido/carrinho-compra'}">Carrinho de Compra<br></a>
-					<a sec:authorize="isAuthenticated()" th:href="@{'http://localhost:8080/user/menu-conta'}">Minha Conta<br></a>
+					<a sec:authorize="hasAuthority('CLIENTE')"
+						th:href="@{'http://localhost:8080/pedido/carrinho-compra'}">Carrinho de Compra<br></a>
+					<a sec:authorize="isAuthenticated()" th:href="@{'http://localhost:8080/user/menu-conta'}">Minha
+						Conta<br></a>
 					<a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout<br></a>
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 				</div>
 			</div>
 			<nav class="navbar navbar-dark bg-primary">
@@ -93,11 +110,11 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"
 		th:fragment="script1"></script>
-		
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
 		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"
 		th:fragment="script2"></script>
-		
+
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
 		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"
 		th:fragment="script3"></script>

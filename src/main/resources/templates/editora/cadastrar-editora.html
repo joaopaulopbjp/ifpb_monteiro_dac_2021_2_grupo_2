@@ -23,13 +23,23 @@
 		</li>
 	</ul>
 
-	<form method="POST" th:action="@{'/editora/salvar-editora'}">
+	<form method="POST" th:object="${dtoEditora}" th:action="@{'/editora/salvar-editora'}">
 		<div class="col-10">
-			<label for="inputNome">Nome da editora:</label>
-			<input type="text" class="form-control" placeholder="Digite o nome da editora" name="nomeEditora"><br>
-			<label for="inputCidade">Cidade da editora:</label>
-			<input type="text" class="form-control" placeholder="Digite o nome da cidade da editora"
-				name="cidadeEditora"><br>
+			<div>
+				<label for="inputNome">Nome da editora:</label>
+				<input type="text" class="form-control" placeholder="Digite o nome da editora" th:field="*{nomeEditora}"
+					th:errorclass="is-invalid">
+				<div class="invalid-feedback" th:if="${#fields.hasErrors('nomeEditora')}" th:errors="*{nomeEditora}">
+				</div>
+			</div><br>
+			<div>
+				<label for="inputCidade">Cidade da editora:</label>
+				<input type="text" class="form-control" placeholder="Digite o nome da cidade da editora"
+					th:field="*{cidadeEditora}"
+					th:errorclass="is-invalid">
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('cidadeEditora')}" th:errors="*{cidadeEditora}">
+				</div>
+			</div><br>
 			<button type="submit" class="btn btn-primary salvar">Salvar</button>
 		</div>
 	</form>

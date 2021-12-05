@@ -13,17 +13,8 @@ public class EditoraService {
 	@Autowired
 	private EditoraRepository editoraRepository;
 	
-	public Editora recuperarEditora(String nomeDaEditora, String cidadeEditora) {
-		
+	public Editora recuperarEditora(String nomeDaEditora) {
 		Editora editora = editoraRepository.findByNome(nomeDaEditora);
-		
-		if(editora == null) {
-			editora = new Editora();
-			editora.setNome(nomeDaEditora);
-			editora.setCidade(cidadeEditora);
-			editoraRepository.save(editora);
-		}
-		
 		return editora;
 	}
 	

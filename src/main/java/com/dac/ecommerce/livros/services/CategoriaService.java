@@ -14,20 +14,8 @@ public class CategoriaService {
 	private CategoriaRepository categoriaRepository;
 	
 	
-	public Categoria recuperarCategoria(String nome) throws Exception {
-		
-		if(nome.equals("")) {
-			throw new Exception("[ERROR] CATEGORIA NÃO PODE SER CADASTRADA!");
-		}
-		
+	public Categoria recuperarCategoria(String nome) {
 		Categoria categoria = categoriaRepository.findByNome(nome);
-		
-		if(categoria == null) {
-			categoria = new Categoria();
-			categoria.setNome(nome);
-			categoriaRepository.save(categoria);
-		}
-		
 		return categoria;
 	}
 	

@@ -21,8 +21,8 @@ public class DTOAutor {
 	
 	public Autor toAutor() {
 		Autor autor = new Autor();
-//		autor.setNome(this.nomeAutor);
-//		autor.setId(this.idAutor);
+		autor.setNome(this.nomeAutor);
+		autor.setId(this.idAutor);
 		return autor;
 	}
 
