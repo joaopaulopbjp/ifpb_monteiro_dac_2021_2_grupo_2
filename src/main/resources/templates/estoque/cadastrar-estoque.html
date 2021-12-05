@@ -35,11 +35,13 @@
 		</li>
 	</ul>
 
-	<form method="POST" th:action="@{'/estoque/salvar'}">
+	<form method="POST" th:object="${dtoEstoque}" th:action="@{'/estoque/salvar'}">
 		<div class="col-10">
 			<label for="inputNome">Nome do estoque</label>
-			<input type="text" class="form-control" placeholder="Digite um nome para o estoque" name="nomeEstoque">
-
+			<input type="text" class="form-control" placeholder="Digite um nome para o estoque" 
+			th:field="*{nomeEstoque}" th:errorclass="is-invalid">
+			<div class="invalid-feedback" th:if="${#fields.hasErrors('nomeEstoque')}" th:errors="*{nomeEstoque}">
+			</div>
 			<button type="submit" class="btn btn-primary salvar">Salvar</button>
 		</div>
 	</form>

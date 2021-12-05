@@ -67,6 +67,7 @@ public class LivroService {
 	}
 	
 	public Livro bucarPelaEditora(Editora editora) {
+		
 		return repositorioLivro.findByEditora(editora);
 	}
 	
