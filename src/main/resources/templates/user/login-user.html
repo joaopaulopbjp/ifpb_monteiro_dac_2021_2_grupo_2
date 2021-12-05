@@ -52,6 +52,12 @@
 		.space {
 			margin: 10px;
 		}
+		
+		.alert {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 	</style>
 
 	<div class="container">
@@ -62,14 +68,17 @@
 			<form th:action="@{/user/login}" method="POST">
 				
 				<div class="row">
+				
+					<!-- Apresentar Erro -->
 					<div class="col-12">
-						<p th:text="${param.error}"></p>
+						<div th:if="${param.error}" class="alert alert-danger">    
+	  				  			Dados Inválidos!
+						</div>
+					</div>
+				
+					<div class="col-12">
 						<label for="input-nome" class="form-label">E-mail:</label>
 						<input id="input-nome" name="username" class="form-control" type="email" required />
-						<div th:if="${param.error}" class="invalid-feedback">
-							E-mail Inválido.
-						</div>
-
 					</div>
 					
 					<div class="col-12">
