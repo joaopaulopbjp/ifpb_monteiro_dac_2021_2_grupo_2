@@ -21,7 +21,11 @@
 			}
 			
 			label {
-				margin: 20px 0 5px 0;
+				margin: 10px 0 5px 0;
+			}
+			
+			h4 {
+				margin-bottom: 20px;
 			}
 			
 			.container-options {
@@ -37,9 +41,9 @@
 	
 		<div class="container">
 		
-			<h4>Informe o Endereço de Entrega</h4>
+			<h4>Informe o endereço de entrega</h4>
 			
-			<form  method="POST" th:action="@{/user/endereco-entrega}" th:object="${endereco}">
+			<form method="POST" th:action="@{/user/endereco-entrega}" th:object="${endereco}">
 				<div class="row">
 				
 					<div class="col-4">

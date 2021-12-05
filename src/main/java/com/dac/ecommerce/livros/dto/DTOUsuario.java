@@ -15,19 +15,22 @@ import lombok.Data;
 @Data
 public class DTOUsuario {
 	
+	@NotEmpty
 	@CPF
 	private String cpf;
 	
 	@NotEmpty
-	@Length(min=3)
+	@Length(min=3, max=200)
 	private String nome;
 	
+	@Length(min=15, max=15)
 	private String telefone;
 	
 	@NotEmpty
 	@Email
 	private String email;
 	
+	@NotEmpty
 	@Length(min=8)
 	private String senha;
 	

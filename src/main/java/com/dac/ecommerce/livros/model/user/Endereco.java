@@ -13,28 +13,28 @@ import lombok.Data;
 public class Endereco {
 	
 	@NotEmpty
-	private String cep = " ";
+	private String cep;
 	
-	private Integer numero = 0;
-	
+	private Integer numero;
+
 	@NotEmpty
 	@Length(min=4, max=200)
-	private String cidade = " ";
+	private String cidade;
 	
 	@NotEmpty
 	@Length(max=2, min=2, message = "{estado}")
-	private String estado = " ";
+	private String estado;
 	
 	@NotEmpty
 	@Length(min=4, max=200)
-	private String bairro = " ";
+	private String bairro;
 	
 	@NotEmpty
 	@Length(min=4, max=200)
-	private String rua = " ";
+	private String rua;
 	
 	@Column(nullable = true)
-	private String complemento = " ";
+	private String complemento;
 	
 	public Endereco(String cep, Integer numero, String cidade, String estado, String bairro, String rua, String complemento) {
 		this.cep = cep;
@@ -46,7 +46,15 @@ public class Endereco {
 		this.complemento = complemento;
 	}
 	
-	public Endereco() {}
+	public Endereco() {
+		this.cep = " ";
+		this.numero = 0;
+		this.cidade = " ";
+		this.estado = " ";
+		this.bairro = " ";
+		this.rua = " ";
+		this.complemento = " ";
+	}
 	
 	public String toString() {
 		return "\nCEP: " + this.cep +

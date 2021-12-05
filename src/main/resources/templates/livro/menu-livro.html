@@ -291,14 +291,14 @@
 													<label for="inputQuantidade">QUANTIDADE DE ITENS</label>
 													<input type="number" class="form-control"
 														placeholder="Digite a quantidade de itens para ser adicionado"
-														name="qtd">
+														name="qtd" required>
 												</div><br>
 												<div>
 													<h4>ESCOLHA UM ESTOQUE</h4>
 													<div class="form-check">
 														<div th:each="e : ${estoques}">
 															<input class="form-check-input" type="radio"
-																th:value="${e.estoqueID}" name="idEstoqueItem">
+																th:value="${e.estoqueID}" name="idEstoqueItem" required>
 															<label class="form-check-label" th:for="${e.estoqueID}"
 																th:text="${e.nome}"></label>
 														</div>
@@ -349,7 +349,7 @@
 											<div class="col-md-auto" th:else="${!autores.empty}">
 												<label class="checkbox-inline" th:each="autor : ${autores}">
 													<input type="checkbox" th:value="${autor.id}"
-														th:text="${autor.nome}" />
+														th:text="${autor.nome}" required/>
 												</label>
 											</div>
 										</div>
@@ -357,14 +357,23 @@
 								</div>
 								<div class="row">
 									<div class="col">
+<<<<<<< HEAD
 										<input type="text" class="form-control" placeholder="ISBN" name="isbn"
 											required />
+=======
+										<input type="text" class="form-control" placeholder="ISBN" th:field="*{isbn}"
+											th:errorclass="is-invalid" required/>
+>>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 										<div class="invalid-feedback" th:if="${#fields.hasErrors('isbn')}"
 											th:errors="*{isbn}"></div>
 									</div>
 									<div class="col">
 										<input type="text" class="form-control" id="titulo_livro" placeholder="TÍTULO"
+<<<<<<< HEAD
 											name="titulo" required />
+=======
+											name="titulo" required/>
+>>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 									</div>
 								</div>
 								<div class="form-group">
@@ -378,7 +387,11 @@
 												<span class="input-group-text">R$</span>
 											</div>
 											<input type="" class="form-control" id="preco" placeholder="PREÇO"
+<<<<<<< HEAD
 												name="preco" required />
+=======
+												name="preco" required/>
+>>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 										</div>
 									</div>
 									<div class="col" id="file">
@@ -390,7 +403,7 @@
 
 								<div class="form-group">
 									<label for="selectEditora">Escolha uma editora</label>
-									<select class="form-control" id="selectEditora" name="editora">
+									<select class="form-control" id="selectEditora" name="editora" required>
 										<option th:each="editora : ${editoras}" th:text="${editora.nome}"
 											th:value="${editora.id}"></option>
 									</select>
@@ -398,7 +411,7 @@
 
 								<div class="form-group">
 									<label for="selectCategoria">Escolha uma categoria</label>
-									<select class="form-control" id="selectCategoria" name="categoria">
+									<select class="form-control" id="selectCategoria" name="categoria" required>
 										<option th:each="categoria : ${categorias}" th:text="${categoria.nome}"
 											th:value="${categoria.id}"></option>
 									</select>
@@ -407,11 +420,19 @@
 								<div class="row">
 									<div class="col">
 										<input type="number" class="form-control" placeholder="EDIÇÃO" id="edicao"
+<<<<<<< HEAD
 											name="edicao" required />
+=======
+											name="edicao" required/>
+>>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 									</div>
 									<div class="col">
 										<input type="date" class="form-control" placeholder="ANO" name="date"
+<<<<<<< HEAD
 											id="calendario" required />
+=======
+											id="calendario" required/>
+>>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 									</div>
 								</div>
 								<div class="modal-footer">

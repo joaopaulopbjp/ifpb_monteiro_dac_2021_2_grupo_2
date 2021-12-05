@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.*;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.dac.ecommerce.livros.dto.DTOItemPedidoUpdate;
 import com.dac.ecommerce.livros.dto.DTOPedido;
+import com.dac.ecommerce.livros.dto.DTOPedidoCancelado;
+import com.dac.ecommerce.livros.exceptions.PedidoException;
 import com.dac.ecommerce.livros.model.pedido.FormaPagamento;
 import com.dac.ecommerce.livros.model.pedido.Pedido;
 import com.dac.ecommerce.livros.model.user.Usuario;
@@ -62,23 +65,35 @@ public class PedidoController {
 	}
 	
 	@PostMapping("/cancelar-pedido")
-	public String cancelarPedido(@AuthenticationPrincipal Usuario usuario) {
-		return "";
+	public String cancelarPedido(@ModelAttribute("dtoPedidoCancelado") DTOPedidoCancelado dtoPedidoCancelado, BindingResult bingBindingResult) {
+		
+		try {
+			pedidoService.cancelarPedido(dtoPedidoCancelado.getIdPedido(), dtoPedidoCancelado.getMotivo());
+		} catch (PedidoException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return "redirect:/pedido/pedidos-finalizados";
 	}
 	
 	@GetMapping("/pedidos-finalizados")
 	public String pedidosFinalizados(@AuthenticationPrincipal Usuario usuario, Model model) {
 		model.addAttribute("pedidos", pedidoService.pedidosFinalizados(usuario.getId()));
+		model.addAttribute("dtoPedidoCancelado", new DTOPedidoCancelado());
 		return "/pedido/pedidos-user";
 	}
 	
 	@PostMapping("/adicionar-item")
 	public String adicionarItemAoCarrinho(@ModelAttribute("dtoPedido") DTOPedido dtoPedido, @AuthenticationPrincipal Usuario usuario) throws Exception {
-			
+		
+		if(usuario.getEndereco() == null) {
+			return "redirect:/user/endereco-entrega";
+		}
+		
 		Pedido pedido = pedidoService.gerarPedido(usuario);
 		pedidoService.adicionarItemAoPedido(pedido.getId(), dtoPedido.getIdLivro(), dtoPedido.getQuantidade());
 		
-		Thread.sleep(5000);
+		Thread.sleep(2000);
 		return "redirect:" + dtoPedido.getUrlOrigem();
 		
 	}
