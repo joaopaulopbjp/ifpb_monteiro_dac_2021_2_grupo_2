@@ -4,7 +4,9 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,10 @@ import com.dac.ecommerce.livros.model.livro.Livro;
 public interface ItemEstoqueRepository extends JpaRepository<ItemEstoque, Long>{
 	
 	ItemEstoque findByProduto(Livro livro);
+	
+	@Modifying
+	@Query("DELETE FROM ItemEstoque i WHERE i.id=:id")
+	void deletarItem(@Param("id")Long id);
 	
 	// Ordenar todos os livros pelo preço
 	@Query("SELECT p FROM ItemEstoque p ORDER BY p.preco ASC")

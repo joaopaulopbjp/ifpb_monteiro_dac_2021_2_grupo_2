@@ -1,13 +1,11 @@
 package com.dac.ecommerce.livros.model.user;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
@@ -30,17 +28,19 @@ public class Usuario implements UserDetails{
 	@Column(unique = true)
 	private String email;
 	
-	@Length(min=8, message = "{senhaCurta}")
+	@NotEmpty
+	@Length(min=8)
 	private String senha;
 	
 	@NotEmpty
-	@Length(min=3)
+	@Length(min=3, max=200)
 	private String nome;
 	
-	@CPF(message = "{cpfInvalido}")
+	@CPF
 	@Column(unique=true, nullable = false)
 	private String cpf;
 	
+	@Length(min=15, max=15)
 	private String telefone;
 
 	@Embedded

@@ -1,10 +1,9 @@
 package com.dac.ecommerce.livros.model.livro;
+
 import java.math.BigDecimal;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -37,14 +36,15 @@ public class Livro {
 	@Lob
 	private String imagemCapa;
 	
-	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	private Editora editora;
-	
 	private Integer edicao;
 	
 	private boolean adicionadoEmEstoque;
 	
 	private Integer ano;
+	
+	@ManyToOne
+	@JoinColumn(name = "editora_id")
+	private Editora editora;
 	
 	@ManyToMany
 	@JoinTable(name = "TB_LIVRO_AUTOR", 
@@ -52,7 +52,7 @@ public class Livro {
 	inverseJoinColumns = @JoinColumn(name ="autor_id"))
 	private List<Autor> autores;
 	
-	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne
 	private Categoria categoria;
 	
 	public Livro(){}
@@ -66,6 +66,5 @@ public class Livro {
 			   "\nAno: " + this.ano +
 			   "\nPreço: " + this.preco +
 			   "\nISBN: " + this.isbn;
-		
 	}
 }

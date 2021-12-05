@@ -13,7 +13,8 @@
 			margin-top: 10px;
 
 		}
-		form{
+
+		form {
 			margin-top: 15px;
 			margin-left: 30px;
 		}
@@ -29,11 +30,10 @@
 			<a class="nav-link active" href="http://localhost:8080/autor/cadastrar-autor">Cadastrar novo Autor</a>
 		</li>
 	</ul>
-	<form method="POST" th:action="@{'/autor/salvar'}">
+	<form method="POST" th:object="${dtoAutor}" th:action="@{/autor/salvar}">
 		<div class="col-10">
-			<label for="inputNome">Nome do Autor</label>
-			<input type="text" class="form-control" placeholder="Digite o nome do autor" name="nomeAutor">
-
+			<input type="text" class="form-control" placeholder="Digite o nome do autor">
+			<div  class="invalid-feedback"></div>
 			<button type="submit" class="btn btn-primary salvar">Salvar</button>
 		</div>
 	</form>

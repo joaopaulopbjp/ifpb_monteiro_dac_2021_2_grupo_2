@@ -1,7 +1,6 @@
 package com.dac.ecommerce.livros.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.dac.ecommerce.livros.dto.DTOEditora;
 import com.dac.ecommerce.livros.model.livro.Editora;
+import com.dac.ecommerce.livros.model.livro.Livro;
 import com.dac.ecommerce.livros.services.EditoraService;
+import com.dac.ecommerce.livros.services.LivroService;
 
 @Controller
 @RequestMapping("/editora")
@@ -19,6 +20,9 @@ public class EditoraController {
 	
 	@Autowired
 	private EditoraService editoraService;
+	
+	@Autowired
+	private LivroService livroService;
 	
 	@RequestMapping("/menu-editora")
 	public String menu(Model modelEditora) {
@@ -48,6 +52,16 @@ public class EditoraController {
 	
 	@GetMapping("/deletar/{id}")
 	public String deletar(@PathVariable("id") Long id) {
+		Editora editora = editoraService.buscarEditora(id);
+		editora.setLivros(null);
+		editoraService.alterarEditora(editora, id);
+		
+		Livro livro = livroService.bucarPelaEditora(editora);
+		if(livro != null) {
+			livro.setEditora(null);
+			livroService.alterarLivro(livro, livro.getId());
+		}
+		
 		editoraService.excluirEditora(id);
 		return "redirect:/editora/menu-editora";
 	}

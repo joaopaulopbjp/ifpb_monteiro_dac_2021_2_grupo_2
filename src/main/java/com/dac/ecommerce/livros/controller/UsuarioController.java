@@ -79,7 +79,7 @@ public class UsuarioController {
 
 		usuarioService.update(usuario);
 		
-		Thread.sleep(3000);
+		Thread.sleep(2000);
 		return "redirect:/user/alterar-dados";
 	}
 	

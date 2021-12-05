@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.dac.ecommerce.livros.dto.DTOCategoria;
 import com.dac.ecommerce.livros.model.livro.Categoria;
+import com.dac.ecommerce.livros.model.livro.Livro;
 import com.dac.ecommerce.livros.services.CategoriaService;
+import com.dac.ecommerce.livros.services.LivroService;
 
 @Controller
 @RequestMapping("/categoria")
@@ -18,6 +20,9 @@ public class CategoriaController {
 	
 	@Autowired
 	private CategoriaService categoriaService;
+	
+	@Autowired
+	private LivroService livroService;
 	
 	@RequestMapping("/menu-categoria")
 	public String menu(Model modelCategorias) {
@@ -47,6 +52,15 @@ public class CategoriaController {
 	
 	@GetMapping("/deletar/{id}")
 	public String deletar(@PathVariable("id") Long id) {
+		Categoria categoria = categoriaService.buscarCategoria(id);
+		categoria.setLivros(null);
+		categoriaService.alterarCategoria(categoria, id);
+		
+		Livro livro = livroService.bucarPelaCategoria(categoria);
+		if(livro != null) {
+			livro.setCategoria(null);
+			livroService.alterarLivro(livro, livro.getId());
+		}
 		categoriaService.excluir(id);
 		return "redirect:/categoria/menu-categoria";
 	}

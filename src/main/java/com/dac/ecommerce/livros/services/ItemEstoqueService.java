@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
+import com.dac.ecommerce.livros.model.livro.Livro;
 import com.dac.ecommerce.livros.repository.ItemEstoqueRepository;
 
 @Service
@@ -11,6 +12,9 @@ public class ItemEstoqueService {
 
 	@Autowired
 	private ItemEstoqueRepository itemEstoqueRepository;
+	
+	@Autowired
+	private LivroService livroService;
 	
 	public List<ItemEstoque> bucarTodosOsItensDoEstoque(){
 		List<ItemEstoque> itens = itemEstoqueRepository.findAll();
@@ -40,4 +44,13 @@ public class ItemEstoqueService {
 		itemEstoqueRepository.save(itemEstoque);
 	}
 	
+	public void deletar(Long id) {
+		
+		Long idLivro = itemEstoqueRepository.findById(id).get().getProduto().getId();
+		Livro livro = livroService.buscarLivro(idLivro);
+		livro.setAdicionadoEmEstoque(false);
+		livroService.alterarLivro(livro, idLivro);
+		itemEstoqueRepository.deletarItem(id);
+		
+	}
 }

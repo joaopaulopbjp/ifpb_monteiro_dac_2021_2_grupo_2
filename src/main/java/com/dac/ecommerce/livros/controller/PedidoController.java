@@ -87,13 +87,13 @@ public class PedidoController {
 	public String adicionarItemAoCarrinho(@ModelAttribute("dtoPedido") DTOPedido dtoPedido, @AuthenticationPrincipal Usuario usuario) throws Exception {
 		
 		if(usuario.getEndereco() == null) {
-			return "redirect:/pedido/cadastrar-endereco";
+			return "redirect:/user/endereco-entrega";
 		}
 		
 		Pedido pedido = pedidoService.gerarPedido(usuario);
 		pedidoService.adicionarItemAoPedido(pedido.getId(), dtoPedido.getIdLivro(), dtoPedido.getQuantidade());
 		
-		Thread.sleep(5000);
+		Thread.sleep(2000);
 		return "redirect:" + dtoPedido.getUrlOrigem();
 		
 	}

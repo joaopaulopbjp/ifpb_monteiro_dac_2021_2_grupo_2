@@ -16,7 +16,7 @@ public class Endereco {
 	private String cep;
 	
 	private Integer numero;
-	
+
 	@NotEmpty
 	@Length(min=4, max=200)
 	private String cidade;
@@ -46,7 +46,15 @@ public class Endereco {
 		this.complemento = complemento;
 	}
 	
-	public Endereco() {}
+	public Endereco() {
+		this.cep = " ";
+		this.numero = 0;
+		this.cidade = " ";
+		this.estado = " ";
+		this.bairro = " ";
+		this.rua = " ";
+		this.complemento = " ";
+	}
 	
 	public String toString() {
 		return "\nCEP: " + this.cep +

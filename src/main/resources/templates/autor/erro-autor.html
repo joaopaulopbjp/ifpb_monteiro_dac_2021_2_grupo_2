@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos :: head('Autor')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos :: header}"></header>
+
+	<style th:replace="~{fragmentos :: style}"></style>
+
+	<style>
+		.salvar {
+			margin-top: 10px;
+
+		}
+
+		form {
+			margin-top: 15px;
+			margin-left: 30px;
+		}
+	</style>
+
+
+	<footer th:replace="~{fragmentos :: footer}"></footer>
+
+	<script th:replace="~{fragmentos :: script1}"></script>
+	<script th:replace="~{fragmentos :: script2}"></script>
+	<script th:replace="~{fragmentos :: script3}"></script>
+
+</body>
+
+</html>

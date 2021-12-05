@@ -57,7 +57,7 @@
 					<div class="col-6">
 						<label for="input-cpf" class="form-label">CPF:</label>
 						<input id="input-cpf"  th:errorclass="is-invalid" class="form-control" th:field="*{cpf}" type="text" required />
-						<div class="valid-feedback" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}">
+						<div class="invalid-feedback" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}">
 							Informe o CPF.
 						</div>
 					</div>
@@ -65,7 +65,7 @@
 					<div class="col-6">
 						<label for="input-telefone" class="form-label">Telefone:</label>
 						<input id="input-telefone" th:errorclass="is-invalid" class="form-control" th:field="*{telefone}" type="text" required />
-						<div class="valid-feedback" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}">
+						<div class="invalid-feedback" th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}">
 							Informe o Telefone.
 						</div>
 					</div>
@@ -73,7 +73,7 @@
 					<div class="col-12">
 						<label for="input-email" class="form-label">Email:</label>
 						<input id="input-email" th:errorclass="is-invalid" class="form-control" th:field="*{email}" type="text" required />
-						<div class="valid-feedback" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}">
+						<div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
 							Informe o email.
 						</div>
 					</div>
@@ -81,7 +81,7 @@
 					<div class="col-12">
 						<label for="input-senha" class="form-label">Senha:</label>
 						<input id="input-senha" th:errorclass="is-invalid" class="form-control" th:field="*{senha}" type="password" required />
-						<div class="valid-feedback" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}">
+						<div class="invalid-feedback" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}">
 							Informe a Senha.
 						</div>
 					</div>
@@ -97,7 +97,6 @@
 		</div>
 		
 	</div>
-
 
 	<footer th:replace="~{fragmentos :: footer}"></footer>
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.dac.ecommerce.livros.dto.DTOUsuario;
 import com.dac.ecommerce.livros.exceptions.UsuarioException;
+import com.dac.ecommerce.livros.model.user.Endereco;
 import com.dac.ecommerce.livros.model.user.Role;
 import com.dac.ecommerce.livros.model.user.Usuario;
 import com.dac.ecommerce.livros.repository.RoleRepository;
@@ -101,7 +102,7 @@ public class UsuarioService {
 			roles.add(role);
 		
 			usuario.setRoles(roles);
-			
+			usuario.setEndereco(new Endereco());
 			repository.save(usuario);
 		}
 		

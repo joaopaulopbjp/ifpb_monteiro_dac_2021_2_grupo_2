@@ -14,6 +14,11 @@
 			height: 25px;
 			width: 25px;
 		}
+
+		#img-excluir {
+			width: 12px;
+			height: 20px;
+		}
 	</style>
 
 	<ul class="nav nav-tabs">
@@ -44,7 +49,7 @@
 		</thead>
 		<tbody>
 			<tr th:if="${itens.empty}">
-				<td colspan="2">Não existe estoques cadastrados!</td>
+				<td colspan="2">Não existe itens em estoque!</td>
 			</tr>
 			<tr th:each="item : ${itens}">
 				<th scope="row">
@@ -133,7 +138,13 @@
 							</div>
 						</div>
 					</div>
-
+					<a th:if="${item.quantidade <= 0}">
+						<a th:href="@{/item-estoque/deletar-item/{id}(id = ${item.id})}">
+							<button id="btn-remover-item" type="button" class="btn btn-secondary" title="Remover item">
+								<img id="img-excluir" src="https://img.icons8.com/ios-glyphs/30/000000/delete.png" />
+							</button>
+						</a>
+					</a>
 				</td>
 			</tr>
 		</tbody>
