@@ -5,19 +5,16 @@
 <head th:fragment="head(titulo)">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<<<<<<< HEAD
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"
 		integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG"
 		crossorigin="anonymous"></script>
 
-=======
 	
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
 		
->>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
 	<title th:text="${titulo}">fragment</title>
 </head>
@@ -81,11 +78,6 @@
 					<a sec:authorize="isAuthenticated()" th:href="@{'http://localhost:8080/user/menu-conta'}">Minha
 						Conta<br></a>
 					<a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout<br></a>
-<<<<<<< HEAD
-
-
-=======
->>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 				</div>
 			</div>
 			<nav class="navbar navbar-dark bg-primary">

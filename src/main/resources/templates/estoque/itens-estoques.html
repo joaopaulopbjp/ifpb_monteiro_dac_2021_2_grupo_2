@@ -100,7 +100,7 @@
 						</div>
 					</div>
 
-					<button id="btn-reduzir" type="button" class="btn btn-danger" title="Reduzir qauntidade de itens"
+					<button id="btn-reduzir" type="button" class="btn btn-danger" title="Reduzir quantidade de itens"
 						data-toggle="modal" th:attr="data-target='#modalReduzirQuantidade'+*{item.id}"
 						th:value="${item.id}">
 						-
@@ -140,7 +140,7 @@
 					</div>
 					<a th:if="${item.quantidade <= 0}">
 						<a th:href="@{/item-estoque/deletar-item/{id}(id = ${item.id})}">
-							<button id="btn-remover-item" type="button" class="btn btn-secondary" title="Remover item">
+							<button id="btn-remover-item" type="button" class="btn btn-secondary" title="Excluir item">
 								<img id="img-excluir" src="https://img.icons8.com/ios-glyphs/30/000000/delete.png" />
 							</button>
 						</a>
