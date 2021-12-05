@@ -43,21 +43,48 @@
 				<tbody>
 					<tr th:each="pedido : ${pedidos}">
 						<td th:text="${pedido.status}"></td>
-						<td th:text="${pedido.dataCriacao}"></td>
-						<td th:text="${pedido.dataFechamento}"></td>
+						<td th:text="${#dates.format(pedido.dataCriacao, 'dd/MM/yyyy')}"></td>
+						<td th:text="${#dates.format(pedido.dataFechamento, 'dd/MM/yyyy')}" th:id="data-fechamento- + ${pedido.id}"></td>
 						<td th:text="${pedido.formaPagamento.tipo}"></td>
 						<td>
-							<button th:if="${flagAtivarCancelamento}" class="btn btn-danger"><i class="bi bi-x-square"></i></button>
+							<button th:id="btn-pedido- + ${pedido.id}" class="btn btn-danger" 
+								data-bs-toggle="modal" data-bs-target="#modal-cancelar-pedido" 
+								th:onclick="'configurarModal(\'' + ${pedido.id} + '\')'">
+								<i class="bi bi-x-square"></i> Cancelar
+							</button>
 						</td>
 					</tr>
 				</tbody>
-			
 			</table>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="modal-cancelar-pedido" tabindex="-1" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title">Cancelar Pedido</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			       <form th:action="@{/pedido/cancelar-pedido}" th:object="${dtoPedidoCancelado}" method="POST">
+				       <p id="texto-aviso"></p>
+				       <div hidden id="container-motivo">
+				       	 <input hidden value="" name="idPedido" id="input-pedido-id"/>
+					     <label for="input-motivo" class="form-label">Motivo do cancelamento:</label>
+					     <textarea id="input-motivo" th:field="*{motivo}" class="form-control" required></textarea>
+				       </div>
+				      </div>
+				      <div class="modal-footer">
+					     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+					     <button type="submit" id="btn-confirmar" class="btn btn-danger" hidden>Confirmar</button>
+				      </div>
+			       </form>
+			    </div>
+			  </div>
+			</div>
 			
 			<button class="btn btn-primary" onclick="retornar()">Voltar</button>
 			
-			
-		
 		</div>
 	
 		<footer th:replace="~{fragmentos :: footer}"></footer>
@@ -65,10 +92,34 @@
 		<script th:replace="~{fragmentos :: script1}"></script>
 		<script th:replace="~{fragmentos :: script2}"></script>
 		<script th:replace="~{fragmentos :: script3}"></script>
-		
 		<script>
 			function retornar() {
 				window.location.href="/user/menu-conta"
+			}
+			
+			function configurarModal(idPedido) {
+				
+				const dataFechamento = document.getElementById(`data-fechamento-${idPedido}`);
+				const textoAviso = document.getElementById('texto-aviso');
+				const btnConfirmar = document.getElementById('btn-confirmar');
+				const containerMotivo = document.getElementById('container-motivo');
+				
+				const dataSplit = dataFechamento.innerText.split('/');
+				
+				const dataLimite = new Date(Date.parse(`${dataSplit[2]}-${dataSplit[1]}-${dataSplit[0]}`));
+				dataLimite.setDate(dataLimite.getDate() + 8);
+		
+				if(dataLimite >= new Date()) {
+					btnConfirmar.hidden = false;
+					containerMotivo.hidden = false;
+					
+					const inputIdPedido = document.getElementById('input-pedido-id');
+					inputIdPedido.value = idPedido;
+					
+				} else {
+					textoAviso.innerHTML = "O pedido não pode ser cancelado. A data limite para cancelamento já se encerrou.";
+				}
+					
 			}
 		</script>
 	</body>
