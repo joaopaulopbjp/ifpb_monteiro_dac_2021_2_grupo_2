@@ -86,7 +86,7 @@ public class PedidoController {
 	@PostMapping("/adicionar-item")
 	public String adicionarItemAoCarrinho(@ModelAttribute("dtoPedido") DTOPedido dtoPedido, @AuthenticationPrincipal Usuario usuario) throws Exception {
 		
-		if(usuario.getEndereco() == null) {
+		if(usuario.getEndereco().getCep().length() == 1) {
 			return "redirect:/user/endereco-entrega";
 		}
 		
