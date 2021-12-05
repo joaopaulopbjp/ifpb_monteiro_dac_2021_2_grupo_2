@@ -357,23 +357,17 @@
 								</div>
 								<div class="row">
 									<div class="col">
-<<<<<<< HEAD
 										<input type="text" class="form-control" placeholder="ISBN" name="isbn"
 											required />
-=======
+
 										<input type="text" class="form-control" placeholder="ISBN" th:field="*{isbn}"
 											th:errorclass="is-invalid" required/>
->>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 										<div class="invalid-feedback" th:if="${#fields.hasErrors('isbn')}"
 											th:errors="*{isbn}"></div>
 									</div>
 									<div class="col">
 										<input type="text" class="form-control" id="titulo_livro" placeholder="TÍTULO"
-<<<<<<< HEAD
 											name="titulo" required />
-=======
-											name="titulo" required/>
->>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 									</div>
 								</div>
 								<div class="form-group">
@@ -387,11 +381,7 @@
 												<span class="input-group-text">R$</span>
 											</div>
 											<input type="" class="form-control" id="preco" placeholder="PREÇO"
-<<<<<<< HEAD
 												name="preco" required />
-=======
-												name="preco" required/>
->>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 										</div>
 									</div>
 									<div class="col" id="file">
@@ -420,19 +410,11 @@
 								<div class="row">
 									<div class="col">
 										<input type="number" class="form-control" placeholder="EDIÇÃO" id="edicao"
-<<<<<<< HEAD
 											name="edicao" required />
-=======
-											name="edicao" required/>
->>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 									</div>
 									<div class="col">
 										<input type="date" class="form-control" placeholder="ANO" name="date"
-<<<<<<< HEAD
 											id="calendario" required />
-=======
-											id="calendario" required/>
->>>>>>> branch 'main' of https://github.com/joaopaulopbjp/ifpb_monteiro_dac_2021_2_grupo_2.git
 									</div>
 								</div>
 								<div class="modal-footer">
@@ -498,6 +480,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
 	<script>
+	
 		function toggleFAB(fab) {
 			if (document.querySelector(fab).classList.contains('show')) {
 				document.querySelector(fab).classList.remove('show');
