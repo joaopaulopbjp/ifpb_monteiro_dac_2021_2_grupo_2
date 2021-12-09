@@ -56,13 +56,13 @@
 				<td><span th:text="${categoria.nome}"></span>
 				<td>
 					<button id="btn-editar" type="button" class="btn btn-primary" title="Editar categoria"
-						data-toggle="modal" th:attr="data-target='#modalEditarCategoria'+*{categoria.id}"
-						th:value="${categoria.id}">
+						data-toggle="modal" data-target="#modalEditarCategoria">
+
 						<img class="img-editar" src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
 					</button>
 
 					<!-- Modal editar categoria-->
-					<div class="modal fade" th:id="*{'modalEditarCategoria'+{categoria.id}}" tabindex="-1" role="dialog"
+					<div class="modal fade" id="modalEditarCategoria" tabindex="-1" role="dialog"
 						aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
@@ -75,14 +75,23 @@
 								</div>
 								<div class="modal-body">
 
-									<form method="POST" th:action="@{'/categoria/alterar-categoria'}">
+									<form method="POST" th:object="${dtoCategoria}"
+										th:action="@{'/categoria/alterar-categoria'}">
 										<div class="form-group">
+
+											<script th:inline="javascript" th:if="${#fields.hasErrors('*')}">
+												$("#modalEditarCategoria").modal("show");
+											</script>
+
 											<label for="inputIdCategoria">Id</label>
-											<input type="" class="form-control" th:value="*{categoria.id}"
+											<input type="" class="form-control" th:value="${categoria.id}"
 												name="idCategoria" readonly>
 											<label for="inputNome">Nova categoria</label>
 											<input type="" class="form-control" name="nomeCategoria"
-												placeholder="Digite uma nova categoria" required><br>
+												th:value="${categoria.nome}" th:errorclass="is-invalid">
+												<div class="text text-danger" th:if="${#fields.hasErrors('nomeCategoria')}"
+													th:errors="*{nomeCategoria}">
+												</div><br>
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary"
@@ -108,8 +117,6 @@
 
 	<script th:replace="~{fragmentos :: script1}"></script>
 	<script th:replace="~{fragmentos :: script2}"></script>
-	<script th:replace="~{fragmentos :: script3}"></script>
-
 </body>
 
 </html>

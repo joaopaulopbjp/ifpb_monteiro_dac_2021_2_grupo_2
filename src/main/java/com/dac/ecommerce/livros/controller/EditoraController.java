@@ -24,64 +24,72 @@ import com.dac.ecommerce.livros.services.LivroService;
 @Controller
 @RequestMapping("/editora")
 public class EditoraController {
-	
+
 	@Autowired
 	private EditoraService editoraService;
-	
+
 	@Autowired
 	private LivroService livroService;
-	
+
 	@RequestMapping("/menu-editora")
 	public String menu(Model model) {
 		model.addAttribute("editoras", editoraService.todasEditoras());
+		model.addAttribute("dtoEditora", new DTOEditora());
 		return "/editora/menu-editora";
 	}
-	
+
 	@RequestMapping("/cadastrar-editora")
 	public String form(Model model) {
 		model.addAttribute("dtoEditora", new DTOEditora());
 		return "/editora/cadastrar-editora";
 	}
-	
+
 	@PostMapping("/salvar-editora")
-	public String salvar(@Valid @ModelAttribute("dtoEditora")DTOEditora dtoEditora,BindingResult bindingResult, RedirectAttributes atts) {
-		if(!bindingResult.hasErrors()) {
+	public String salvar(@Valid @ModelAttribute("dtoEditora") DTOEditora dtoEditora, BindingResult bindingResult,
+			RedirectAttributes atts, Model model) {
+		if (!bindingResult.hasErrors()) {
 			Editora editora = dtoEditora.toEditora();
 			editoraService.salvar(editora);
 			return "redirect:/editora/menu-editora";
-			
+
 		}
+		model.addAttribute("editoras", editoraService.todasEditoras());
 		atts.addAttribute("hasErrors", true);
 		return "/editora/cadastrar-editora";
 	}
-	
+
 	@PostMapping("/alterar-editora")
-	public String alterar(@Valid @ModelAttribute("dtoEditora") DTOEditora dtoEditora,BindingResult bindingResult, RedirectAttributes atts) {
-		if(!bindingResult.hasErrors()) {
+	public String alterar(@Valid @ModelAttribute("dtoEditora") DTOEditora dtoEditora, BindingResult bindingResult,
+			RedirectAttributes atts, Model model) {
+		if (!bindingResult.hasErrors()) {
+			System.out.println(dtoEditora.toString());
 			Editora editora = dtoEditora.toEditora();
 			editoraService.alterarEditora(editora, editora.getId());
 			return "redirect:/editora/menu-editora";
 		}
+		model.addAttribute("editoras", editoraService.todasEditoras());
 		atts.addAttribute("hasErrors", true);
-		return "redirect:/editora/menu-editora";
+		return "/editora/menu-editora";
 	}
-	
+
 	@GetMapping("/deletar/{id}")
 	public String deletar(@PathVariable("id") Long id) {
 
 		List<Livro> livros = livroService.recuperarTodosOsLivros();
 		boolean result = false;
-		if(!livros.isEmpty()) {
+		if (!livros.isEmpty()) {
 			for (Livro livro : livros) {
-				if(livro.getEditora().getId() == id) {
+				if (livro.getEditora().getId() == id) {
 					result = true;
+					break;
 				}
 			}
 		}
-		if(result == false) {
+		if (result == false) {
 			editoraService.excluirEditora(id);
+			return "redirect:/editora/menu-editora";
 		}
-		
-		return "redirect:/editora/menu-editora";
+		return "/editora/erro-excluir-editora";
+
 	}
 }

@@ -24,28 +24,30 @@ import com.dac.ecommerce.livros.services.LivroService;
 @Controller
 @RequestMapping("/categoria")
 public class CategoriaController {
-	
+
 	@Autowired
 	private CategoriaService categoriaService;
-	
+
 	@Autowired
 	private LivroService livroService;
-	
+
 	@RequestMapping("/menu-categoria")
 	public String menu(Model model) {
 		model.addAttribute("categorias", categoriaService.listar());
+		model.addAttribute("dtoCategoria", new DTOCategoria());
 		return "/categoria/menu-categoria";
 	}
-	
+
 	@RequestMapping("/cadastrar-categoria")
 	public String form(Model model) {
 		model.addAttribute("dtoCategoria", new DTOCategoria());
 		return "/categoria/cadastrar-categoria";
 	}
-	
+
 	@PostMapping("/salvar")
-	public String salvar(@Valid @ModelAttribute("dtoCategoria")DTOCategoria dtoCategoria,BindingResult bindingResult, RedirectAttributes atts) {
-		if(!bindingResult.hasErrors()) {
+	public String salvar(@Valid @ModelAttribute("dtoCategoria") DTOCategoria dtoCategoria, BindingResult bindingResult,
+			RedirectAttributes atts) {
+		if (!bindingResult.hasErrors()) {
 			Categoria categoria = dtoCategoria.toCategoria();
 			categoriaService.salvar(categoria);
 			return "redirect:/categoria/menu-categoria";
@@ -53,35 +55,40 @@ public class CategoriaController {
 		atts.addAttribute("hasErrors", true);
 		return "/categoria/cadastrar-categoria";
 	}
-	
+
 	@PostMapping("/alterar-categoria")
-	public String alterar(@Valid @ModelAttribute("dtoCategoria")DTOCategoria dtoCategoria, BindingResult bindingResult, RedirectAttributes atts) {
-		if(!bindingResult.hasErrors()) {
+	public String alterar(@Valid @ModelAttribute("dtoCategoria") DTOCategoria dtoCategoria, BindingResult bindingResult,
+			RedirectAttributes atts ,Model model) {
+		
+		if (!bindingResult.hasErrors()) {
 			Categoria categoria = dtoCategoria.toCategoria();
-			categoriaService.salvar(categoria);
-		//	return "redirect:/categoria/menu-categoria";
+			categoriaService.alterarCategoria(categoria, categoria.getId());
+			return "redirect:/categoria/menu-categoria";
 		}
-		System.out.println("erro");
+		model.addAttribute("categorias", categoriaService.listar());
 		atts.addAttribute("hasErrors", true);
-		return "redirect:/categoria/menu-categoria";
+		return "/categoria/menu-categoria";
+		
 	}
-	
+
 	@GetMapping("/deletar/{id}")
 	public String deletar(@PathVariable("id") Long id) {
-		
+
 		List<Livro> livros = livroService.recuperarTodosOsLivros();
 		boolean result = false;
-		if(!livros.isEmpty()) {
+		if (!livros.isEmpty()) {
 			for (Livro livro : livros) {
-				if(livro.getCategoria().getId() == id) {
+				if (livro.getCategoria().getId() == id) {
 					result = true;
+					break;
 				}
 			}
 		}
-		if(result == false) {
+		if (result == false) {
 			categoriaService.excluir(id);
+			return "redirect:/categoria/menu-categoria";
 		}
-		return "redirect:/categoria/menu-categoria";
+		return "/categoria/erro-excluir-categoria";
 	}
 
 }

@@ -27,7 +27,7 @@ public class Autor {
 	
 	public Autor() {}
 	
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "autores", fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "autores", fetch = FetchType.EAGER)
 	private List<Livro> livros;
 	
 	public String toString() {

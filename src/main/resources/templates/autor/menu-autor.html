@@ -37,86 +37,83 @@
 		</li>
 	</ul>
 
+
+
 	<table class="table">
 		<thead>
 			<tr>
 				<th scope="col">ID</th>
-				<th scope="col">Nome</th>
+				<th scope="col">NOME</th>
 				<th scope="col"></th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:if="${autores.empty}">
-				<td colspan="2">Não existe autores cadastrados</td>
-			</tr>
 			<tr th:each="autor : ${autores}">
-				<th scope="row">
-					<span th:text="${autor.id}"></span>
-				</th>
-				<td><span th:text="${autor.nome}"></span>
+				<th scope="row"><span th:text="${autor.id}"></span></th>
+				<td><span th:text="${autor.nome}"></span></td>
 				<td>
-					<button id="btn-editar" type="button" class="btn btn-primary" title="Editar Autor"
-						data-toggle="modal" th:attr="data-target='#modalEditarAutor'+*{autor.id}"
-						th:value="${autor.id}">
+
+					<!-- Botão para acionar modal -->
+					<button type="button" id="btn-editar" class="btn btn-primary" data-toggle="modal"
+						data-target="#modalExemplo">
 						<img class="img-editar" src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
 					</button>
 
-					<!-- Modal editar autor-->
-					<div class="modal fade" th:id="*{'modalEditarAutor'+{autor.id}}" tabindex="-1" role="dialog"
-						aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+
+					<!-- Modal Editar Autor-->
+					<div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog"
+						aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="TituloModalLongoExemplo">Título do modal
-									</h5>
+									<h5 class="modal-title" id="exampleModalLabel">Editar Autor</h5>
 									<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
 										<span aria-hidden="true">&times;</span>
 									</button>
 								</div>
 								<div class="modal-body">
+									<form th:action="@{/autor/alterar-autor}" th:object="${dtoAutor}" method="post">
+										<div class="modal-body">
 
-									<form method="POST" th:action="@{'/autor/alterar-autor'}">
-										<div class="form-group">
-											<label for="inputIdAutor">Id</label>
-											<input type="" class="form-control" th:value="*{autor.id}" name="idAutor"
-												readonly>
-											<label for="inputNome">Novo nome</label>
-											<input type="text" class="form-control" name="nomeAutor"
-												placeholder="Digite o novo nome para o autor" required>
+											<script th:inline="javascript" th:if="${#fields.hasErrors('*')}">
+												$("#modalExemplo").modal("show");
+											</script>
+
+
+											<div class="form-group">
+
+												<label for="inputIdAutor">Id</label>
+												<input type="" class="form-control" name="idAutor"
+													th:value="${autor.id}" readonly>
+												<label for="className">Nome do Autor</label>
+												<input type="text" class="form-control" th:value="${autor.nome}" name="nomeAutor"
+													th:errorclass="is-invalid">
+												<div class="text text-danger" th:if="${#fields.hasErrors('nomeAutor')}"
+													th:errors="*{nomeAutor}">
+												</div><br>
+												<button type="submit" class="btn btn-primary">Salvar mudanças</button>
+											</div>
 										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
-												data-dismiss="modal">Fechar</button>
-											<button type="submit" class="btn btn-primary">Salvar alteração</button>
-										</div>
-									</form>
 								</div>
 							</div>
 						</div>
 					</div>
-
-
 
 					<a th:href="@{/autor/deletar/{id}(id = ${autor.id})}">
 						<button id="btn-excluir" type="button" class="btn btn-danger" title="Excluir Autor">
 							<img class="img-excluir" src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
 						</button>
 					</a>
-
 				</td>
 			</tr>
 		</tbody>
 	</table>
 
-
-
-
-
 	<footer th:replace="~{fragmentos :: footer}"></footer>
-
 	<script th:replace="~{fragmentos :: script1}"></script>
 	<script th:replace="~{fragmentos :: script2}"></script>
-	<script th:replace="~{fragmentos :: script3}"></script>
 
 </body>
 

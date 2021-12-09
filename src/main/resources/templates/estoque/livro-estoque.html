@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos :: head('Adicionar Livro')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos :: header}"></header>
+
+	<style th:replace="~{fragmentos :: style}"></style>
+
+	<style>
+		label {
+			margin-top: 10px;
+		}
+
+		button {
+			margin-top: 10px;
+		}
+
+		.card {
+			padding: 20px;
+			margin-bottom: 50px;
+		}
+
+		.container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+		}
+
+		.container-options {
+			margin-top: 20px;
+		}
+	</style>
+
+
+	</style>
+	<div class="container">
+		<div class="card">
+			<h4>Adicionar livro no estoque</h4>
+			<form method="POST" th:object="${dtoItem}" th:action="@{'/item-estoque/salvar'}">
+				<div class="col-12">
+					<label for="inputPreço">Id do livro</label>
+					<input type="text" class="form-control" th:field="*{idlivro}" th:errorclass="is-invalid" readonly>
+					<div class="text text-danger" th:if="${#fields.hasErrors('idlivro')}" th:errors="*{idlivro}"></div>
+				</div>
+				<div class="col-12">
+					<label for="inputPreço">Preco</label>
+					<input type="text" class="form-control" th:field="*{precoItem}" th:errorclass="is-invalid" readonly>
+				</div>
+				<div class="col-12">
+					<label for="inputQuantidade">Quantidade de itens</label>
+					<input type="number" class="form-control" th:field="*{qtd}" th:errorclass="is-invalid">
+					<div class="text text-danger" th:if="${#fields.hasErrors('qtd')}">Quantidade inválida</div>
+				</div>
+				<div class="col-12">
+					<label for="selectEstoque">Escolha um estoque</label>
+					<select class="form-control" id="select-estoque" th:field="*{estoque}" th:errorclass="is-invalid">
+						<option value="">----</option>
+						<option th:each="e : ${estoques}" th:text="${e.nome}" th:value="${e.estoqueID}"
+							th:errorclass="is-invalid">
+						</option>
+					</select>
+					<div class="text text-danger" th:if="${#fields.hasErrors('estoque')}">Escolha um estoque</div>
+				</div>
+				<div div class="col-12">
+					<button class="btn btn-primary" type="submit">Adicionar</button>
+					<button class="btn btn-danger" type="button" th:onclick="cancelar()">Cancelar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<footer th:replace="~{fragmentos :: footer}"></footer>
+
+	<script th:replace="~{fragmentos :: script1}"></script>
+	<script th:replace="~{fragmentos :: script2}"></script>
+
+	<script>
+
+		function cancelar() {
+			const link = "http://localhost:8080/livro/menu-livro";
+			window.location.href = link;
+
+		}
+
+	</script>
+
+</body>
+
+</html>

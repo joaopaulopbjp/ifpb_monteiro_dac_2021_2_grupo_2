@@ -34,14 +34,14 @@ public class ItemEstoqueService {
 	
 	public void adicionarItem(Integer qtd, Long id) {
 		ItemEstoque itemEstoque = itemEstoqueRepository.findById(id).get();
-		Integer qtdAtual = itemEstoque.getQuantidade() + qtd;
+		Integer qtdAtual = itemEstoque.getQuantidade() + 1;
 		itemEstoque.setQuantidade(qtdAtual);
 		itemEstoqueRepository.save(itemEstoque);
 	}
 	
 	public void removerItem(Integer qtd, Long id) {
 		ItemEstoque itemEstoque = itemEstoqueRepository.findById(id).get();
-		Integer qtdAtual = itemEstoque.getQuantidade() - qtd;
+		Integer qtdAtual = itemEstoque.getQuantidade() - 1;
 		itemEstoque.setQuantidade(qtdAtual);
 		itemEstoqueRepository.save(itemEstoque);
 	}

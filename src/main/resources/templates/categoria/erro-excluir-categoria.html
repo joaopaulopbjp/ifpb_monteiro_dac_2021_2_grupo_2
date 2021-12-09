@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos :: head('Categoria')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos :: header}"></header>
+
+	<style th:replace="~{fragmentos :: style}"></style>
+
+	<style>
+	.form{
+		text-align: center;
+	}
+	
+	</style>
+	<div class="form">
+		<h5>Ops... Categoria não pode ser excluída, pois possui livros relacionados</h5>
+
+		<button id="btn-voltar" type="button" class="btn btn-success" th:onclick="cancelar()">
+			Voltar para pagina anterior
+		</button>
+	</div>
+	<footer th:replace="~{fragmentos :: footer}"></footer>
+
+	<script th:replace="~{fragmentos :: script1}"></script>
+	<script th:replace="~{fragmentos :: script2}"></script>
+	<script>
+			function cancelar() {
+			const link = "http://localhost:8080/categoria/menu-categoria";
+			window.location.href = link;
+
+		}
+	</script>
+</body>
+
+</html>

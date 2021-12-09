@@ -188,61 +188,12 @@
 						</th>
 						<td><span th:text="${livro.titulo}">Título</span></td>
 						<td>
-							<button id="btn_editar" type="button" class="btn btn-primary" title="Editar livro"
-								data-toggle="modal" data-target="#modalEditarLivro">
-								<img class="img-editar"
-									src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
-							</button>
-
-							<!-- Modal editar livro ao estoque-->
-
-							<div class="modal fade" id="modalEditarLivro" tabindex="-1" role="dialog"
-								aria-labelledby="exampleModalLabel" aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">Editar Livro</h5>
-											<button type="button" class="close" data-dismiss="modal"
-												aria-label="Fechar">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body">
-										
-											<form method="POST" th:action="@{'/livro/editar'}">
-											<div class="form-group">
-													<label for="input-id">ID</label>
-													<input type="text" class="form-control" id="input-id"
-														th:value="${livro.id}" name="idLivro" readonly >
-												</div>
-												<div class="form-group">
-													<label for="inputNovoTitulo">Digite Um novo título</label>
-													<input type="text" class="form-control" id="inputNovoTitulo"
-														placeholder="Digite um novo Titulo" name="titulo" required>
-												</div>
-												<div class="form-group">
-													<label for="inputNovaDescricao">Digite uma nova Decrição</label>
-													<textarea class="form-control"
-														placeholder="Digite uma nova descrição" rows="2" name="descricao" required></textarea><br>
-												</div>
-												<div class="row">
-													<div class="col-md-auto">
-														<div class="input-group mb-3">
-															<div class="input-group-prepend">
-																<span class="input-group-text">R$</span>
-															</div>
-															<input type="" class="form-control" id="novo-preco"
-																placeholder="PREÇO" name="preco" required/>
-														</div>
-													</div>
-												</div>
-												<button type="submit" class="btn btn-primary">Salvar</button>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-
+							<a th:href="@{/livro/form-editar/{id}(id = ${livro.id})}">
+								<button id="btn_editar" type="button" class="btn btn-primary" title="Editar livro">
+									<img class="img-editar"
+										src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
+								</button>
+							</a>
 
 							<a th:if="${livro.adicionadoEmEstoque == false}"
 								th:href="@{/livro/deletar/{id}(id = ${livro.id})}">
@@ -252,69 +203,15 @@
 								</button>
 							</a>
 
-
 							<a th:if="${!estoques.empty && livro.adicionadoEmEstoque == false}">
-								<button id="btn_adicionar" type="submit" class="btn btn-success"
-									title="Adicionar livro para o estoque" data-toggle="modal"
-									th:attr="data-target='#modalAdicionar'+*{livro.id}" th:value="${livro.id}">
+								<a th:href="@{/item-estoque/form-adicionar-item/{id}(id = ${livro.id})}">
+									<button id="btn_adicionar" type="button" class="btn btn-success"
+										title="Adicionar livro para o estoque" />
 									<img class="img-adicionar" img
 										src="https://img.icons8.com/glyph-neue/64/000000/add.png" />
-								</button>
+									</button>
+								</a>
 							</a>
-
-							<!-- Modal adicionar livro ao estoque-->
-
-							<div class="modal fade" th:id="*{'modalAdicionar'+{livro.id}}" tabindex="-1" role="dialog"
-								aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="TituloModalLongoExemplo">Título do modal
-											</h5>
-											<button type="button" class="close" data-dismiss="modal"
-												aria-label="Fechar">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body">
-
-											<form method="POST" th:action="@{'/item-estoque/salvar'}">
-												<div class="form-group">
-													<label for="inputIdLivro">Id</label>
-													<input type="" class="form-control" th:value="*{livro.id}"
-														name="idLivroItem" readonly>
-													<label for="inputPreco">PREÇO</label>
-													<input type="" class="form-control" th:value="*{livro.preco}"
-														name="precoItem" readonly>
-												</div>
-												<div>
-													<label for="inputQuantidade">QUANTIDADE DE ITENS</label>
-													<input type="number" class="form-control"
-														placeholder="Digite a quantidade de itens para ser adicionado"
-														name="qtd" required>
-												</div><br>
-												<div>
-													<h4>ESCOLHA UM ESTOQUE</h4>
-													<div class="form-check">
-														<div th:each="e : ${estoques}">
-															<input class="form-check-input" type="radio"
-																th:value="${e.estoqueID}" name="idEstoqueItem" required>
-															<label class="form-check-label" th:for="${e.estoqueID}"
-																th:text="${e.nome}"></label>
-														</div>
-													</div>
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-secondary"
-														data-dismiss="modal">Fechar</button>
-													<button type="submit" class="btn btn-primary">adicionar</button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-
 						</td>
 					</tr>
 				</tbody>
@@ -336,86 +233,113 @@
 
 							<form method="post" id="formulario" th:object="${dtoLivro}" th:action="@{'/livro/salvar'}"
 								enctype="multipart/form-data">
+								<div class="modal-body">
 
-								<div class="form-group" id="grupo">
-									<h4 id="titulo">Escolha os autores do livro</h4>
-									<div class="container">
-										<div class="row justify-content-md-center">
-											<div class="col-md-auto" th:if="${autores.empty}">
-												<div>
-													<h5 style="text-align: center;">Não existe autores cadastrados</h5>
+									<script th:inline="javascript" th:if="${#fields.hasErrors('*')}">
+										$("#modalCadastrarLivro").modal("show");
+									</script>
+
+									<div class="form-group" id="grupo">
+										<h4 id="titulo">Escolha os autores do livro</h4>
+										<div class="container">
+											<div class="row justify-content-md-center">
+												<div class="col-md-auto" th:if="${autores.empty}">
+													<div>
+														<h5 style="text-align: center;">Não existe autores cadastrados
+														</h5>
+													</div>
+												</div>
+												<div class="col-md-auto" th:else="${!autores.empty}">
+													<label class="checkbox-inline" th:each="autor : ${autores}">
+														<input type="checkbox" th:value="${autor.id}"
+															th:text="${autor.nome}" th:field="*{autoresCadastrados}" />
+														<div class="text text-danger"
+															th:if="${#fields.hasErrors('autoresCadastrados')}">
+															Escolha pelo menos um autor para o livro
+														</div>
+													</label>
 												</div>
 											</div>
-											<div class="col-md-auto" th:else="${!autores.empty}">
-												<label class="checkbox-inline" th:each="autor : ${autores}">
-													<input type="checkbox" th:value="${autor.id}"
-														th:text="${autor.nome}"/>
-												</label>
-											</div>
 										</div>
 									</div>
-								</div>
-								<div class="row">
-									<div class="col">
-										<input type="text" class="form-control" placeholder="ISBN" name="isbn"
-											required />
+									<div class="form-group">
+										<input type="text" class="form-control" placeholder="ISBN" th:field="*{isbn}"
+											th:errorclass="is-invalid" />
+										<div class="text text-danger" th:if="${#fields.hasErrors('isbn')}"
+											th:errors="*{isbn}"></div>
 									</div>
-									<div class="col">
+									<div class="form-group">
 										<input type="text" class="form-control" id="titulo_livro" placeholder="TÍTULO"
-											name="titulo" required />
+											th:field="*{titulo}" th:errorclass="is-invalid" />
+										<div class="text text-danger" th:if="${#fields.hasErrors('titulo')}"
+											th:errors="*{titulo}"></div>
 									</div>
-								</div>
-								<div class="form-group">
-									<textarea class="form-control" placeholder="DESCRIÇÃO" rows="2" id="descricao"
-										name="descricao" required></textarea><br>
-								</div>
-								<div class="row">
-									<div class="col-md-auto">
-										<div class="input-group mb-3">
-											<div class="input-group-prepend">
-												<span class="input-group-text">R$</span>
+									<div class="form-group">
+										<textarea class="form-control" placeholder="DESCRIÇÃO" rows="2" id="descricao"
+											th:field="*{descricao}" th:errorclass="is-invalid"></textarea>
+										<div class="text text-danger" th:if="${#fields.hasErrors('descricao')}"
+											th:errors="*{descricao}"></div>
+										<br>
+									</div>
+									<div class="row">
+										<div class="col-md-auto">
+											<div class="input-group mb-3">
+												<div class="input-group-prepend">
+													<span class="input-group-text">R$</span>
+												</div>
+												<input type="text" class="form-control" id="preco" placeholder="PREÇO"
+													th:field="*{preco}" th:errorclass="is-invalid" />
+												<div class="text text-danger" th:if="${#fields.hasErrors('preco')}"
+													th:errors="*{preco}"></div>
 											</div>
-											<input type="" class="form-control" id="preco" placeholder="PREÇO"
-												name="preco" required />
+										</div>
+										<div class="col" id="file">
+											<label for="imagem" class="form-label">Escolha uma imagem para capa do
+												Livro</label>
+											<input type="file" name="fileLivro" id="imagem" accept="image/*" required>
 										</div>
 									</div>
-									<div class="col" id="file">
-										<label for="imagem" class="form-label">Escolha uma imagem para capa do
-											Livro</label>
-										<input type="file" name="fileLivro" id="imagem" required>
-									</div>
-								</div>
 
-								<div class="form-group">
-									<label for="selectEditora">Escolha uma editora</label>
-									<select class="form-control" id="selectEditora" name="editora" required>
-										<option th:each="editora : ${editoras}" th:text="${editora.nome}"
-											th:value="${editora.id}"></option>
-									</select>
-								</div><br>
-
-								<div class="form-group">
-									<label for="selectCategoria">Escolha uma categoria</label>
-									<select class="form-control" id="selectCategoria" name="categoria" required>
-										<option th:each="categoria : ${categorias}" th:text="${categoria.nome}"
-											th:value="${categoria.id}"></option>
-									</select>
-								</div><br>
-
-								<div class="row">
-									<div class="col">
-										<input type="number" class="form-control" placeholder="EDIÇÃO" id="edicao"
-											name="edicao" required />
+									<div class="form-group">
+										<label for="selectEditora">Escolha uma editora</label>
+										<select class="form-control" id="select-editora" th:field="*{editora}">
+											<option value=""> -- </option>
+											<option th:each="editora : ${editoras}" th:text="${editora.nome}"
+												th:value="${editora.id}"></option>
+										</select>
+										<div class="text text-danger" th:if="${#fields.hasErrors('editora')}">Escolha
+											uma editora</div>
 									</div>
-									<div class="col">
-										<input type="date" class="form-control" placeholder="ANO" name="date"
-											id="calendario" required />
+									<div class="form-group">
+										<label for="selectCategoria">Escolha uma categoria</label>
+										<select class="form-control" id="selectCategoria" th:field="*{categoria}">
+											<option value=""> -- </option>
+											<option th:each="categoria : ${categorias}" th:text="${categoria.nome}"
+												th:value="${categoria.id}"></option>
+										</select>
+										<div class="text text-danger" th:if="${#fields.hasErrors('editora')}">Escolha
+											uma categoria</div>
 									</div>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-									<div th:if="${!autores.empty && !editoras.empty && !categorias.empty}">
-										<button type="submit" class="btn btn-primary">Salvar</button>
+									<div class="row">
+										<div class="col">
+											<input type="number" class="form-control" placeholder="EDIÇÃO" id="edicao"
+												th:field="*{edicao}" th:errorclass="is-invalid" />
+											<div class="text text-danger" th:if="${#fields.hasErrors('edicao')}">Edição
+												inválida</div>
+										</div>
+										<div class="col">
+											<input type="date" class="form-control" placeholder="ANO" id="calendario"
+												th:field="*{date}" th:errorclass="is-invalid" />
+											<div class="text text-danger" th:if="${#fields.hasErrors('date')}">Data
+												inválida</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-dismiss="modal">Fechar</button>
+										<div th:if="${!autores.empty && !editoras.empty && !categorias.empty}">
+											<button type="submit" class="btn btn-primary">Salvar</button>
+										</div>
 									</div>
 								</div>
 							</form>
@@ -439,14 +363,16 @@
 				<a href="http://localhost:8080/autor/menu-autor">
 					<button id="opcao2">
 						<img id="img-escritor"
-							src="https://img.icons8.com/ios-filled/50/000000/user-typing-using-typewriter.png" title="autor"/>
+							src="https://img.icons8.com/ios-filled/50/000000/user-typing-using-typewriter.png"
+							title="autor" />
 					</button>
 				</a>
 			</li>
 			<li>
 				<a href="http://localhost:8080/editora/menu-editora">
 					<button id="opcao3">
-						<img id="img-editora" src="https://img.icons8.com/ios-filled/50/000000/bookshop.png" title="editora"/>
+						<img id="img-editora" src="https://img.icons8.com/ios-filled/50/000000/bookshop.png"
+							title="editora" />
 					</button>
 				</a>
 
@@ -454,14 +380,16 @@
 			<li>
 				<a href="http://localhost:8080/estoque/menu-estoque">
 					<button id="opcao4">
-						<img id="img-estoque" src="https://img.icons8.com/ios-filled/50/000000/move-stock--v2.png" title="estoque"/>
+						<img id="img-estoque" src="https://img.icons8.com/ios-filled/50/000000/move-stock--v2.png"
+							title="estoque" />
 					</button>
 				</a>
 			</li>
 			<li>
 				<a href="http://localhost:8080/categoria/menu-categoria">
 					<button id="opcao5">
-						<img id="img-categoria" src="https://img.icons8.com/glyph-neue/64/000000/book-stack.png" title="Categorias"/>
+						<img id="img-categoria" src="https://img.icons8.com/glyph-neue/64/000000/book-stack.png"
+							title="Categorias" />
 					</button>
 				</a>
 			</li>
@@ -469,13 +397,12 @@
 	</div>
 	<script th:replace="~{fragmentos :: script1}"></script>
 	<script th:replace="~{fragmentos :: script2}"></script>
-	<script th:replace="~{fragmentos :: script3}"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
 	<script>
-	
+
 		function toggleFAB(fab) {
 			if (document.querySelector(fab).classList.contains('show')) {
 				document.querySelector(fab).classList.remove('show');
@@ -497,7 +424,6 @@
 		calendario.max = new Date().toISOString().split("T")[0];
 
 		$('#preco').mask('#.##0,00', {reverse: true});
-		$('#novo-preco').mask('#.##0,00', {reverse: true});
 	</script>
 
 </body>
