@@ -25,6 +25,13 @@
 			margin-left: -7px;
 			margin-bottom: 5px;
 		}
+
+		.jumbotron {
+			background-color: white;
+			margin-top: 15px;
+			margin-left: 15px;
+			margin-right: 15px;
+		}
 	</style>
 
 
@@ -37,81 +44,64 @@
 		</li>
 	</ul>
 
-	<table class="table">
-		<thead>
-			<tr>
-				<th scope="col">ID</th>
-				<th scope="col">Nome</th>
-				<th scope="col"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:if="${categorias.empty}">
-				<td colspan="2">Não existe editoras cadastradas</td>
-			</tr>
-			<tr th:each="categoria : ${categorias}">
-				<th scope="row">
-					<span th:text="${categoria.id}"></span>
-				</th>
-				<td><span th:text="${categoria.nome}"></span>
-				<td>
-					<button id="btn-editar" type="button" class="btn btn-primary" title="Editar categoria"
-						data-toggle="modal" data-target="#modalEditarCategoria">
+	<div class="jumbotron">
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Nome</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${categorias.empty}">
+					<td colspan="2">Não existe editoras cadastradas</td>
+				</tr>
+				<tr th:each="categoria : ${categorias}">
+					<th scope="row">
+						<span th:text="${categoria.id}"></span>
+					</th>
+					<td><span th:text="${categoria.nome}"></span>
+					<td>
+						<a th:href="@{/categoria/editar/{id}(id = ${categoria.id})}">
+							<button id="btn-editar" type="button" class="btn btn-primary" title="Editar categoria">
+								<img class="img-editar"
+									src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
+							</button>
+						</a>
 
-						<img class="img-editar" src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
-					</button>
+						<a th:href="@{/categoria/deletar/{id}(id = ${categoria.id})}">
+							<button id="btn-excluir" type="button" class="btn btn-danger" title="Excluir categoria">
+								<img class="img-excluir"
+									src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
+							</button>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
-					<!-- Modal editar categoria-->
-					<div class="modal fade" id="modalEditarCategoria" tabindex="-1" role="dialog"
-						aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
-						<div class="modal-dialog" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="TituloModalLongoExemplo">Editar categoria
-									</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body">
-
-									<form method="POST" th:object="${dtoCategoria}"
-										th:action="@{'/categoria/alterar-categoria'}">
-										<div class="form-group">
-
-											<script th:inline="javascript" th:if="${#fields.hasErrors('*')}">
-												$("#modalEditarCategoria").modal("show");
-											</script>
-
-											<label for="inputIdCategoria">Id</label>
-											<input type="" class="form-control" th:value="${categoria.id}"
-												name="idCategoria" readonly>
-											<label for="inputNome">Nova categoria</label>
-											<input type="" class="form-control" name="nomeCategoria"
-												th:value="${categoria.nome}" th:errorclass="is-invalid">
-												<div class="text text-danger" th:if="${#fields.hasErrors('nomeCategoria')}"
-													th:errors="*{nomeCategoria}">
-												</div><br>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
-												data-dismiss="modal">Fechar</button>
-											<button type="submit" class="btn btn-primary">Salvar alteração</button>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
-					<a th:href="@{/categoria/deletar/{id}(id = ${categoria.id})}">
-						<button id="btn-excluir" type="button" class="btn btn-danger" title="Excluir categoria">
-							<img class="img-excluir" src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
-						</button>
-					</a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	<div style="text-align: center;">
+		Total de Categorias: <span th:text="${totalItems}"></span> - Página <span th:text="${currentPage}"></span> de
+		<span th:text="${totalPages}"></span> -
+		<a th:if="${currentPage > 1}" th:href="@{/categoria/page/1}">Primeira</a>
+		<span th:unless="${currentPage > 1}">Primeira</span>
+		&nbsp;&nbsp;
+		<a th:if="${currentPage > 1}" th:href="@{'/categoria/page/' + ${currentPage - 1}}">Anterior</a>
+		<span th:unless="${currentPage > 1}">Anterior</span>
+		&nbsp;&nbsp;
+		<span th:each="i : ${#numbers.sequence(1,totalPages)}">
+			<a th:if="${i != currentPage}" th:href="@{'/categoria/page/' + ${i}}">[[${i}]]</a>
+			<span th:unless="${i != currentPage}">[[${i}]]</span>
+			&nbsp;&nbsp;
+		</span>
+		<a th:if="${currentPage < totalPages}" th:href="@{'/categoria/page/' + ${currentPage + 1}}">Proxima</a>
+		<span th:unless="${currentPage < totalPages}">Anterior</span>
+		&nbsp;&nbsp;
+		<a th:if="${currentPage < totalPages}" th:href="@{'/categoria/page/' + ${totalPages}}">Última</a>
+		<span th:unless="${currentPage < totalPages}">Última</span>
+	</div>
 
 	<footer th:replace="~{fragmentos :: footer}"></footer>
 

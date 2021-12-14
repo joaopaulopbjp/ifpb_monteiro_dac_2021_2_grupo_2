@@ -1,11 +1,12 @@
 package com.dac.ecommerce.livros.services;
 
 import java.util.List;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import com.dac.ecommerce.livros.exceptions.LivroException;
 import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
 import com.dac.ecommerce.livros.model.livro.Categoria;
@@ -26,6 +27,7 @@ public class LivroService {
 	public void salvar(Livro livro) throws Exception {
 		repositorioLivro.save(livro);
 	}
+
 	public void excluirLivro(String isbn) throws LivroException {
 		Livro livro = repositorioLivro.findByIsbn(isbn);
 		if (livro == null) {
@@ -65,14 +67,17 @@ public class LivroService {
 		BeanUtils.copyProperties(livro, bucarLivro);
 		repositorioLivro.save(bucarLivro);
 	}
-	
+
 	public Livro bucarPelaEditora(Editora editora) {
-		
 		return repositorioLivro.findByEditora(editora);
 	}
-	
+
 	public Livro bucarPelaCategoria(Categoria categoria) {
 		return repositorioLivro.findByCategoria(categoria);
 	}
 
+	public Page<Livro> pageLivros(int pageNumber) {
+		Page<Livro> page = repositorioLivro.findAll(PageRequest.of(pageNumber - 1, 5, Sort.by("titulo").ascending()));
+		return page;
+	}
 }

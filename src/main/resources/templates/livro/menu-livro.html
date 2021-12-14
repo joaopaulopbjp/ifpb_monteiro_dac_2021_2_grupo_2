@@ -17,10 +17,6 @@
 			text-align: center;
 		}
 
-		.checkbox-inline {
-			margin-right: 15px;
-		}
-
 		#img-livro,
 		#img-escritor,
 		#img-estoque,
@@ -164,200 +160,99 @@
 		.fab.show button.main+ul li:hover label {
 			opacity: 1;
 		}
+
+		.jumbotron {
+			background-color: white;
+			margin-top: 15px;
+			margin-left: 15px;
+			margin-right: 15px;
+		}
 	</style>
 
 
 	<div class="jumbotron">
-		<div class="container" style="height: 600px;">
-			<h5 style="text-align: center;">Catálogo de Livros</h5>
-			<table class="table" id="tabelaLivro">
-				<thead>
-					<tr>
-						<th scope="col">ID</th>
-						<th scope="col">TÍTULO</th>
-						<th scope="col"></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:if="${livros.empty}">
-						<td colspan="2">Não existe livros cadastrados</td>
-					</tr>
-					<tr th:each="livro : ${livros}">
-						<th scope="row">
-							<span th:text="${livro.id}"></span>
-						</th>
-						<td><span th:text="${livro.titulo}">Título</span></td>
-						<td>
-							<a th:href="@{/livro/form-editar/{id}(id = ${livro.id})}">
-								<button id="btn_editar" type="button" class="btn btn-primary" title="Editar livro">
-									<img class="img-editar"
-										src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
-								</button>
-							</a>
-
-							<a th:if="${livro.adicionadoEmEstoque == false}"
-								th:href="@{/livro/deletar/{id}(id = ${livro.id})}">
-								<button id="btn_excluir" type="button" class="btn btn-danger" title="Excluir livro">
-									<img class="img-excluir"
-										src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
-								</button>
-							</a>
-
-							<a th:if="${!estoques.empty && livro.adicionadoEmEstoque == false}">
-								<a th:href="@{/item-estoque/form-adicionar-item/{id}(id = ${livro.id})}">
-									<button id="btn_adicionar" type="button" class="btn btn-success"
-										title="Adicionar livro para o estoque" />
-									<img class="img-adicionar" img
-										src="https://img.icons8.com/glyph-neue/64/000000/add.png" />
-									</button>
-								</a>
-							</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-
-			<!-- Modal cadastrar livro-->
-
-			<div class="modal fade" id="modalCadastrarLivro" tabindex="-1" role="dialog"
-				aria-labelledby="cadastrarLivroModalLabel" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="cadastrartModalLabel">Cadastrar Livro</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-								<span aria-hidden="true">&times;</span>
+		<h5 style="text-align: center;">Catálogo de Livros</h5>
+		<table class="table" id="tabelaLivro">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">TÍTULO</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${livros.empty}">
+					<td colspan="2">Não existe livros cadastrados</td>
+				</tr>
+				<tr th:each="livro : ${livros}">
+					<th scope="row">
+						<span th:text="${livro.id}"></span>
+					</th>
+					<td><span th:text="${livro.titulo}">Título</span></td>
+					<td>
+						<a th:href="@{/livro/form-editar/{id}(id = ${livro.id})}">
+							<button id="btn_editar" type="button" class="btn btn-primary" title="Editar livro">
+								<img class="img-editar"
+									src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
 							</button>
-						</div>
-						<div class="modal-body">
+						</a>
 
-							<form method="post" id="formulario" th:object="${dtoLivro}" th:action="@{'/livro/salvar'}"
-								enctype="multipart/form-data">
-								<div class="modal-body">
+						<a th:if="${livro.adicionadoEmEstoque == false}"
+							th:href="@{/livro/deletar/{id}(id = ${livro.id})}">
+							<button id="btn_excluir" type="button" class="btn btn-danger" title="Excluir livro">
+								<img class="img-excluir"
+									src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
+							</button>
+						</a>
 
-									<script th:inline="javascript" th:if="${#fields.hasErrors('*')}">
-										$("#modalCadastrarLivro").modal("show");
-									</script>
-
-									<div class="form-group" id="grupo">
-										<h4 id="titulo">Escolha os autores do livro</h4>
-										<div class="container">
-											<div class="row justify-content-md-center">
-												<div class="col-md-auto" th:if="${autores.empty}">
-													<div>
-														<h5 style="text-align: center;">Não existe autores cadastrados
-														</h5>
-													</div>
-												</div>
-												<div class="col-md-auto" th:else="${!autores.empty}">
-													<label class="checkbox-inline" th:each="autor : ${autores}">
-														<input type="checkbox" th:value="${autor.id}"
-															th:text="${autor.nome}" th:field="*{autoresCadastrados}" />
-														<div class="text text-danger"
-															th:if="${#fields.hasErrors('autoresCadastrados')}">
-															Escolha pelo menos um autor para o livro
-														</div>
-													</label>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="ISBN" th:field="*{isbn}"
-											th:errorclass="is-invalid" />
-										<div class="text text-danger" th:if="${#fields.hasErrors('isbn')}"
-											th:errors="*{isbn}"></div>
-									</div>
-									<div class="form-group">
-										<input type="text" class="form-control" id="titulo_livro" placeholder="TÍTULO"
-											th:field="*{titulo}" th:errorclass="is-invalid" />
-										<div class="text text-danger" th:if="${#fields.hasErrors('titulo')}"
-											th:errors="*{titulo}"></div>
-									</div>
-									<div class="form-group">
-										<textarea class="form-control" placeholder="DESCRIÇÃO" rows="2" id="descricao"
-											th:field="*{descricao}" th:errorclass="is-invalid"></textarea>
-										<div class="text text-danger" th:if="${#fields.hasErrors('descricao')}"
-											th:errors="*{descricao}"></div>
-										<br>
-									</div>
-									<div class="row">
-										<div class="col-md-auto">
-											<div class="input-group mb-3">
-												<div class="input-group-prepend">
-													<span class="input-group-text">R$</span>
-												</div>
-												<input type="text" class="form-control" id="preco" placeholder="PREÇO"
-													th:field="*{preco}" th:errorclass="is-invalid" />
-												<div class="text text-danger" th:if="${#fields.hasErrors('preco')}"
-													th:errors="*{preco}"></div>
-											</div>
-										</div>
-										<div class="col" id="file">
-											<label for="imagem" class="form-label">Escolha uma imagem para capa do
-												Livro</label>
-											<input type="file" name="fileLivro" id="imagem" accept="image/*" required>
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label for="selectEditora">Escolha uma editora</label>
-										<select class="form-control" id="select-editora" th:field="*{editora}">
-											<option value=""> -- </option>
-											<option th:each="editora : ${editoras}" th:text="${editora.nome}"
-												th:value="${editora.id}"></option>
-										</select>
-										<div class="text text-danger" th:if="${#fields.hasErrors('editora')}">Escolha
-											uma editora</div>
-									</div>
-									<div class="form-group">
-										<label for="selectCategoria">Escolha uma categoria</label>
-										<select class="form-control" id="selectCategoria" th:field="*{categoria}">
-											<option value=""> -- </option>
-											<option th:each="categoria : ${categorias}" th:text="${categoria.nome}"
-												th:value="${categoria.id}"></option>
-										</select>
-										<div class="text text-danger" th:if="${#fields.hasErrors('editora')}">Escolha
-											uma categoria</div>
-									</div>
-									<div class="row">
-										<div class="col">
-											<input type="number" class="form-control" placeholder="EDIÇÃO" id="edicao"
-												th:field="*{edicao}" th:errorclass="is-invalid" />
-											<div class="text text-danger" th:if="${#fields.hasErrors('edicao')}">Edição
-												inválida</div>
-										</div>
-										<div class="col">
-											<input type="date" class="form-control" placeholder="ANO" id="calendario"
-												th:field="*{date}" th:errorclass="is-invalid" />
-											<div class="text text-danger" th:if="${#fields.hasErrors('date')}">Data
-												inválida</div>
-										</div>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary"
-											data-dismiss="modal">Fechar</button>
-										<div th:if="${!autores.empty && !editoras.empty && !categorias.empty}">
-											<button type="submit" class="btn btn-primary">Salvar</button>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+						<a th:if="${!estoques.empty && livro.adicionadoEmEstoque == false}">
+							<a th:href="@{/item-estoque/form-adicionar-item/{id}(id = ${livro.id})}">
+								<button id="btn_adicionar" type="button" class="btn btn-success"
+									title="Adicionar livro para o estoque" />
+								<img class="img-adicionar" img
+									src="https://img.icons8.com/glyph-neue/64/000000/add.png" />
+								</button>
+							</a>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
+	
+	<div style="text-align: center;">
+		Total de Livros: <span th:text="${totalItems}"></span> - Página <span th:text="${currentPage}"></span>
+		de
+		<span th:text="${totalPages}"></span> -
+		<a th:if="${currentPage > 1}" th:href="@{/livro/page/1}">Primeira</a>
+		<span th:unless="${currentPage > 1}">Primeira</span>
+		&nbsp;&nbsp;
+		<a th:if="${currentPage > 1}" th:href="@{'/livro/page/' + ${currentPage - 1}}">Anterior</a>
+		<span th:unless="${currentPage > 1}">Anterior</span>
+		&nbsp;&nbsp;
+		<span th:each="i : ${#numbers.sequence(1,totalPages)}">
+			<a th:if="${i != currentPage}" th:href="@{'/livro/page/' + ${i}}">[[${i}]]</a>
+			<span th:unless="${i != currentPage}">[[${i}]]</span>
+			&nbsp;&nbsp;
+		</span>
+		<a th:if="${currentPage < totalPages}" th:href="@{'/livro/page/' + ${currentPage + 1}}">Proxima</a>
+		<span th:unless="${currentPage < totalPages}">Anterior</span>
+		&nbsp;&nbsp;
+		<a th:if="${currentPage < totalPages}" th:href="@{'/livro/page/' + ${totalPages}}">Última</a>
+		<span th:unless="${currentPage < totalPages}">Última</span>
+	</div>
+	
 	<footer th:replace="~{fragmentos :: footer}"></footer>
 	<div class="fab">
 		<button class="main">
 		</button>
 		<ul>
 			<li>
-				<button id="opcao1" title="Cadastrar livro" data-toggle="modal" data-target="#modalCadastrarLivro">
-					<img id="img-livro" src="https://img.icons8.com/ios-glyphs/30/000000/add-book.png" />
-				</button>
+				<a href="http://localhost:8080/livro/cadastrar">
+					<button id="opcao1" title="Cadastrar livro">
+						<img id="img-livro" src="https://img.icons8.com/ios-glyphs/30/000000/add-book.png" />
+					</button>
+				</a>
 			</li>
 			<li>
 				<a href="http://localhost:8080/autor/menu-autor">

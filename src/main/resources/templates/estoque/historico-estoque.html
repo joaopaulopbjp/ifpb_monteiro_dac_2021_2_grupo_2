@@ -8,6 +8,16 @@
 
 	<style th:replace="~{fragmentos :: style}"></style>
 
+	<style>
+		.jumbotron {
+			background-color: white;
+			margin-top: 15px;
+			margin-left: 15px;
+			margin-right: 15px;
+		}
+	</style>
+
+
 	<ul class="nav nav-tabs">
 
 		<li class="nav-item">
@@ -23,29 +33,29 @@
 			<a class="nav-link active" href="http://localhost:8080/estoque/historico-estoque">Histórico de itens</a>
 		</li>
 	</ul>
-
-	<table class="table">
-		<thead>
-			<tr>
-				<th scope="col">ITEM</th>
-				<th scope="col">REGISTRO</th>
-				<th scope="col">ESTADO</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:if="${historicos.empty}">
-				<td colspan="2">Histórico vazio!</td>
-			</tr>
-			<tr th:each="historico : ${historicos}">
-				<th scope="row">
-					<span th:text="${historico.nomeItem}"></span>
-				</th>
-				<td><span th:text="${historico.calendario.getTime().toString()}"></span></td>
-				<td><span th:text="${historico.estadoItem}"></span></td>
-			</tr>
-		</tbody>
-	</table>
-
+	<div class="jumbotron">
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">ITEM</th>
+					<th scope="col">REGISTRO</th>
+					<th scope="col">ESTADO</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${historicos.empty}">
+					<td colspan="2">Histórico vazio!</td>
+				</tr>
+				<tr th:each="historico : ${historicos}">
+					<th scope="row">
+						<span th:text="${historico.nomeItem}"></span>
+					</th>
+					<td><span th:text="${historico.calendario.getTime().toString()}"></span></td>
+					<td><span th:text="${historico.estadoItem}"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 	<footer th:replace="~{fragmentos :: footer}"></footer>
 

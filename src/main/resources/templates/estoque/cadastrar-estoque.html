@@ -10,13 +10,18 @@
 
 	<style>
 		.salvar {
-			margin-top: 10px;
-
+			margin-top: 15px;
+			margin-bottom: 15px;
 		}
 
 		form {
 			margin-top: 15px;
 			margin-left: 30px;
+			margin-right: 30px;
+		}
+
+		.container {
+			margin-top: 15px;
 		}
 	</style>
 
@@ -34,18 +39,21 @@
 			<a class="nav-link" href="http://localhost:8080/estoque/historico-estoque">Histórico de itens</a>
 		</li>
 	</ul>
-
-	<form method="POST" th:object="${dtoEstoque}" th:action="@{'/estoque/salvar'}">
-		<div class="col-10">
-			<label for="inputNome">Nome do estoque</label>
-			<input type="text" class="form-control" placeholder="Digite um nome para o estoque" 
-			th:field="*{nomeEstoque}" th:errorclass="is-invalid">
-			<div class="invalid-feedback" th:if="${#fields.hasErrors('nomeEstoque')}" th:errors="*{nomeEstoque}">
-			</div>
-			<button type="submit" class="btn btn-primary salvar">Salvar</button>
+	<div class="container">
+		<div class="card">
+			<form method="POST" th:object="${dtoEstoque}" th:action="@{'/estoque/salvar'}">
+				<div class="col-10">
+					<label for="inputNome">Nome do estoque</label>
+					<input type="text" class="form-control" placeholder="Digite um nome para o estoque"
+						th:field="*{nomeEstoque}" th:errorclass="is-invalid">
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('nomeEstoque')}"
+						th:errors="*{nomeEstoque}">
+					</div>
+					<button type="submit" class="btn btn-primary salvar">Salvar</button>
+				</div>
+			</form>
 		</div>
-	</form>
-
+	</div>
 
 	<footer th:replace="~{fragmentos :: footer}"></footer>
 

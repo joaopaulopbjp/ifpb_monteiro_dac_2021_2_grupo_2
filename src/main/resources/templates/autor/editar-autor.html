@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos :: head('Editar autor')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos :: header}"></header>
+
+	<style th:replace="~{fragmentos :: style}"></style>
+
+	<style>
+		.salvar, .cancelar{
+			margin-top: 10px;
+			margin-bottom: 15px;
+
+		}
+
+		form {
+			margin-top: 15px;
+			margin-left: 30px;
+			margin-right: 30px;
+		}
+
+		.container {
+			margin-top: 15px;
+		}
+	</style>
+
+
+	<div class="container">
+		<div class="card">
+			<form method="POST" th:object="${dtoAutor}" th:action="@{'/autor/alterar-autor'}">
+				<div class="form-group">
+					<label for="input-id" class="form-label">ID</label>
+					<input type="text" class="form-control" th:field="*{idAutor}" readonly>
+				</div>
+				<div class="form-group">
+					<label for="input-nome" class="form-label">NOME</label>
+					<input type="text" class="form-control" th:field="*{nomeAutor}" th:errorclass="is-invalid"/>
+					<div class="text text-danger" th:if="${#fields.hasErrors('nomeAutor')}" th:errors="*{nomeAutor}"></div>
+					<button type="submit" class="btn btn-primary salvar">Salvar Alterações</button>
+					<button type="button" th:onclick="cancelar()" class="btn btn-danger cancelar">Cancelar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<footer th:replace="~{fragmentos :: footer}"></footer>
+	<script th:replace="~{fragmentos :: script1}"></script>
+	<script th:replace="~{fragmentos :: script2}"></script>
+	<script>
+		function cancelar() {
+			const link = "http://localhost:8080/autor/menu-autor";
+			window.location.href = link;
+		}
+	</script>
+</body>
+
+</html>

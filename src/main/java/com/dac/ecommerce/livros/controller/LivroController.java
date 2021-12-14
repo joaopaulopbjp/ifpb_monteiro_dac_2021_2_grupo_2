@@ -2,8 +2,10 @@ package com.dac.ecommerce.livros.controller;
 
 import java.math.BigDecimal;
 import java.util.Base64;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.dac.ecommerce.livros.dto.DTOLivro;
 import com.dac.ecommerce.livros.dto.DTOEditarLivro;
+import com.dac.ecommerce.livros.dto.DTOLivro;
 import com.dac.ecommerce.livros.model.estoque.ItemEstoque;
 import com.dac.ecommerce.livros.model.livro.Livro;
 import com.dac.ecommerce.livros.services.AutorService;
@@ -50,23 +52,45 @@ public class LivroController {
 
 	@RequestMapping("/menu-livro")
 	public String menu(Model model) throws Exception {
+		return listByPage(model, 1);
+	}
 
+	@GetMapping("/page/{pageNumber}")
+	public String listByPage(Model model, @PathVariable("pageNumber") int currentPage) {
+
+		Page<Livro> page = livroService.pageLivros(currentPage);
+		long totalItems = page.getTotalElements();
+		int totalPages = page.getTotalPages();
+
+		List<Livro> livros = page.getContent();
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("totalItems", totalItems);
+		model.addAttribute("totalPages", totalPages);
+
+		model.addAttribute("livros", livros);
 		model.addAttribute("editoras", editoraService.todasEditoras());
 		model.addAttribute("categorias", categoriaService.listar());
 		model.addAttribute("estoques", estoqueService.listarEstoques());
-		model.addAttribute("livros", livroService.recuperarTodosOsLivros());
 		model.addAttribute("autores", autorService.todosAutores());
 		model.addAttribute("dtoLivro", new DTOLivro());
 
 		return "/livro/menu-livro";
 	}
 
+	@RequestMapping("/cadastrar")
+	public String formCadastrar(Model model) {
+		model.addAttribute("editoras", editoraService.todasEditoras());
+		model.addAttribute("categorias", categoriaService.listar());
+		model.addAttribute("autores", autorService.todosAutores());
+		model.addAttribute("dtoLivro", new DTOLivro());
+		return "/livro/cadastrar-livro";
+	}
+
 	@PostMapping("/salvar")
 	public String salvar(@Valid @ModelAttribute("dtoLivro") DTOLivro dtoLivro, BindingResult bindingResult,
-			RedirectAttributes atts, @RequestParam("fileLivro") MultipartFile file, Model model) {
+			RedirectAttributes atts, @RequestParam("fileLivro") MultipartFile file, Model model) throws Exception {
 
 		if (!bindingResult.hasErrors()) {
-
 			Livro livro = dtoLivro.toLivro();
 			try {
 				if (!file.isEmpty()) {
@@ -79,16 +103,14 @@ public class LivroController {
 				e.printStackTrace();
 			}
 			return "redirect:/livro/menu-livro";
-
 		}
-		System.out.println("erro");
+
 		model.addAttribute("editoras", editoraService.todasEditoras());
 		model.addAttribute("categorias", categoriaService.listar());
-		model.addAttribute("estoques", estoqueService.listarEstoques());
 		model.addAttribute("livros", livroService.recuperarTodosOsLivros());
 		model.addAttribute("autores", autorService.todosAutores());
 		atts.addAttribute("hasErrors", true);
-		return "/livro/menu-livro";
+		return "/livro/cadastrar-livro";
 	}
 
 	@GetMapping("/deletar/{id}")
@@ -114,7 +136,6 @@ public class LivroController {
 			RedirectAttributes atts) {
 
 		if (!bindingResult.hasErrors()) {
-			System.out.println("sem erro");
 			Livro livro = livroService.buscarLivro(dtoEditar.getId());
 			livro.setPreco(new BigDecimal(dtoEditar.getPreco().replace(",", ".")));
 			livro.setTitulo(dtoEditar.getTitulo());
@@ -124,12 +145,12 @@ public class LivroController {
 				itemEstoque.setPreco(livro.getPreco());
 				itemEstoqueService.alterar(itemEstoque, itemEstoque.getId());
 			}
-			
+
 			livroService.alterarLivro(livro, livro.getId());
 			return "redirect:/livro/menu-livro";
 		}
 		atts.addAttribute("hasErrors", true);
 		return "livro/editar-livro";
-
 	}
+
 }

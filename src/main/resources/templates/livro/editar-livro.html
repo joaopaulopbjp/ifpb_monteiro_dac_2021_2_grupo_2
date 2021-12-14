@@ -9,8 +9,9 @@
 	<style th:replace="~{fragmentos :: style}"></style>
 
 	<style>
-		.salvar {
+		.salvar, .cancelar{
 			margin-top: 10px;
+			margin-bottom: 15px;
 
 		}
 
@@ -24,9 +25,6 @@
 			margin-top: 15px;
 		}
 
-		.salvar {
-			margin-bottom: 15px;
-		}
 	</style>
 	<div class="container">
 		<div class="card">
@@ -61,12 +59,11 @@
 					</div>
 				</div>
 				<button type="submit" class="btn btn-primary salvar">Salvar Alterações</button>
-				<button type="button" th:onclick="cancelar()" class="btn btn-danger">Cancelar</button>
+				<button type="button" th:onclick="cancelar()" class="btn btn-danger cancelar">Cancelar</button>
 
 		</div>
 
 		</form>
-	</div>
 	</div>
 	<footer th:replace="~{fragmentos :: footer}"></footer>
 

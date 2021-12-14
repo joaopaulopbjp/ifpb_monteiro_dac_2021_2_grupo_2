@@ -3,6 +3,9 @@ package com.dac.ecommerce.livros.services;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.dac.ecommerce.livros.model.livro.Editora;
 import com.dac.ecommerce.livros.repository.EditoraRepository;
@@ -40,5 +43,10 @@ public class EditoraService {
 	
 	public void excluirEditora(Long id) {
 		editoraRepository.deleteById(id);
+	}
+
+	public Page<Editora> pageEditora(int currentPage) {
+		Page<Editora> page = editoraRepository.findAll(PageRequest.of(currentPage - 1, 5, Sort.by("nome").ascending()));
+		return page;
 	}
 }

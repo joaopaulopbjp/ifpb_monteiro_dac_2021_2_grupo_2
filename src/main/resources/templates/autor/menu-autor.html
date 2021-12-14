@@ -25,6 +25,13 @@
 			margin-left: -7px;
 			margin-bottom: 5px;
 		}
+
+		.jumbotron {
+			background-color: white;
+			margin-top: 15px;
+			margin-left: 15px;
+			margin-right: 15px;
+		}
 	</style>
 
 
@@ -38,78 +45,60 @@
 	</ul>
 
 
+	<div class="jumbotron">
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">NOME</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="autor : ${autores}">
+					<th scope="row"><span th:text="${autor.id}"></span></th>
+					<td><span th:text="${autor.nome}"></span></td>
+					<td>
+						<a th:href="@{/autor/form-editar/{id}(id = ${autor.id})}">
+							<button type="button" id="btn-editar" class="btn btn-primary" title="Editar Autor">
+								<img class="img-editar"
+									src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
+							</button>
+						</a>
+						<a th:href="@{/autor/deletar/{id}(id = ${autor.id})}">
+							<button id="btn-excluir" type="button" class="btn btn-danger" title="Excluir Autor">
+								<img class="img-excluir"
+									src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
+							</button>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
-	<table class="table">
-		<thead>
-			<tr>
-				<th scope="col">ID</th>
-				<th scope="col">NOME</th>
-				<th scope="col"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="autor : ${autores}">
-				<th scope="row"><span th:text="${autor.id}"></span></th>
-				<td><span th:text="${autor.nome}"></span></td>
-				<td>
-
-					<!-- Botão para acionar modal -->
-					<button type="button" id="btn-editar" class="btn btn-primary" data-toggle="modal"
-						data-target="#modalExemplo">
-						<img class="img-editar" src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
-					</button>
-
-
-					<!-- Modal Editar Autor-->
-					<div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog"
-						aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div style="text-align: center;">
+		Total de Autores: <span th:text="${totalItems}"></span> - Página <span th:text="${currentPage}"></span> de <span
+			th:text="${totalPages}"></span> -
+		<a th:if="${currentPage > 1}" th:href="@{/autor/page/1}">Primeira</a>
+		<span th:unless="${currentPage > 1}">Primeira</span>
+		&nbsp;&nbsp;
+		<a th:if="${currentPage > 1}" th:href="@{'/autor/page/' + ${currentPage - 1}}">Anterior</a>
+		<span th:unless="${currentPage > 1}">Anterior</span>
+		&nbsp;&nbsp;
+		<span th:each="i : ${#numbers.sequence(1,totalPages)}">
+			<a th:if="${i != currentPage}" th:href="@{'/autor/page/' + ${i}}">[[${i}]]</a>
+			<span th:unless="${i != currentPage}">[[${i}]]</span>
+			&nbsp;&nbsp;
+		</span>
+		<a th:if="${currentPage < totalPages}" th:href="@{'/autor/page/' + ${currentPage + 1}}">Proxima</a>
+		<span th:unless="${currentPage < totalPages}">Anterior</span>
+		&nbsp;&nbsp;
+		<a th:if="${currentPage < totalPages}" th:href="@{'/autor/page/' + ${totalPages}}">Última</a>
+		<span th:unless="${currentPage < totalPages}">Última</span>
+	</div>
 
 
-						<div class="modal-dialog" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLabel">Editar Autor</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body">
-									<form th:action="@{/autor/alterar-autor}" th:object="${dtoAutor}" method="post">
-										<div class="modal-body">
-
-											<script th:inline="javascript" th:if="${#fields.hasErrors('*')}">
-												$("#modalExemplo").modal("show");
-											</script>
-
-
-											<div class="form-group">
-
-												<label for="inputIdAutor">Id</label>
-												<input type="" class="form-control" name="idAutor"
-													th:value="${autor.id}" readonly>
-												<label for="className">Nome do Autor</label>
-												<input type="text" class="form-control" th:value="${autor.nome}" name="nomeAutor"
-													th:errorclass="is-invalid">
-												<div class="text text-danger" th:if="${#fields.hasErrors('nomeAutor')}"
-													th:errors="*{nomeAutor}">
-												</div><br>
-												<button type="submit" class="btn btn-primary">Salvar mudanças</button>
-											</div>
-										</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<a th:href="@{/autor/deletar/{id}(id = ${autor.id})}">
-						<button id="btn-excluir" type="button" class="btn btn-danger" title="Excluir Autor">
-							<img class="img-excluir" src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
-						</button>
-					</a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
 
 	<footer th:replace="~{fragmentos :: footer}"></footer>
 	<script th:replace="~{fragmentos :: script1}"></script>

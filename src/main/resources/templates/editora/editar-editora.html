@@ -9,6 +9,12 @@
 	<style th:replace="~{fragmentos :: style}"></style>
 
 	<style>
+		.salvar,
+		.cancelar {
+			margin-top: 10px;
+			margin-bottom: 15px;
+		}
+
 		form {
 			margin-top: 15px;
 			margin-left: 30px;
@@ -18,47 +24,46 @@
 		.container {
 			margin-top: 15px;
 		}
-
-		button {
-			margin-top: 15px;
-		}
 	</style>
-	<ul class="nav nav-tabs">
-		<li class="nav-item">
-			<a class="nav-link" href="http://localhost:8080/editora/menu-editora">Editoras cadastradas</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link active" href="http://localhost:8080/editora/cadastrar-editora">Cadastrar nova editora</a>
-		</li>
-	</ul>
+
 	<div class="container">
 		<div class="card">
-			<form method="POST" th:object="${dtoEditora}" th:action="@{'/editora/salvar-editora'}">
+			<form method="POST" th:object="${dtoEditora}" th:action="@{'/editora/alterar-editora'}">
 				<div class="form-group">
-					<label for="inputNome">Nome da editora:</label>
-					<input type="text" class="form-control" placeholder="Digite o nome da editora"
-						th:field="*{nomeEditora}" th:errorclass="is-invalid">
+					<label for="input-id" class="form-label">ID</label>
+					<input type="text" class="form-control" th:field="*{idEditora}" readonly>
+				</div>
+				<div class="form-group">
+					<label for="input-nome" class="form-label">NOME DA EDITORA</label>
+					<input type="text" class="form-control" th:field="*{nomeEditora}" th:errorclass="is-invalid">
 					<div class="invalid-feedback" th:if="${#fields.hasErrors('nomeEditora')}"
 						th:errors="*{nomeEditora}">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="inputCidade">Cidade da editora:</label>
-					<input type="text" class="form-control" placeholder="Digite o nome da cidade da editora"
-						th:field="*{cidadeEditora}" th:errorclass="is-invalid">
+					<label for="input-cidade" class="form-label">CIDADE DA EDITORA</label>
+					<input type="text" class="form-control" th:field="*{cidadeEditora}" th:errorclass="is-invalid">
 					<div class="invalid-feedback" th:if="${#fields.hasErrors('cidadeEditora')}"
 						th:errors="*{cidadeEditora}">
 					</div>
 					<button type="submit" class="btn btn-primary salvar">Salvar</button>
+					<button type="button" th:onclick="cancelar()" class="btn btn-danger cancelar">Cancelar</button>
 				</div>
 			</form>
 		</div>
 	</div>
 
 	<footer th:replace="~{fragmentos :: footer}"></footer>
-
 	<script th:replace="~{fragmentos :: script1}"></script>
 	<script th:replace="~{fragmentos :: script2}"></script>
+
+	<script>
+		function cancelar() {
+			const link = "http://localhost:8080/editora/menu-editora";
+			window.location.href = link;
+		}
+	</script>
+
 </body>
 
 </html>

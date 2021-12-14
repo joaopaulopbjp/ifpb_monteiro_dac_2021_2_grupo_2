@@ -174,7 +174,6 @@ public class EstoqueService {
 		return itemEstoqueRepository.findByProduto(livro);
 	}
 	
-	
 	public void salvarEstoque(Estoque estoque) {
 		estoqueRepository.save(estoque);
 	}

@@ -14,4 +14,5 @@ public interface LivroRepository extends JpaRepository<Livro, Long>{
 	Livro findByEditora(Editora editora);
 	
 	Livro findByCategoria(Categoria categoria);
+	
 }

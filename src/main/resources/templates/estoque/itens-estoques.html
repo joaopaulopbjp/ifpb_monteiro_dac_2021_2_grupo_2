@@ -19,6 +19,13 @@
 			width: 12px;
 			height: 20px;
 		}
+
+		.jumbotron {
+			background-color: white;
+			margin-top: 15px;
+			margin-left: 15px;
+			margin-right: 15px;
+		}
 	</style>
 
 	<ul class="nav nav-tabs">
@@ -37,55 +44,59 @@
 			<a class="nav-link" href="http://localhost:8080/estoque/historico-estoque">Histórico de itens</a>
 		</li>
 	</ul>
-	<table class="table">
-		<thead>
-			<tr>
-				<th scope="col">id</th>
-				<th scope="col">Quantidade</th>
-				<th scope="col">Livro</th>
-				<th scope="col">Estoque</th>
-				<th scope="col"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:if="${itens.empty}">
-				<td colspan="2">Não existe itens em estoque!</td>
-			</tr>
-			<tr th:each="item : ${itens}">
-				<th scope="row">
-					<span th:text="${item.id}"></span>
-				</th>
-				<td>
-					<span th:text="${item.quantidade}"></span>
-				</td>
-				<td><span th:text="${item.produto.titulo}"></span></td>
-				<td><span th:text="${item.estoque.nome}"></span></td>
-				<td>
-					<a th:href="@{/item-estoque/adicionar-itens/{id}(id = ${item.id})}">
-						<button id="btn-adicionar" type="button" class="btn btn-success"
-							title="Adicionar quantidade de itens" th:value="${item.id}">
-							+
-						</button>
-					</a>
-					<a th:if="${item.quantidade > 0}">
-						<a th:href="@{/item-estoque/remover-item/{id}(id = ${item.id})}">
-							<button id="btn-reduzir" type="button" class="btn btn-danger"
-								title="Reduzir quantidade de itens" th:value="${item.id}">
-								-
+	<div class="jumbotron">
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">id</th>
+					<th scope="col">Quantidade</th>
+					<th scope="col">Livro</th>
+					<th scope="col">Estoque</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${itens.empty}">
+					<td colspan="2">Não existe itens em estoque!</td>
+				</tr>
+				<tr th:each="item : ${itens}">
+					<th scope="row">
+						<span th:text="${item.id}"></span>
+					</th>
+					<td>
+						<span th:text="${item.quantidade}"></span>
+					</td>
+					<td><span th:text="${item.produto.titulo}"></span></td>
+					<td><span th:text="${item.estoque.nome}"></span></td>
+					<td>
+						<a th:href="@{/item-estoque/adicionar-itens/{id}(id = ${item.id})}">
+							<button id="btn-adicionar" type="button" class="btn btn-success"
+								title="Adicionar quantidade de itens" th:value="${item.id}">
+								+
 							</button>
 						</a>
-					</a>
-					<a th:if="${item.quantidade <= 0}">
-						<a th:href="@{/item-estoque/deletar-item/{id}(id = ${item.id})}">
-							<button id="btn-remover-item" type="button" class="btn btn-secondary" title="Excluir item">
-								<img id="img-excluir" src="https://img.icons8.com/ios-glyphs/30/000000/delete.png" />
-							</button>
+						<a th:if="${item.quantidade > 0}">
+							<a th:href="@{/item-estoque/remover-item/{id}(id = ${item.id})}">
+								<button id="btn-reduzir" type="button" class="btn btn-danger"
+									title="Reduzir quantidade de itens" th:value="${item.id}">
+									-
+								</button>
+							</a>
 						</a>
-					</a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+						<a th:if="${item.quantidade <= 0}">
+							<a th:href="@{/item-estoque/deletar-item/{id}(id = ${item.id})}">
+								<button id="btn-remover-item" type="button" class="btn btn-secondary"
+									title="Excluir item">
+									<img id="img-excluir"
+										src="https://img.icons8.com/ios-glyphs/30/000000/delete.png" />
+								</button>
+							</a>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 	<footer th:replace="~{fragmentos :: footer}"></footer>
 

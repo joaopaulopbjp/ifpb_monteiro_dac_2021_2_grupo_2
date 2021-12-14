@@ -3,6 +3,9 @@ package com.dac.ecommerce.livros.services;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.dac.ecommerce.livros.model.livro.Categoria;
 import com.dac.ecommerce.livros.repository.CategoriaRepository;
@@ -40,6 +43,11 @@ public class CategoriaService {
 	
 	public void excluir(Long id) {
 		categoriaRepository.deleteById(id);
+	}
+	
+	public Page<Categoria> pageCategoria(int currentPage) {
+		Page<Categoria> page = categoriaRepository.findAll(PageRequest.of(currentPage - 1, 5, Sort.by("nome").ascending()));
+		return page;
 	}
 	
 	
