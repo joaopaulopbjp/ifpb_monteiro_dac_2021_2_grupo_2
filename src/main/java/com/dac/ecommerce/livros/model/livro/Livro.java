@@ -53,6 +53,7 @@ public class Livro {
 	private List<Autor> autores;
 	
 	@ManyToOne
+	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
 	
 	public Livro(){}

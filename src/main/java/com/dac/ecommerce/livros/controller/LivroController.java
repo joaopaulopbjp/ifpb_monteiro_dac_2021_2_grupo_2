@@ -98,6 +98,7 @@ public class LivroController {
 					String codigo = Base64.getEncoder().encodeToString(file.getBytes());
 					livro.setImagemCapa(inicio + codigo);
 				}
+				
 				livroService.salvar(livro);
 			} catch (Exception e) {
 				e.printStackTrace();

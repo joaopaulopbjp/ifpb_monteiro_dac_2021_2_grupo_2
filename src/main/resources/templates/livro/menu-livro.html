@@ -231,7 +231,7 @@
 		<span th:unless="${currentPage > 1}">Anterior</span>
 		&nbsp;&nbsp;
 		<span th:each="i : ${#numbers.sequence(1,totalPages)}">
-			<a th:if="${i != currentPage}" th:href="@{'/livro/page/' + ${i}}">[[${i}]]</a>
+			<a th:if="${i != currentPage && i != 0}" th:href="@{'/livro/page/' + ${i}}">[[${i}]]</a>
 			<span th:unless="${i != currentPage}">[[${i}]]</span>
 			&nbsp;&nbsp;
 		</span>
@@ -316,9 +316,6 @@
 			});
 		})
 
-		calendario.max = new Date().toISOString().split("T")[0];
-
-		$('#preco').mask('#.##0,00', {reverse: true});
 	</script>
 
 </body>
