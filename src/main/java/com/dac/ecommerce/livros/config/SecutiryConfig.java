@@ -10,11 +10,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.dac.ecommerce.livros.config.jwt.JwtFilter;
+import com.dac.ecommerce.livros.services.ImplementsUserDetailsService;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -25,7 +26,7 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+		http.cors().and().csrf().disable().authorizeRequests()
 		.antMatchers("/resources/**").permitAll()
 		.antMatchers(HttpMethod.GET, "/").permitAll()
 		.antMatchers(HttpMethod.GET, "/").permitAll()
@@ -35,7 +36,7 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/user/cadastrar").permitAll()
 		.antMatchers(HttpMethod.POST, "/user/cadastrar").permitAll()
 		.antMatchers(HttpMethod.GET, "/user/login").permitAll()
-		.antMatchers(HttpMethod.POST, "/user/login").permitAll()
+		.antMatchers(HttpMethod.POST, "/user/autenticar").permitAll()
 		.antMatchers(HttpMethod.GET, "/user/**").hasAnyAuthority("CLIENTE", "ADMIN")
 		.antMatchers(HttpMethod.POST, "/user/**").hasAnyAuthority("CLIENTE", "ADMIN")
 		.antMatchers(HttpMethod.GET, "/pedido/forma-pagamento").hasAuthority("ADMIN")
@@ -57,14 +58,10 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/item-estoque/**").hasAuthority("ADMIN")
 		.antMatchers(HttpMethod.POST, "/item-estoque/**").hasAuthority("ADMIN")
 		.anyRequest().authenticated()
-		.and()
-		.formLogin().loginPage("/user/login").defaultSuccessUrl("/", true)
-		.and()
-		.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/");
+		.and().exceptionHandling()
+		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	
-		
-		
-		//http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Override

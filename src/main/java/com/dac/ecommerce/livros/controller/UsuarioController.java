@@ -2,29 +2,48 @@ package com.dac.ecommerce.livros.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import com.dac.ecommerce.livros.config.jwt.JwtUtil;
+import com.dac.ecommerce.livros.dto.DTOAuth;
 import com.dac.ecommerce.livros.dto.DTOUsuario;
 import com.dac.ecommerce.livros.exceptions.UsuarioException;
 import com.dac.ecommerce.livros.model.user.Endereco;
-
+import com.dac.ecommerce.livros.model.user.UserCredentials;
 import com.dac.ecommerce.livros.model.user.Usuario;
 import com.dac.ecommerce.livros.services.UsuarioService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UsuarioController {
 	
 	@Autowired private UsuarioService usuarioService;
+	@Autowired private JwtUtil jwtUtil;
+	@Autowired private ObjectMapper mapper;
+	@Autowired private AuthenticationManager authenticationManager;
 
-	@RequestMapping("/login")
-	public String login() {
-		return "/user/login-user";
+	@PostMapping("/autenticar")
+	public String autenticar(@RequestBody UserCredentials userCredentials) throws Exception {
+		
+		try {
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(userCredentials.getUsername(), userCredentials.getPassword()));
+		} catch(Exception error) {
+			throw new UsuarioException("CREDENCIAIS INVÁLIDAS!");
+		}
+		
+		
+		String profile = usuarioService.buscarPerfil(userCredentials.getUsername());
+		String token = jwtUtil.gerarToken(userCredentials.getUsername());
+		
+		return mapper.writeValueAsString(new DTOAuth(token, profile));
 	}
 
 	@GetMapping("/cadastrar") 

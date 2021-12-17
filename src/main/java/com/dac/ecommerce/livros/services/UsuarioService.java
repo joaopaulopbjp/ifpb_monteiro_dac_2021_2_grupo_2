@@ -1,5 +1,6 @@
 package com.dac.ecommerce.livros.services;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -58,6 +59,10 @@ public class UsuarioService {
 		return repository.findByNome(nome);
 	}
 
+	public String buscarPerfil(String email) {
+		Usuario usuario = repository.findByEmail(email);
+		return new ArrayList<Role>(usuario.getRoles()).get(0).getRole();
+	}
 
 	public Page<Usuario> findAll(Pageable page) {
 		return repository.findAll(page);

@@ -1,4 +1,4 @@
-package com.dac.ecommerce.livros.config;
+package com.dac.ecommerce.livros.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,10 +6,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.dac.ecommerce.livros.config.ImplementsUserDetailsService;
-
 import com.dac.ecommerce.livros.model.user.Usuario;
 import com.dac.ecommerce.livros.repository.UsuarioRepository;
+import com.dac.ecommerce.livros.services.ImplementsUserDetailsService;
 
 @Service
 public class ImplementsUserDetailsService implements UserDetailsService{
