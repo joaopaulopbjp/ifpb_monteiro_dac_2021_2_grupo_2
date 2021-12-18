@@ -4,7 +4,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,13 +43,14 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/cadastrar") 
-	public void adicionarUsuario(@Valid @RequestBody DTOUsuario usuario, BindingResult bindingResult, Model model) throws UsuarioException {
+	public void adicionarUsuario(@Valid @RequestBody DTOUsuario usuario, BindingResult bindingResult) throws UsuarioException {
 		
-		if(!bindingResult.hasErrors()) {
-			usuarioService.cadastrarUsuario(usuario);
+		if(bindingResult.hasErrors()) {
+			throw new UsuarioException("NÃO FOI POSSÍVEL CADASTRAR O USUÁRIO");
 		}
 		
-		throw new UsuarioException("NÃO FOI POSSÍVEL CADASTRAR O USUÁRIO");
+		usuarioService.cadastrarUsuario(usuario);
+		
 	}
 	
 }

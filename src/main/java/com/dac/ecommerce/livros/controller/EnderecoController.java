@@ -28,21 +28,23 @@ public class EnderecoController {
 	@PostMapping("/cadastrar")
 	public void cadastrar(@Valid @RequestBody Endereco endereco, @AuthenticationPrincipal Usuario usuario, BindingResult bindingResult) throws EnderecoException {
 		
-		if(!bindingResult.hasErrors()) {
-			enderecoService.salvar(usuario, endereco);
+		if(bindingResult.hasErrors()) {
+			throw new EnderecoException("NÃO FOI POSSÍVEL CADASTRAR O ENDEREÇO!");
 		}
 		
-		throw new EnderecoException("NÃO FOI POSSÍVEL CADASTRAR O ENDEREÇO!");
+		enderecoService.salvar(usuario, endereco);
+		
 	}
 	
 	@PutMapping("/atualizar") 
 	public void atualizar(@Valid @RequestBody Endereco endereco, @AuthenticationPrincipal Usuario usuario,  BindingResult bindingResult) throws EnderecoException {
 		
-		if(!bindingResult.hasErrors()) {
-			enderecoService.atualizar(usuario, endereco);
+		if(bindingResult.hasErrors()) {
+			throw new EnderecoException("NÃO FOI POSSÍVEL ATUALIZAR O ENDEREÇO!");
 		}
 		
-		throw new EnderecoException("NÃO FOI POSSÍVEL ATUALIZAR O ENDEREÇO!");
+		enderecoService.atualizar(usuario, endereco);
+		
 	}
 	
 	@DeleteMapping("/deletar")
