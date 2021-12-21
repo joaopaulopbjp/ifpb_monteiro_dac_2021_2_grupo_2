@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos :: head('Cadastrar livro')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos :: header}"></header>
+
+	<style th:replace="~{fragmentos :: style}"></style>
+	<style>
+		.salvar,
+		.cancelar {
+			margin-bottom: 15px;
+		}
+
+		form {
+			margin-top: 15px;
+			margin-left: 30px;
+			margin-right: 30px;
+		}
+
+		.container {
+			margin-top: 15px;
+			margin-bottom: 20px;
+		}
+
+		.checkbox-inline {
+			margin-right: 15px;
+		}
+	</style>
+
+
+	<div class="container">
+		<div class="card">
+			<form method="post" id="formulario" th:object="${dtoLivro}" th:action="@{'/livro/salvar'}"
+				enctype="multipart/form-data">
+				<div class="form-group" id="grupo">
+					<h4 id="titulo">Escolha os autores do livro</h4>
+					<div class="container">
+						<div class="row justify-content-md-center">
+							<div class="col-md-auto" th:if="${autores.empty}">
+								<div>
+									<h5 style="text-align: center;">Não existe autores cadastrados
+									</h5>
+								</div>
+							</div>
+							<div class="col" th:else="${!autores.empty}">
+								<label class="checkbox-inline" th:each="autor : ${autores}">
+									<input type="checkbox" th:value="${autor.id}" th:text="${autor.nome}"
+										th:field="*{autoresCadastrados}" />
+								</label>
+								<div class="text text-danger" th:if="${#fields.hasErrors('autoresCadastrados')}">Escolha
+									um
+									Autor</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="ISBN" th:field="*{isbn}"
+						th:errorclass="is-invalid" />
+					<div class="text text-danger" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></div>
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control" id="titulo_livro" placeholder="TÍTULO" th:field="*{titulo}"
+						th:errorclass="is-invalid" />
+					<div class="text text-danger" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></div>
+				</div>
+				<div class="form-group">
+					<textarea class="form-control" placeholder="DESCRIÇÃO" rows="2" id="descricao"
+						th:field="*{descricao}" th:errorclass="is-invalid"></textarea>
+					<div class="text text-danger" th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}">
+					</div>
+					<br>
+				</div>
+				<div class="row">
+					<div class="col-md-auto">
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text">R$</span>
+							</div>
+							<input type="text" class="form-control" id="preco" placeholder="PREÇO" th:field="*{preco}"
+								th:errorclass="is-invalid" />
+							<div class="text text-danger" th:if="${#fields.hasErrors('preco')}" th:errors="*{preco}">
+							</div>
+						</div>
+					</div>
+					<div class="col" id="file">
+						<label for="imagem" class="form-label">Escolha uma imagem para capa do
+							Livro</label>
+						<input type="file" name="fileLivro" id="imagem" accept="image/*" required>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="selectEditora">Escolha uma editora</label>
+					<select class="form-control" id="select-editora" th:field="*{editora}">
+						<option value=""> -- </option>
+						<option th:each="editora : ${editoras}" th:text="${editora.nome}" th:value="${editora.id}">
+						</option>
+					</select>
+					<div class="text text-danger" th:if="${#fields.hasErrors('editora')}">Escolha
+						uma editora</div>
+				</div>
+				<div class="form-group">
+					<label for="selectCategoria">Escolha uma categoria</label>
+					<select class="form-control" id="selectCategoria" th:field="*{categoria}">
+						<option value=""> -- </option>
+						<option th:each="categoria : ${categorias}" th:text="${categoria.nome}"
+							th:value="${categoria.id}">
+						</option>
+					</select>
+					<div class="text text-danger" th:if="${#fields.hasErrors('editora')}">Escolha
+						uma categoria</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<input type="number" class="form-control" placeholder="EDIÇÃO" id="edicao" th:field="*{edicao}"
+							th:errorclass="is-invalid" />
+						<div class="text text-danger" th:if="${#fields.hasErrors('edicao')}">Edição
+							inválida</div>
+					</div>
+					<div class="col">
+						<input type="date" class="form-control" placeholder="ANO" id="calendario" th:field="*{date}"
+							th:errorclass="is-invalid" />
+						<div class="text text-danger" th:if="${#fields.hasErrors('date')}">Data
+							inválida</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div th:if="${!autores.empty && !editoras.empty && !categorias.empty}">
+						<button type="submit" class="btn btn-primary salvar">Salvar</button>
+					</div>
+					<button type="button" class="btn btn-danger cancelar" th:onclick="cancelar()">Cancelar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<footer th:replace="~{fragmentos :: footer}"></footer>
+	<script th:replace="~{fragmentos :: script1}"></script>
+	<script th:replace="~{fragmentos :: script2}"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+	<script>
+		$('#preco').mask('#.##0,00', {reverse: true});
+		function cancelar() {
+			const link = "http://localhost:8080/livro/menu-livro";
+			window.location.href = link;
+		}
+		calendario.max = new Date().toISOString().split("T")[0];
+	</script>
+
+</body>
+
+</html>

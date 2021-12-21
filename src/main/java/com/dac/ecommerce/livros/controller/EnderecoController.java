@@ -1,18 +1,15 @@
 package com.dac.ecommerce.livros.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import com.dac.ecommerce.livros.dto.DTOEndereco;
 import com.dac.ecommerce.livros.exceptions.EnderecoException;
 import com.dac.ecommerce.livros.model.user.Endereco;
 import com.dac.ecommerce.livros.model.user.Usuario;
@@ -37,30 +34,30 @@ public class EnderecoController {
 	}
 	
 	@PutMapping("/atualizar") 
-	public void atualizar(@Valid @RequestBody Endereco endereco, @AuthenticationPrincipal Usuario usuario,  BindingResult bindingResult) throws EnderecoException {
+	public void atualizar(@Valid @RequestBody Endereco endereco, @AuthenticationPrincipal Usuario usuario, BindingResult bindingResult) throws EnderecoException {
 		
 		if(bindingResult.hasErrors()) {
 			throw new EnderecoException("NÃO FOI POSSÍVEL ATUALIZAR O ENDEREÇO!");
 		}
 		
-		enderecoService.atualizar(usuario, endereco);
-		
+		enderecoService.atualizar(endereco);
 	}
 	
-	@DeleteMapping("/deletar")
-	public void deletar(@AuthenticationPrincipal Usuario usuario) throws EnderecoException {
-		enderecoService.deletar(usuario);
+	@DeleteMapping("/deletar/{id}")
+	public void deletar(@PathVariable Long id, @AuthenticationPrincipal Usuario usuario) throws EnderecoException {
+		enderecoService.deletar(usuario, id);
 	}
 	
 	@GetMapping("/consultar")
-	public Endereco consultar(@AuthenticationPrincipal Usuario usuario) throws EnderecoException {
-		Endereco endereco = enderecoService.consultar(usuario);
+	public List<DTOEndereco> consultar(@AuthenticationPrincipal Usuario usuario) throws EnderecoException {
 		
-		if(endereco == null) {
+		List<DTOEndereco> enderecos = enderecoService.consultar(usuario);
+		
+		if(enderecos.size() == 0) {
 			throw new EnderecoException("NÃO EXISTE ENDEREÇO CADASTRADO!");
 		}
-		
-		return endereco;
+
+		return enderecos;
 	}
 	
 	

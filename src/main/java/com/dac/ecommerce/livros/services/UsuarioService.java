@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.dac.ecommerce.livros.dto.DTOUsuario;
 import com.dac.ecommerce.livros.exceptions.UsuarioException;
-import com.dac.ecommerce.livros.model.user.Endereco;
 import com.dac.ecommerce.livros.model.user.Role;
 import com.dac.ecommerce.livros.model.user.Usuario;
 import com.dac.ecommerce.livros.repository.RoleRepository;
@@ -21,31 +20,23 @@ import com.dac.ecommerce.livros.repository.UsuarioRepository;
 @Service
 public class UsuarioService {
 
-	@Autowired
-	private UsuarioRepository repository;
+	@Autowired private UsuarioRepository usuarioRepository;
+	@Autowired private RoleRepository roleRepository;
 	
-	@Autowired
-	private RoleRepository roleRepository;
-	
-
-	//Atualiza o usuário. É feita a busca pelo id do cliente informado fazendo uma
-	//cópia das suas informações pelo BeanUtils
 	public Usuario update(Usuario usuario) {
-		Usuario usuarioSalvo = repository.findById(usuario.getId()).get();
+		Usuario usuarioSalvo = usuarioRepository.findById(usuario.getId()).get();
 		BeanUtils.copyProperties(usuario, usuarioSalvo,"id");
-		repository.save(usuarioSalvo);
+		usuarioRepository.save(usuarioSalvo);
 		return usuarioSalvo;	
 		
 	}
 	
-	//Método deleta um usuário do Banco
 	public void delete(long id) {
-		repository.deleteById(id);
+		usuarioRepository.deleteById(id);
 	}
 	
-	//Método busca um usuário pelo ID
 	public Usuario findById(long id) throws UsuarioException {
-		Usuario usuario = repository.findById(id).get();
+		Usuario usuario = usuarioRepository.findById(id).get();
 		
 		if(usuario == null) {
 			throw new UsuarioException("[ERROR USUÁRIO] - USUÁRIO NÃO ENCONTRADO!");
@@ -54,23 +45,21 @@ public class UsuarioService {
 		return usuario;
 	}
 	
-	//Método Busca usuário pelo nome
 	public Usuario findByNome(String nome) {
-		return repository.findByNome(nome);
+		return usuarioRepository.findByNome(nome);
 	}
 
 	public String buscarPerfil(String email) {
-		Usuario usuario = repository.findByEmail(email);
+		Usuario usuario = usuarioRepository.findByEmail(email);
 		return new ArrayList<Role>(usuario.getRoles()).get(0).getRole();
 	}
 
 	public Page<Usuario> findAll(Pageable page) {
-		return repository.findAll(page);
+		return usuarioRepository.findAll(page);
 	}
 
-	//Método busca usuário pelo Email
 	public Usuario findByEmail(String email) throws UsuarioException {
-		Usuario usuario = repository.findByEmail(email);
+		Usuario usuario = usuarioRepository.findByEmail(email);
 		
 		if(usuario == null) {
 			throw new UsuarioException("[ERROR USUÁRIO] - USUÁRIO NÃO ENCONTRADO!");
@@ -79,12 +68,11 @@ public class UsuarioService {
 		return usuario;
 	}
 	
-	// metodo para cadastrar usuario
 	public void cadastrarUsuario(DTOUsuario usuarioDTO) {
 		
 		Usuario usuario = usuarioDTO.parser();
 		
-		if(repository.findByEmail(usuario.getEmail()) == null) {
+		if(usuarioRepository.findByEmail(usuario.getEmail()) == null) {
 			
 			Role role = new Role();
 			
@@ -107,8 +95,7 @@ public class UsuarioService {
 			roles.add(role);
 		
 			usuario.setRoles(roles);
-			usuario.setEndereco(new Endereco());
-			repository.save(usuario);
+			usuarioRepository.save(usuario);
 		}
 		
 	

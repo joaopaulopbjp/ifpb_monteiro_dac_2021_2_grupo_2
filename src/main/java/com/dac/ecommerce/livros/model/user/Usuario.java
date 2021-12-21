@@ -1,6 +1,7 @@
 package com.dac.ecommerce.livros.model.user;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -12,13 +13,19 @@ import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import lombok.Data;
 
 @Entity
 @Data
 @Table(name="TB_USUARIO")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Long.class)
 public class Usuario implements UserDetails{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -43,8 +50,8 @@ public class Usuario implements UserDetails{
 	@Length(min=15, max=15)
 	private String telefone;
 
-	@Embedded
-	private Endereco endereco;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Endereco> enderecos;
 	
 	@Enumerated(EnumType.STRING)
 	private TipoUsuario tipoUsuario;

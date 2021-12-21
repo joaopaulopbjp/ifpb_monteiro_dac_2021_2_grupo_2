@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos :: head('Livro')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos :: header}"></header>
+
+	<style th:replace="~{fragmentos :: style}"></style>
+
+	<style>
+		.col {
+			margin-bottom: 15px;
+		}
+
+		#titulo {
+			text-align: center;
+		}
+
+		#img-livro,
+		#img-escritor,
+		#img-estoque,
+		#img-editora,
+		#img-categoria {
+			margin-bottom: 5px;
+			width: 30px;
+		}
+
+		#btn_editar,
+		#btn_excluir,
+		#btn_adicionar {
+			width: 40px;
+		}
+
+		.img-editar,
+		.img-excluir,
+		.img-adicionar {
+			width: 20px;
+			margin-left: -3px;
+		}
+
+		#lista-autores-modal,
+		#cadastrar-autor-modal {
+			margin-right: 10px;
+		}
+
+		.sub_menu {
+			margin-top: 15px;
+			text-align: center;
+			margin-bottom: 15px;
+		}
+
+		.imagem {
+			max-height: 50px;
+			border: 1px solid black;
+		}
+
+		#btn_editar,
+		#btn_excluir {
+			max-width: 40px;
+		}
+
+		.jumbotron {
+			margin-left: -15px;
+		}
+
+		.fab {
+			position: fixed;
+			bottom: 10px;
+			right: 10px;
+		}
+
+		.fab button {
+			cursor: pointer;
+			width: 48px;
+			height: 48px;
+			border-radius: 30px;
+			background-color: #3CB371;
+			border: none;
+			box-shadow: 0 1px 5px rgba(0, 0, 0, .4);
+			font-size: 24px;
+			color: white;
+
+			-webkit-transition: .2s ease-out;
+			-moz-transition: .2s ease-out;
+			transition: .2s ease-out;
+		}
+
+		.fab button:focus {
+			outline: none;
+		}
+
+		.fab button.main {
+			position: absolute;
+			width: 60px;
+			height: 60px;
+			border-radius: 30px;
+			background-color: #006400;
+			right: 0;
+			bottom: 0;
+			z-index: 20;
+		}
+
+		.fab button.main:before {
+			content: '⏚';
+		}
+
+		.fab ul {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			padding: 0;
+			padding-right: 5px;
+			margin: 0;
+			list-style: none;
+			z-index: 10;
+
+			-webkit-transition: .2s ease-out;
+			-moz-transition: .2s ease-out;
+			transition: .2s ease-out;
+		}
+
+		.fab ul li {
+			display: flex;
+			justify-content: flex-start;
+			position: relative;
+			margin-bottom: -10%;
+			opacity: 0;
+
+			-webkit-transition: .3s ease-out;
+			-moz-transition: .3s ease-out;
+			transition: .3s ease-out;
+		}
+
+
+		.fab.show button.main,
+		.fab.show button.main {
+			outline: none;
+			background-color: #008000;
+			box-shadow: 0 3px 8px rgba(0, 0, 0, .5);
+		}
+
+		.fab.show button.main:before,
+		.fab.show button.main:before {
+			content: '↑';
+		}
+
+		.fab.show button.main+ul,
+		.fab.show button.main+ul {
+			bottom: 70px;
+		}
+
+		.fab.show button.main+ul li,
+		.fab.show button.main+ul li {
+			margin-bottom: 10px;
+			opacity: 1;
+		}
+
+		.fab.show button.main+ul li:hover label,
+		.fab.show button.main+ul li:hover label {
+			opacity: 1;
+		}
+
+		.jumbotron {
+			background-color: white;
+			margin-top: 15px;
+			margin-left: 15px;
+			margin-right: 15px;
+		}
+	</style>
+
+
+	<div class="jumbotron">
+		<h5 style="text-align: center;">Catálogo de Livros</h5>
+		<table class="table" id="tabelaLivro">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">TÍTULO</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${livros.empty}">
+					<td colspan="2">Não existe livros cadastrados</td>
+				</tr>
+				<tr th:each="livro : ${livros}">
+					<th scope="row">
+						<span th:text="${livro.id}"></span>
+					</th>
+					<td><span th:text="${livro.titulo}">Título</span></td>
+					<td>
+						<a th:href="@{/livro/form-editar/{id}(id = ${livro.id})}">
+							<button id="btn_editar" type="button" class="btn btn-primary" title="Editar livro">
+								<img class="img-editar"
+									src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
+							</button>
+						</a>
+
+						<a th:if="${livro.adicionadoEmEstoque == false}"
+							th:href="@{/livro/deletar/{id}(id = ${livro.id})}">
+							<button id="btn_excluir" type="button" class="btn btn-danger" title="Excluir livro">
+								<img class="img-excluir"
+									src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
+							</button>
+						</a>
+
+						<a th:if="${!estoques.empty && livro.adicionadoEmEstoque == false}">
+							<a th:href="@{/item-estoque/form-adicionar-item/{id}(id = ${livro.id})}">
+								<button id="btn_adicionar" type="button" class="btn btn-success"
+									title="Adicionar livro para o estoque" />
+								<img class="img-adicionar" img
+									src="https://img.icons8.com/glyph-neue/64/000000/add.png" />
+								</button>
+							</a>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div style="text-align: center;">
+		Total de Livros: <span th:text="${totalItems}"></span> - Página <span th:text="${currentPage}"></span>
+		de
+		<span th:text="${totalPages}"></span> -
+		<a th:if="${currentPage > 1}" th:href="@{/livro/page/1}">Primeira</a>
+		<span th:unless="${currentPage > 1}">Primeira</span>
+		&nbsp;&nbsp;
+		<a th:if="${currentPage > 1}" th:href="@{'/livro/page/' + ${currentPage - 1}}">Anterior</a>
+		<span th:unless="${currentPage > 1}">Anterior</span>
+		&nbsp;&nbsp;
+		<span th:each="i : ${#numbers.sequence(1,totalPages)}">
+			<a th:if="${i != currentPage && i != 0}" th:href="@{'/livro/page/' + ${i}}">[[${i}]]</a>
+			<span th:unless="${i != currentPage}">[[${i}]]</span>
+			&nbsp;&nbsp;
+		</span>
+		<a th:if="${currentPage < totalPages}" th:href="@{'/livro/page/' + ${currentPage + 1}}">Proxima</a>
+		<span th:unless="${currentPage < totalPages}">Anterior</span>
+		&nbsp;&nbsp;
+		<a th:if="${currentPage < totalPages}" th:href="@{'/livro/page/' + ${totalPages}}">Última</a>
+		<span th:unless="${currentPage < totalPages}">Última</span>
+	</div>
+	
+	<footer th:replace="~{fragmentos :: footer}"></footer>
+	<div class="fab">
+		<button class="main">
+		</button>
+		<ul>
+			<li>
+				<a href="http://localhost:8080/livro/cadastrar">
+					<button id="opcao1" title="Cadastrar livro">
+						<img id="img-livro" src="https://img.icons8.com/ios-glyphs/30/000000/add-book.png" />
+					</button>
+				</a>
+			</li>
+			<li>
+				<a href="http://localhost:8080/autor/menu-autor">
+					<button id="opcao2">
+						<img id="img-escritor"
+							src="https://img.icons8.com/ios-filled/50/000000/user-typing-using-typewriter.png"
+							title="autor" />
+					</button>
+				</a>
+			</li>
+			<li>
+				<a href="http://localhost:8080/editora/menu-editora">
+					<button id="opcao3">
+						<img id="img-editora" src="https://img.icons8.com/ios-filled/50/000000/bookshop.png"
+							title="editora" />
+					</button>
+				</a>
+
+			</li>
+			<li>
+				<a href="http://localhost:8080/estoque/menu-estoque">
+					<button id="opcao4">
+						<img id="img-estoque" src="https://img.icons8.com/ios-filled/50/000000/move-stock--v2.png"
+							title="estoque" />
+					</button>
+				</a>
+			</li>
+			<li>
+				<a href="http://localhost:8080/categoria/menu-categoria">
+					<button id="opcao5">
+						<img id="img-categoria" src="https://img.icons8.com/glyph-neue/64/000000/book-stack.png"
+							title="Categorias" />
+					</button>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<script th:replace="~{fragmentos :: script1}"></script>
+	<script th:replace="~{fragmentos :: script2}"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+	<script>
+
+		function toggleFAB(fab) {
+			if (document.querySelector(fab).classList.contains('show')) {
+				document.querySelector(fab).classList.remove('show');
+			} else {
+				document.querySelector(fab).classList.add('show');
+			}
+		}
+
+		document.querySelector('.fab .main').addEventListener('click', function () {
+			toggleFAB('.fab');
+		});
+
+		document.querySelectorAll('.fab ul li button').forEach((item) => {
+			item.addEventListener('click', function () {
+				toggleFAB('.fab');
+			});
+		})
+
+	</script>
+
+</body>
+
+</html>

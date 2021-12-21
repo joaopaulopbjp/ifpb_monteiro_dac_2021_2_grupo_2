@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos :: head('Editora')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos :: header}"></header>
+
+	<style th:replace="~{fragmentos :: style}"></style>
+
+	<style>
+		#btn-excluir,
+		#btn-editar {
+
+			max-width: 35px;
+			max-height: 35px;
+		}
+
+		.img-editar {
+			margin-left: -9px;
+			margin-top: -5px;
+		}
+
+		.img-excluir {
+			margin-left: -7px;
+			margin-bottom: 5px;
+		}
+
+		.jumbotron {
+			background-color: white;
+			margin-top: 15px;
+			margin-left: 15px;
+			margin-right: 15px;
+		}
+	</style>
+	<ul class="nav nav-tabs">
+		<li class="nav-item">
+			<a class="nav-link active" href="http://localhost:8080/editora/menu-editora">Editoras cadastradas</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="http://localhost:8080/editora/cadastrar-editora">Cadastrar nova editora</a>
+		</li>
+	</ul>
+
+	<div class="jumbotron">
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Nome</th>
+					<th scope="col">Cidade</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${editoras.empty}">
+					<td colspan="2">Não existe editoras cadastradas</td>
+				</tr>
+				<tr th:each="editora : ${editoras}">
+					<th scope="row">
+						<span th:text="${editora.id}"></span>
+					</th>
+					<td><span th:text="${editora.nome}"></span>
+					<td><span th:text="${editora.cidade}"></span>
+					<td>
+
+						<a th:href="@{/editora/editar/{id}(id = ${editora.id})}">
+							<button id="btn-editar" type="button" class="btn btn-primary" title="Editar editora"
+								data-toggle="modal" data-target="#modalEditarEditora">
+								<img class="img-editar"
+									src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" />
+							</button>
+						</a>
+
+						<a th:href="@{/editora/deletar/{id}(id = ${editora.id})}">
+							<button id="btn-excluir" type="button" class="btn btn-danger" title="Excluir Autor">
+								<img class="img-excluir"
+									src="https://img.icons8.com/material-sharp/24/000000/delete.png" />
+							</button>
+						</a>
+
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div style="text-align: center;">
+		Total de Editoras: <span th:text="${totalItems}"></span> - Página <span th:text="${currentPage}"></span> de
+		<span th:text="${totalPages}"></span> -
+		<a th:if="${currentPage > 1}" th:href="@{/editora/page/1}">Primeira</a>
+		<span th:unless="${currentPage > 1}">Primeira</span>
+		&nbsp;&nbsp;
+		<a th:if="${currentPage > 1}" th:href="@{'/editora/page/' + ${currentPage - 1}}">Anterior</a>
+		<span th:unless="${currentPage > 1}">Anterior</span>
+		&nbsp;&nbsp;
+		<span th:each="i : ${#numbers.sequence(1,totalPages)}">
+			<a th:if="${i != currentPage && i != 0}" th:href="@{'/autor/page/' + ${i}}">[[${i}]]</a>
+			<span th:unless="${i != currentPage}">[[${i}]]</span>
+			&nbsp;&nbsp;
+		</span>
+		<a th:if="${currentPage < totalPages}" th:href="@{'/editora/page/' + ${currentPage + 1}}">Proxima</a>
+		<span th:unless="${currentPage < totalPages}">Anterior</span>
+		&nbsp;&nbsp;
+		<a th:if="${currentPage < totalPages}" th:href="@{'/editora/page/' + ${totalPages}}">Última</a>
+		<span th:unless="${currentPage < totalPages}">Última</span>
+	</div>
+
+	<footer th:replace="~{fragmentos :: footer}"></footer>
+
+	<script th:replace="~{fragmentos :: script1}"></script>
+	<script th:replace="~{fragmentos :: script2}"></script>
+</body>
+
+</html>
