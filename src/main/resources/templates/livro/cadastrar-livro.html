@@ -60,12 +60,12 @@
 					<input type="text" class="form-control" placeholder="ISBN" th:field="*{isbn}"
 						th:errorclass="is-invalid" />
 					<div class="text text-danger" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></div>
-				</div>
+				</div><br>
 				<div class="form-group">
 					<input type="text" class="form-control" id="titulo_livro" placeholder="TÍTULO" th:field="*{titulo}"
 						th:errorclass="is-invalid" />
 					<div class="text text-danger" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></div>
-				</div>
+				</div><br>
 				<div class="form-group">
 					<textarea class="form-control" placeholder="DESCRIÇÃO" rows="2" id="descricao"
 						th:field="*{descricao}" th:errorclass="is-invalid"></textarea>
@@ -101,7 +101,7 @@
 					</select>
 					<div class="text text-danger" th:if="${#fields.hasErrors('editora')}">Escolha
 						uma editora</div>
-				</div>
+				</div><br>
 				<div class="form-group">
 					<label for="selectCategoria">Escolha uma categoria</label>
 					<select class="form-control" id="selectCategoria" th:field="*{categoria}">
@@ -112,7 +112,7 @@
 					</select>
 					<div class="text text-danger" th:if="${#fields.hasErrors('editora')}">Escolha
 						uma categoria</div>
-				</div>
+				</div><br>
 				<div class="row">
 					<div class="col">
 						<input type="number" class="form-control" placeholder="EDIÇÃO" id="edicao" th:field="*{edicao}"
@@ -140,6 +140,7 @@
 	<footer th:replace="~{fragmentos :: footer}"></footer>
 	<script th:replace="~{fragmentos :: script1}"></script>
 	<script th:replace="~{fragmentos :: script2}"></script>
+	<script th:replace="~{fragmentos :: script3}"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
 	<script>

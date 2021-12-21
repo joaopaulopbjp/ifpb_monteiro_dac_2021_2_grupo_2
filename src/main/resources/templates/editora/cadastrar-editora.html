@@ -41,7 +41,7 @@
 					<div class="invalid-feedback" th:if="${#fields.hasErrors('nomeEditora')}"
 						th:errors="*{nomeEditora}">
 					</div>
-				</div>
+				</div><br>
 				<div class="form-group">
 					<label for="inputCidade">Cidade da editora:</label>
 					<input type="text" class="form-control" placeholder="Digite o nome da cidade da editora"
@@ -50,7 +50,7 @@
 						th:errors="*{cidadeEditora}">
 					</div>
 					<button type="submit" class="btn btn-primary salvar">Salvar</button>
-				</div>
+				</div><br>
 			</form>
 		</div>
 	</div>
@@ -59,6 +59,7 @@
 
 	<script th:replace="~{fragmentos :: script1}"></script>
 	<script th:replace="~{fragmentos :: script2}"></script>
+	<script th:replace="~{fragmentos :: script3}"></script>
 </body>
 
 </html>
