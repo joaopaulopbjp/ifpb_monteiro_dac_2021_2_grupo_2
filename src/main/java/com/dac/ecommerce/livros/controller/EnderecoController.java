@@ -60,5 +60,16 @@ public class EnderecoController {
 		return enderecos;
 	}
 	
+	@GetMapping("/listar")
+	public List<DTOEndereco> consultar() throws EnderecoException {
+		
+		List<DTOEndereco> enderecos = enderecoService.listar();
+		
+		if(enderecos.size() == 0) {
+			throw new EnderecoException("NÃO EXISTE ENDEREÇO CADASTRADO!");
+		}
+
+		return enderecos;
+	}
 	
 }

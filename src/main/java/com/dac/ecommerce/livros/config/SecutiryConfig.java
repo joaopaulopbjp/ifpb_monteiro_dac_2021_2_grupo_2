@@ -32,9 +32,7 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/user/cadastrar").permitAll()
 		.antMatchers(HttpMethod.POST, "/user/cadastrar").permitAll()
 		.antMatchers(HttpMethod.POST, "/user/autenticar").permitAll()
-		.antMatchers(HttpMethod.GET, "/user/**").hasAnyAuthority("CLIENTE", "ADMIN")
-		.antMatchers(HttpMethod.POST, "/user/**").hasAnyAuthority("CLIENTE", "ADMIN")
-		.antMatchers( "/endereco/**").hasAnyAuthority("CLIENTE", "ADMIN")
+		.antMatchers("/endereco/**").hasAnyAuthority("CLIENTE", "ADMIN")
 		.anyRequest().authenticated()
 		.and().exceptionHandling()
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

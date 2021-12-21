@@ -60,5 +60,16 @@ public class EnderecoService {
 		
 		return DTOenderecos;
 	}
+	
+	public List<DTOEndereco> listar() {
+		List<Endereco> enderecos =  enderecoRepository.findAll();
+		List<DTOEndereco> DTOenderecos = new ArrayList<DTOEndereco>();
+		
+		enderecos.forEach((e) -> {
+			DTOenderecos.add(new DTOEndereco(e));
+		});
+		
+		return DTOenderecos;
+	}
 
 }
