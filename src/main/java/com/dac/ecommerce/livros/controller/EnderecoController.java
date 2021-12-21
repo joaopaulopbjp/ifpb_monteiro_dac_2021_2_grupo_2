@@ -35,7 +35,7 @@ public class EnderecoController {
 	
 	@PutMapping("/atualizar") 
 	public void atualizar(@Valid @RequestBody Endereco endereco, @AuthenticationPrincipal Usuario usuario, BindingResult bindingResult) throws EnderecoException {
-		
+
 		if(bindingResult.hasErrors()) {
 			throw new EnderecoException("NÃO FOI POSSÍVEL ATUALIZAR O ENDEREÇO!");
 		}

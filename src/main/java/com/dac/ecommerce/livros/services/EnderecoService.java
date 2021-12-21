@@ -3,7 +3,6 @@ package com.dac.ecommerce.livros.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +34,8 @@ public class EnderecoService {
 	
 	public void atualizar(Endereco endereco) {
 		Endereco enderecoDesatualizado = enderecoRepository.findById(endereco.getId()).get();
-		BeanUtils.copyProperties(enderecoDesatualizado, endereco, "id");
-		enderecoRepository.save(enderecoDesatualizado);
+		endereco.setUsuario(enderecoDesatualizado.getUsuario());
+		enderecoRepository.save(endereco);
 	}
 	
 	public void deletar(Usuario usuario, Long idEndereco) throws EnderecoException {
